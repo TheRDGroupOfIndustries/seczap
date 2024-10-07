@@ -10,7 +10,7 @@ export default function UserHome() {
   const { data: session } = useSession(); // console.log(session);
   const router = useRouter();
   if (session?.user && session?.user?.role === "admin")
-    return router.replace("/admin");
+    return router.replace("/admin/dashboard");
 
   return (
     <main className="w-full h-screen relative flex-center flex-col gap-4 overflow-hidden">
@@ -28,9 +28,11 @@ export default function UserHome() {
       </div>
       <div className="space-x-2">
         {session?.user ? (
-          <>
-            <h4 className="text-xl">{session?.user?.name}</h4>
-            Role: {session?.user?.role}
+          <div className="flex-center flex-col space-y-2">
+            <div className="">
+              <h4 className="text-xl">{session?.user?.name}</h4>
+              Role: {session?.user?.role}
+            </div>
             <Button
               onClick={() => signOut()}
               title="Logout"
@@ -40,7 +42,7 @@ export default function UserHome() {
             >
               <FcGoogle className="mr-1" /> Logout
             </Button>
-          </>
+          </div>
         ) : (
           <Button
             onClick={() => signIn("google")}
