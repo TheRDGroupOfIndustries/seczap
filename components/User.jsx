@@ -7,14 +7,14 @@ import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 
 export default function UserHome() {
-  const { data: session } = useSession(); // console.log(session);
+  const { data: session, status } = useSession(); // console.log(session);
   const router = useRouter();
   if (session?.user && session?.user?.role === "admin")
     return router.replace("/admin/dashboard");
 
   return (
     <main className="w-full h-screen relative flex-center flex-col gap-4 overflow-hidden">
-      <div className="absolute top-2 left-2 flex-center gap-1">
+      <div className="absolute top-2 left-2 flex-center gap-1 animate-slide-down">
         <Image
           src="/logo.png"
           alt="logo"
@@ -26,33 +26,38 @@ export default function UserHome() {
           <span className="text-green-400">Sec</span>zap
         </div>
       </div>
-      <div className="space-x-2">
-        {session?.user ? (
-          <div className="flex-center flex-col space-y-2">
-            <div className="">
-              <h4 className="text-xl">{session?.user?.name}</h4>
-              Role: {session?.user?.role}
-            </div>
-            <Button
-              onClick={() => signOut()}
-              title="Logout"
-              size="lg"
-              className="text-lg"
-              variant="destructive"
-            >
-              <FcGoogle className="mr-1" /> Logout
-            </Button>
+      <div className="space-x-2 animate-fade-in">
+        <div className="flex-center flex-col space-y-2">
+          <div className="">
+            {session?.user && (
+              <>
+                <h4 className="text-xl">{session?.user?.name}</h4>
+                <p>Role: {session?.user?.role}</p>
+              </>
+            )}
           </div>
-        ) : (
           <Button
-            onClick={() => signIn("google")}
-            title="Login"
+            onClick={() => {
+              if (status === "unauthenticated") {
+                signIn("google");
+              } else {
+                signOut();
+              }
+            }}
+            variant={status === "authenticated" ? "destructive" : "default"}
+            disabled={status === "loading"}
+            title={status === "authenticated" ? "Logout" : "Login"}
             size="lg"
             className="text-lg"
           >
-            <FcGoogle className="mr-1" /> Login
+            <FcGoogle className="mr-1" />
+            {status === "loading"
+              ? "Loading..."
+              : status === "unauthenticated"
+              ? "Login"
+              : "Logout"}
           </Button>
-        )}
+        </div>
       </div>
     </main>
   );
