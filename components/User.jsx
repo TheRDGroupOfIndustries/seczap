@@ -28,14 +28,23 @@ export default function UserHome() {
       </div>
       <div className="space-x-2 animate-fade-in">
         <div className="flex-center flex-col space-y-2">
-          <div className="">
-            {session?.user && (
-              <>
-                <h4 className="text-xl">{session?.user?.name}</h4>
-                <p>Role: {session?.user?.role}</p>
-              </>
-            )}
-          </div>
+          {session?.user && (
+            <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-xl shadow px-4 py-2">
+              <div className="w-10 h-10 rounded-full overflow-hidden">
+                <Image
+                  src={session?.user?.image ?? "/logo.png"}
+                  alt="Profile Image"
+                  width="100"
+                  height="100"
+                  className="w-10 h-10 rounded-full object-cover overflow-hidden"
+                />
+              </div>
+              <div className="hidden md:block w-fit h-fit space-y-1">
+                <h4 className="line-clamp-1">{session?.user?.name}</h4>
+                <h6 className="text-xs line-clamp-1">{session?.user?.role}</h6>
+              </div>
+            </div>
+          )}
           <Button
             onClick={() => {
               if (status === "unauthenticated") {

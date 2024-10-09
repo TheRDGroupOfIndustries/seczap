@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { adminSections } from "@/lib/sections";
 import Sidebar from "./Sidebar";
@@ -8,20 +8,17 @@ import Total from "./Total";
 
 const Admin = ({ section, children }) => {
   const router = useRouter();
-  const pathName = usePathname();
   const { data: session } = useSession(); // console.log(session);
   if (session?.user?.role !== "admin") return router.replace("/");
-  const isSectionSetting = pathName === "/admin/settings";
+
   return (
     <>
       <section className="w-full h-screen animate-fade-in flex overflow-hidden">
         <Sidebar section={section} sections={adminSections} />
         <div className="w-full h-full space-y-8 p-4 md:p-8">
-          {!isSectionSetting && <Total />}
+          <Total />
           <div
-            className={`animate-fade-in w-full ${
-              !isSectionSetting ? "h-fit max-h-[68vh]" : "h-full max-h-[68vh]"
-            } p-4 rounded-lg border border-zinc-300 dark:border-zinc-800/50 border-opacity-30 shadow-sm dark:shadow-muted hover:shadow-md ease-in-out duration-300 overflow-hidden`}
+            className={`animate-fade-in w-full h-fit max-h-[68vh] p-4 rounded-lg border border-zinc-300 dark:border-zinc-800/50 border-opacity-30 shadow-sm dark:shadow-muted hover:shadow-md ease-in-out duration-300 overflow-hidden`}
           >
             {children}
           </div>
