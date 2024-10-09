@@ -26,8 +26,8 @@ export default function UserHome() {
       <div className="space-x-2 animate-fade-in">
         <div className="flex-center flex-col gap-4">
           {session?.user && (
-            <div className="flex-center flex-col space-y-2 animate-slide-up">
-              <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-xl shadow px-4 py-2">
+            <div className="flex-center flex-col space-y-2 overflow-hidden">
+              <div className="flex items-center gap-2 animate-slide-up bg-white/15 backdrop-blur-sm rounded-xl shadow px-4 py-2">
                 <div className="w-10 h-10 rounded-full overflow-hidden">
                   <Image
                     src={session?.user?.image ?? "/logo.png"}
@@ -44,7 +44,7 @@ export default function UserHome() {
                   </h6>
                 </div>
               </div>
-              <Link href="/admin/dashboard" className="mt-4">
+              <Link href="/admin/dashboard" className="mt-4 animate-slide-up">
                 <Button type="button" size="lg" variant="outline">
                   Dashborad
                 </Button>
