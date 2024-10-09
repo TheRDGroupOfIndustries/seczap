@@ -35,6 +35,7 @@ const OSINTAnalysis = () => {
     budget: "",
     notes: "",
   });
+  const [file, setFile] = useState(null);
   const [serviceType, setServiceType] = useState("");
   const [priority, setPriority] = useState("");
   const [date, setDate] = useState(new Date());
@@ -97,10 +98,21 @@ const OSINTAnalysis = () => {
         <div className="w-full h-[50vh] pr-1 overflow-x-hidden overflow-y-scroll">
           <div className="mb-4">
             <div className="relative w-full cursor-pointer flex-center mt-2 p-2 bg-transparent border border-zinc-300 dark:border-zinc-800 rounded-md">
-              <input type="file" className="absolute inset-0 z-10 hidden" />
-              <span className="flex-center gap-1">
-                <TbBoxMargin />
-                Upload a doc or pdf file with task details
+              <input
+                type="file"
+                onChange={(e) => {
+                  const selectedFile = e.target.files?.[0];
+                  if (selectedFile) {
+                    setFile(selectedFile);
+                  }
+                }}
+                className="absolute inset-0 z-10 opacity-0 cursor-pointer"
+              />
+              <span className="flex-center gap-1 line-clamp-1">
+                <TbBoxMargin color={file && "red"} />
+                {file
+                  ? file.name
+                  : "Upload a doc or pdf file with task details"}
               </span>
             </div>
           </div>

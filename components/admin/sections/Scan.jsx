@@ -19,6 +19,7 @@ import {
 import { IoScan } from "react-icons/io5";
 
 const Scan = () => {
+  const [file, setFile] = useState(null);
   const [scanType, setScanType] = useState("");
   const [scanSchedule, setScanSchedule] = useState("");
   const [scanResult, setScanResult] = useState(null);
@@ -65,9 +66,19 @@ const Scan = () => {
         <div className="w-full max-h-[50vh] pr-0 overflow-x-hidden overflow-y-scroll">
           <div className="mb-4">
             <div className="relative w-full cursor-pointer flex-center mt-2 p-2 bg-transparent border border-zinc-300 dark:border-zinc-800 rounded-md">
-              <input type="file" className="absolute inset-0 z-10 opacity-0" />
-              <span className="flex-center gap-1">
-                <IoScan /> Scan Now
+              <input
+                type="file"
+                onChange={(e) => {
+                  const selectedFile = e.target.files?.[0];
+                  if (selectedFile) {
+                    setFile(selectedFile);
+                  }
+                }}
+                className="absolute inset-0 z-10 opacity-0 cursor-pointer"
+              />
+              <span className="flex-center gap-1 line-clamp-1">
+                <IoScan color={file && "green"} />
+                {file ? file.name : "Scan Now"}
               </span>
             </div>
           </div>
