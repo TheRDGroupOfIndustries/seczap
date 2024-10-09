@@ -5,12 +5,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function UserHome() {
   const { data: session, status } = useSession(); // console.log(session);
   const router = useRouter();
-  if (session?.user && session?.user?.role === "admin")
-    return router.replace("/admin/dashboard");
+  // if (session?.user && session?.user?.role === "admin")
+  //   return router.replace("/admin/dashboard");
 
   return (
     <main className="w-full h-screen relative flex-center flex-col gap-4 overflow-hidden">
@@ -27,22 +28,31 @@ export default function UserHome() {
         </div>
       </div>
       <div className="space-x-2 animate-fade-in">
-        <div className="flex-center flex-col space-y-2">
+        <div className="flex-center flex-col gap-4">
           {session?.user && (
-            <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-xl shadow px-4 py-2">
-              <div className="w-10 h-10 rounded-full overflow-hidden">
-                <Image
-                  src={session?.user?.image ?? "/logo.png"}
-                  alt="Profile Image"
-                  width="100"
-                  height="100"
-                  className="w-10 h-10 rounded-full object-cover overflow-hidden"
-                />
+            <div className="flex-center flex-col space-y-2">
+              <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-xl shadow px-4 py-2">
+                <div className="w-10 h-10 rounded-full overflow-hidden">
+                  <Image
+                    src={session?.user?.image ?? "/logo.png"}
+                    alt="Profile Image"
+                    width="100"
+                    height="100"
+                    className="w-10 h-10 rounded-full object-cover overflow-hidden"
+                  />
+                </div>
+                <div className="block w-fit h-fit space-y-1">
+                  <h4 className="line-clamp-1">{session?.user?.name}</h4>
+                  <h6 className="text-xs line-clamp-1">
+                    {session?.user?.role}
+                  </h6>
+                </div>
               </div>
-              <div className="block w-fit h-fit space-y-1">
-                <h4 className="line-clamp-1">{session?.user?.name}</h4>
-                <h6 className="text-xs line-clamp-1">{session?.user?.role}</h6>
-              </div>
+              <Link href="/admin/dashboard" className="mt-4">
+                <Button type="button" size="lg" variant="outline">
+                  Dashborad
+                </Button>
+              </Link>
             </div>
           )}
           <Button

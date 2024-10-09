@@ -14,7 +14,11 @@ const Sidebar = ({ sections }) => {
   return (
     <aside className="w-fit md:w-60 max-w-lg h-full flex-between flex-col p-2 md:p-4 bg-muted overflow-hidden">
       <div className="w-full">
-        <div className="flex items-center animate-slide-down">
+        <Link
+          href="/"
+          title="Home"
+          className="flex items-center animate-slide-down"
+        >
           <Image
             src="/logo.png"
             alt="logo"
@@ -25,7 +29,7 @@ const Sidebar = ({ sections }) => {
           <div className="text-xl md:text-2xl lg:text-3xl font-semibold hidden md:block">
             <span className="text-green-400">Sec</span>zap
           </div>
-        </div>
+        </Link>
         <div className="w-full h-fit space-y-2 mt-4 animate-slide-right">
           {sections.map((sec, index) => {
             const isActive = pathName === sec.href;

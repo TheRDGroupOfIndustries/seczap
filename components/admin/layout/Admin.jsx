@@ -9,7 +9,7 @@ import Total from "./Total";
 const Admin = ({ section, children }) => {
   const router = useRouter();
   const { data: session } = useSession(); // console.log(session);
-  if (session?.user?.role !== "admin") return router.replace("/");
+  // if (session?.user?.role !== "admin") return router.replace("/");
 
   return (
     <>
