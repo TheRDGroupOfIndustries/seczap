@@ -29,8 +29,9 @@ const Scan = () => {
   // VirusTotal API key
   const VIRUSTOTAL_API_KEY = process.env.NEXT_PUBLIC_VIRUSTOTAL_API_KEY;
 
-  // Handle form submission
-  const handleScan = async () => {
+  // handling form submission
+  const handleScan = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
 
     try {
@@ -50,6 +51,8 @@ const Scan = () => {
       });
 
       const result = await response.json();
+      console.log(result);
+
       setScanResult(result);
       setIsLoading(false);
     } catch (error) {
@@ -60,7 +63,7 @@ const Scan = () => {
 
   return (
     <>
-      <div className="w-full mx-auto overflow-hidden">
+      <form onSubmit={handleScan} className="w-full mx-auto overflow-hidden">
         <h1 className="text-2xl font-bold mb-4">Initiate Malware Scan</h1>
 
         <div className="w-full max-h-[50vh] pr-0 overflow-x-hidden overflow-y-scroll">
@@ -122,7 +125,7 @@ const Scan = () => {
         </div>
 
         <div className="mt-4 w-full h-fit flex items-center justify-start gap-4 py-2">
-          <Button size="sm" onClick={handleScan}>
+          <Button type="submit" disabled={isLoading} size="sm">
             {isLoading ? "Scaning..." : "Scan"}
           </Button>
           {scanResult && (
@@ -131,7 +134,7 @@ const Scan = () => {
             </Button>
           )}
         </div>
-      </div>
+      </form>
       {isOpen && scanResult && (
         <ScanResult
           scanResult={scanResult}

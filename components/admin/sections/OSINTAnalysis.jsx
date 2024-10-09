@@ -54,8 +54,9 @@ const OSINTAnalysis = () => {
     });
   };
 
-  // Handle form submission
-  const handleAnalyze = async () => {
+  // handling form submission
+  const handleAnalyze = async (e) => {
+    e.preventDefault();
     const { target } = formData;
 
     if (!target) {
@@ -66,7 +67,7 @@ const OSINTAnalysis = () => {
     setIsLoading(true);
 
     try {
-      const apiUrl = "https://www.virustotal.com/vtapi/v2/url/scan";
+      const apiUrl = "https://www.virustotal.com/vtapi/v3/url/scan";
 
       // sending POST request to VirusTotal API
       const response = await fetch(apiUrl, {
@@ -92,7 +93,7 @@ const OSINTAnalysis = () => {
 
   return (
     <>
-      <div className="w-full mx-auto overflow-hidden">
+      <form onSubmit={handleAnalyze} className="w-full mx-auto overflow-hidden">
         <h1 className="text-2xl font-bold mb-4">OSINT Analysis</h1>
 
         <div className="w-full h-[50vh] pr-1 overflow-x-hidden overflow-y-scroll">
@@ -150,6 +151,7 @@ const OSINTAnalysis = () => {
               <label className="block text-sm font-medium">Target</label>
               <input
                 type="text"
+                required
                 name="target"
                 value={formData.target}
                 onChange={handleInputChange}
@@ -242,7 +244,7 @@ const OSINTAnalysis = () => {
         </div>
 
         <div className="w-full h-fit flex items-center justify-start gap-4 py-2">
-          <Button size="sm" onClick={handleAnalyze}>
+          <Button type="submit" size="sm" disabled={isLoading}>
             {isLoading ? "Analyzing..." : "Analyze"}
           </Button>
           {analysisResult && (
@@ -251,7 +253,7 @@ const OSINTAnalysis = () => {
             </Button>
           )}
         </div>
-      </div>
+      </form>
       {isOpen && analysisResult && (
         <AnalysisResult
           analysisResult={analysisResult}
