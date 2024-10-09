@@ -26,7 +26,7 @@ export default function UserHome() {
       <div className="space-x-2 animate-fade-in">
         <div className="flex-center flex-col gap-4">
           {session?.user && (
-            <div className="flex-center flex-col space-y-2">
+            <div className="flex-center flex-col space-y-2 animate-slide-up">
               <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-xl shadow px-4 py-2">
                 <div className="w-10 h-10 rounded-full overflow-hidden">
                   <Image
