@@ -1,10 +1,13 @@
-"use client"
+"use client";
 
 import { adminSections } from "@/lib/sections";
 import Sidebar from "./Sidebar";
 import Total from "./Total";
 
 const Admin = ({ section, children }) => {
+  const router = useRouter();
+  const { data: session } = useSession(); // console.log(session);
+  if (!session?.user) return router.replace("/");
   return (
     <>
       <section className="w-full h-screen animate-fade-in flex overflow-hidden">
