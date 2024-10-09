@@ -39,7 +39,7 @@ export default function UserHome() {
                   className="w-10 h-10 rounded-full object-cover overflow-hidden"
                 />
               </div>
-              <div className="hidden md:block w-fit h-fit space-y-1">
+              <div className="block w-fit h-fit space-y-1">
                 <h4 className="line-clamp-1">{session?.user?.name}</h4>
                 <h6 className="text-xs line-clamp-1">{session?.user?.role}</h6>
               </div>
