@@ -1,17 +1,13 @@
 "use client";
 
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 export default function UserHome() {
   const { data: session, status } = useSession(); // console.log(session);
-  const router = useRouter();
-  // if (session?.user && session?.user?.role === "admin")
-  //   return router.replace("/admin/dashboard");
 
   return (
     <main className="w-full h-screen relative flex-center flex-col gap-4 overflow-hidden">

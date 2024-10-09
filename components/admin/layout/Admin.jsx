@@ -1,16 +1,8 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { adminSections } from "@/lib/sections";
 import Sidebar from "./Sidebar";
 import Total from "./Total";
 
 const Admin = ({ section, children }) => {
-  const router = useRouter();
-  const { data: session } = useSession(); // console.log(session);
-  // if (session?.user?.role !== "admin") return router.replace("/");
-
   return (
     <>
       <section className="w-full h-screen animate-fade-in flex overflow-hidden">
