@@ -1,5 +1,7 @@
 "use client";
 
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { adminSections } from "@/lib/sections";
 import Sidebar from "./Sidebar";
 import Total from "./Total";
