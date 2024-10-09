@@ -96,7 +96,7 @@ const OSINTAnalysis = () => {
       <form onSubmit={handleAnalyze} className="w-full mx-auto overflow-hidden">
         <h1 className="text-2xl font-bold mb-4">OSINT Analysis</h1>
 
-        <div className="w-full h-[50vh] pr-1 overflow-x-hidden overflow-y-scroll">
+        <div className="w-full h-[50vh] pr-1.5 overflow-x-hidden overflow-y-scroll">
           <div className="mb-4">
             <div className="relative w-full cursor-pointer flex-center mt-2 p-2 bg-transparent border border-zinc-300 dark:border-zinc-800 rounded-md">
               <input

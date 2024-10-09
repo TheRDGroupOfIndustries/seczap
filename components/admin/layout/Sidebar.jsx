@@ -53,13 +53,13 @@ const Sidebar = ({ sections }) => {
         </div>
       </div>
       <div className="w-full space-y-4 animate-slide-up">
-        <div className="flex items-center gap-2 bg-green-500/15 backdrop-blur-sm rounded-xl shadow p-2">
+        <div className="flex items-center gap-2 md:bg-green-500/15 backdrop-blur-sm rounded-xl shadow p-2">
           <div className="w-10 h-10 rounded-full overflow-hidden">
             <Image
-              src={session?.user?.image ?? "/logo.png"}
+              src={session?.user?.image ?? "/user.png"}
               alt="Profile Image"
-              width="100"
-              height="100"
+              width="200"
+              height="200"
               className="w-10 h-10 rounded-full object-cover overflow-hidden"
             />
           </div>
@@ -77,12 +77,7 @@ const Sidebar = ({ sections }) => {
             />
             <span className="hidden md:inline">Upgrade to Pro</span>
           </Button>
-          <Button
-            title="Logout"
-            onClick={() => signOut()}
-            size="icon"
-            className="p-1"
-          >
+          <Button title="Logout" onClick={() => signOut()} className="md:p-1">
             <HiOutlineLogout size={20} />
           </Button>
         </div>
