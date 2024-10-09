@@ -8,6 +8,16 @@
   @apply scroll-smooth m-0 p-0;
 }
 
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-zinc-500;
+}
+::-webkit-scrollbar {
+  @apply w-[2px] h-[2px];
+}
+.scroll-none::-webkit-scrollbar {
+  display: none;
+}
+
 .theme {
   transition: 5s all ease;
 }

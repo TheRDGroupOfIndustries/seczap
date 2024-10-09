@@ -37,7 +37,7 @@ const Total = () => {
         {totalTabs.map((t, index) => (
           <div
             key={index}
-            className="w-full h-fit md:h-32 animate-slide-down flex-between flex-col gap-4 p-4 rounded-lg border border-muted border-opacity-30 shadow-lg dark:shadow-muted hover:shadow-xl ease-in-out duration-300 overflow-hidden"
+            className="w-full h-fit md:h-32 animate-slide-down flex-between flex-col gap-4 p-4 rounded-lg border border-zinc-300 dark:border-zinc-800/50 border-opacity-30 shadow-lg dark:shadow-muted hover:shadow-xl ease-in-out duration-300 overflow-hidden"
           >
             <div className="w-full h-fit flex items-center gap-2">
               <t.icon color={t.color} size={20} />
