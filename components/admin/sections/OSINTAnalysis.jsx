@@ -155,7 +155,7 @@ const OSINTAnalysis = () => {
                 name="target"
                 value={formData.target}
                 onChange={handleInputChange}
-                className="mt-2 p-2 bg-transparent border border-zinc-300 dark:border-zinc-800 rounded-md w-full"
+                className="input-style"
                 placeholder="Enter target name or URL"
               />
             </div>
@@ -167,7 +167,7 @@ const OSINTAnalysis = () => {
                 name="keywords"
                 value={formData.keywords}
                 onChange={handleInputChange}
-                className="mt-2 p-2 bg-transparent border border-zinc-300 dark:border-zinc-800 rounded-md w-full"
+                className="input-style"
                 placeholder="Enter keywords (optional)"
               />
             </div>
@@ -193,7 +193,7 @@ const OSINTAnalysis = () => {
                     mode="single"
                     selected={date}
                     onSelect={setDate}
-                    className="mt-2 p-2 bg-transparent border border-zinc-300 dark:border-zinc-800 rounded-md w-full"
+                    className="input-style"
                   />
                 </PopoverContent>
               </Popover>
@@ -225,7 +225,7 @@ const OSINTAnalysis = () => {
                 name="budget"
                 value={formData.budget}
                 onChange={handleInputChange}
-                className="mt-2 p-2 bg-transparent border border-zinc-300 dark:border-zinc-800 rounded-md w-full"
+                className="input-style"
                 placeholder="Enter budget"
               />
             </div>
@@ -237,7 +237,7 @@ const OSINTAnalysis = () => {
               name="notes"
               value={formData.notes}
               onChange={handleInputChange}
-              className="mt-2 p-2 bg-transparent border border-zinc-300 dark:border-zinc-800 rounded-md w-full"
+              className="input-style"
               placeholder="Enter any additional notes"
             ></textarea>
           </div>

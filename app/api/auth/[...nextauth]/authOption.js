@@ -1,9 +1,36 @@
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import User from "@/models/User";
 import connect from "@/utils/db";
+import bcrypt from "bcryptjs";
+import User from "@/models/User";
 
 export const authOptions = {
   providers: [
+    CredentialsProvider({
+      id: "credentials",
+      name: "Credentials",
+      credentials: {
+        email: { label: "E-mail", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        await connect();
+        try {
+          const user = await User.findOne({ email: credentials.email });
+          if (user) {
+            const isPasswordCorrect = await bcrypt.compare(
+              credentials.password,
+              user.password
+            );
+            if (isPasswordCorrect) {
+              return user;
+            }
+          }
+        } catch (error) {
+          throw new Error(error);
+        }
+      },
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -13,6 +40,8 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user, account }) {
+      if (account?.provider === "credentials") return true;
+
       if (account.provider === "google") {
         try {
           await connect();
@@ -23,6 +52,7 @@ export const authOptions = {
               name: user.name,
               email: user.email,
               image: user?.image,
+              integrationsAuth: ["google"],
             });
             const savedUser = await newUser.save();
             return savedUser;

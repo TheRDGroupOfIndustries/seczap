@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,14 +18,56 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { IoScan } from "react-icons/io5";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "lucide-react";
 
 const Scan = () => {
+  const [open, setOpen] = useState(false);
+
   const [file, setFile] = useState(null);
   const [scanType, setScanType] = useState("");
-  const [scanSchedule, setScanSchedule] = useState("");
+  // const [scanSchedule, setScanSchedule] = useState("");
+  const [scanSchedule, setScanSchedule] = useState(new Date());
+  const [formattedDateTime, setFormattedDateTime] = useState("");
+
   const [scanResult, setScanResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleDateChange = (date) => {
+    if (date) {
+      const updatedDateTime = new Date(scanSchedule);
+      updatedDateTime.setFullYear(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+      );
+      setScanSchedule(updatedDateTime);
+      updateFormattedDateTime(updatedDateTime);
+    }
+  };
+
+  const handleTimeChange = (e) => {
+    const time = e.target.value;
+    const [hours, minutes] = time.split(":").map(Number);
+    const updatedDateTime = new Date(scanSchedule);
+    updatedDateTime.setHours(hours, minutes);
+    setScanSchedule(updatedDateTime);
+    updateFormattedDateTime(updatedDateTime);
+  };
+
+  const updateFormattedDateTime = (date) => {
+    setFormattedDateTime(format(date, "PPP p"));
+  };
+
+  const hours = scanSchedule.getHours().toString().padStart(2, "0");
+  const minutes = scanSchedule.getMinutes().toString().padStart(2, "0");
+  const timeValue = `${hours}:${minutes}`;
 
   // VirusTotal API key
   const VIRUSTOTAL_API_KEY = process.env.NEXT_PUBLIC_VIRUSTOTAL_API_KEY;
@@ -95,9 +138,8 @@ const Scan = () => {
                     <SelectValue placeholder="Select scan type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="light">Light</SelectItem>
-                    <SelectItem value="dark">Dark</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
+                    <SelectItem value="default">Default</SelectItem>
+                    <SelectItem value="advance">Advance</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -105,21 +147,36 @@ const Scan = () => {
 
             <div>
               <label className="block text-sm font-medium">Scan Schedule</label>
-              <div className="w-full py-2">
-                <Select
-                  defaultValue={scanSchedule}
-                  onValueChange={setScanSchedule}
-                >
-                  <SelectTrigger className="py-5">
-                    <SelectValue placeholder="Select scan schedule" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="light">Light</SelectItem>
-                    <SelectItem value="dark">Dark</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="mt-2 px-2 py-5 bg-transparent border border-zinc-300 dark:border-zinc-800 rounded-md w-full active:translate-y-0"
+                  >
+                    {formattedDateTime || "Select date and time"}
+                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="scale-[0.80] translate-y-10">
+                  <div className="flex flex-col space-y-4">
+                    <Calendar
+                      mode="single"
+                      selected={scanSchedule}
+                      onSelect={handleDateChange}
+                      className="input-style"
+                    />
+                    <div className="flex flex-col">
+                      <label className="text-sm font-medium">Select Time</label>
+                      <input
+                        type="time"
+                        value={timeValue}
+                        className="mt-1 p-2 border rounded"
+                        onChange={handleTimeChange}
+                      />
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
         </div>

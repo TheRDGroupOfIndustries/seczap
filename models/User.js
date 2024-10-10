@@ -16,15 +16,39 @@ const userSchema = new Schema(
       required: true,
       default: "/user.png",
     },
-    // password: {
-    //   type: String,
-    //   required: true,
-    //   default: "$2a$05$mDaH1eQzeGHd0dvj5gLBuuieKb41INVbnzi/nciRWIXM6pDW4A5nS",
-    // },
+    password: {
+      type: String,
+      required: false,
+    },
     role: {
       type: String,
       required: true,
       default: "user",
+    },
+    integrationsAuth: {
+      type: [
+        {
+          type: String,
+          enum: ["google", "github", "jira", "slack", "email-password"],
+        },
+      ],
+      required: true,
+      default: ["email-password"],
+    },
+    subscription: {
+      type: String,
+      required: true,
+      default: "free",
+    },
+
+    resetPasswordToken: {
+      type: String,
+      trim: true,
+      required: false,
+    },
+    resetPasswordTokenExpiry: {
+      type: Date,
+      required: false,
     },
   },
   { timestamps: true }

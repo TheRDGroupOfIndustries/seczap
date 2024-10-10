@@ -1,6 +1,7 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { FcGoogle } from "react-icons/fc";
 
 export default function UserHome() {
   const { data: session, status } = useSession(); // console.log(session);
+  const router = useRouter();
 
   return (
     <main className="w-full h-screen relative flex-center flex-col gap-4 overflow-hidden">
@@ -15,12 +17,12 @@ export default function UserHome() {
         <Image
           src="/logo.png"
           alt="logo"
-          width="70"
-          height="70"
-          className="w-12 h-12 overflow-hidden"
+          width="100"
+          height="100"
+          className="w-8 h-8 overflow-hidden"
         />
         <div className="text-xl md:text-2xl lg:text-3xl font-semibold">
-          <span className="text-green-400">Sec</span>zap
+          <span className="text-primary-green">Sec</span>zap
         </div>
       </div>
       <div className="space-x-2 animate-fade-in">
@@ -54,7 +56,7 @@ export default function UserHome() {
           <Button
             onClick={() => {
               if (status === "unauthenticated") {
-                signIn("google");
+                router.push("/auth/sign-in");
               } else {
                 signOut();
               }

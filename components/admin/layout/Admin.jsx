@@ -6,14 +6,14 @@ import { adminSections } from "@/lib/sections";
 import Sidebar from "./Sidebar";
 import Total from "./Total";
 
-const Admin = ({ section, children }) => {
+const Admin = ({ children }) => {
   const router = useRouter();
   const { data: session } = useSession(); // console.log(session);
   if (!session?.user) return router.replace("/");
   return (
     <>
       <section className="w-full h-screen animate-fade-in flex overflow-hidden">
-        <Sidebar section={section} sections={adminSections} />
+        <Sidebar sections={adminSections} />
         <div className="w-full h-full space-y-8 p-4 md:p-8 overflow-y-scroll lg:overflow-hidden">
           <Total />
           <div

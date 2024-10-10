@@ -30,9 +30,39 @@ const connect = async () => {
 
     isConnected = true;
     console.log("MongoDB connected");
+    // await updateUsersIntegrationsAndSubscription();
   } catch (error) {
     throw new Error("Error connecting to Mongoose");
   }
 };
 
 export default connect;
+
+// const updateUsersIntegrationsAndSubscription = async () => {
+//   try {
+//     await connect();
+
+//     const result = await mongoose.connection.db.collection("Users").updateMany(
+//       {
+//         $or: [
+//           { integrationsAuth: { $ne: ["google", "github", "jira", "slack"] } },
+//           { subscription: { $exists: false } }, // Find users who do not have a subscription field
+//         ],
+//       },
+//       {
+//         $set: {
+//           integrationsAuth: ["email-password"], // Ensure "email-password" is set for existing users
+//           subscription: "free", // Set the default subscription to "free"
+//         },
+//         $addToSet: {
+//           integrationsAuth: { $each: ["google", "github", "jira", "slack"] }, // Add new integrations if not present
+//         },
+//       }
+//     );
+
+//     console.log(`${result.matchedCount} documents matched.`);
+//     console.log(`${result.modifiedCount} documents were updated.`);
+//   } catch (error) {
+//     console.error("Error updating users: ", error);
+//   }
+// };

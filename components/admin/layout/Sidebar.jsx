@@ -24,10 +24,10 @@ const Sidebar = ({ sections }) => {
             alt="logo"
             width="100"
             height="100"
-            className="w-12 h-12 overflow-hidden"
+            className="w-8 h-8 overflow-hidden"
           />
           <div className="text-xl md:text-2xl lg:text-3xl font-semibold hidden md:block">
-            <span className="text-green-400">Sec</span>zap
+            <span className="text-primary-green">Sec</span>zap
           </div>
         </Link>
         <div className="w-full h-fit space-y-2 mt-4 animate-slide-right">
@@ -37,9 +37,9 @@ const Sidebar = ({ sections }) => {
               <Link
                 key={index}
                 href={sec.href}
-                className={`flex items-center gap-3 px-2 py-2 text-md font-medium transition-colors hover:text-green-400 group ${
+                className={`flex items-center gap-3 px-2 py-2 text-md font-medium transition-colors hover:text-primary-green group ${
                   isActive
-                    ? "text-green-400 fill-green-400 underline underline-offset-8"
+                    ? "text-primary-green fill-primary-green underline underline-offset-8"
                     : ""
                 } ease-in-out duration-200`}
               >

@@ -46,6 +46,7 @@ export default function ThemeToggle() {
     if (theme === "dark") return "Dark Theme";
     return "System Theme";
   };
+  // console.log(theme, resolvedTheme);
 
   return (
     <>
