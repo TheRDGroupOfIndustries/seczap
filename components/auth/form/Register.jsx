@@ -217,7 +217,7 @@ const Register = () => {
           <div
             onClick={() => {
               if (showConfirmPass === "text") setShowConfirmPass("password");
-              else setShowPass("text");
+              else setShowConfirmPass("text");
             }}
             className="w-fit h-fit cursor-pointer flex-center gap-1 ease-in-out duration-200"
           >
