@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
-import nodemailer from "nodemailer";
+import { transporter } from "../../core";
 
 export const POST = async (request) => {
   const { name, email, password, otp, checkOtpCode } = await request.json();
@@ -26,16 +26,6 @@ export const POST = async (request) => {
     otpCode = Math.floor(1000 + Math.random() * 9000);
     const body = `<h1 style="color: #333; font-family: 'Arial', sans-serif;">Heya ${name}!!</h1>
     <span style="color: #ccc; font-size: 18px; font-family: 'Arial', sans-serif;">Here's an OTP for your email verification <b style="color: #2fff00;">${otpCode}</b><br /></span>`;
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      host: "smtp.gmail.com",
-      port: 587,
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASSWORD,
-      },
-    });
 
     await transporter.sendMail({
       from: process.env.GMAIL_USER,

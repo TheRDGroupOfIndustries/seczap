@@ -6,6 +6,7 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const passwordPattern =
@@ -163,6 +164,9 @@ const Login = () => {
               <FaRegEye size={20} className="w-full h-full active:scale-75" />
             )}
           </div>
+        </div>
+        <div className="flex justify-end text-sm font-medium font-[family-name:var(--font-geist-mono)]">
+          <Link href="/auth/forget-password" className="hover-link">Forgot your password?</Link>
         </div>
         <Button
           disabled={disableBtn || submitting || success}
