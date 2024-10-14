@@ -20,7 +20,7 @@ const geistMono = localFont({
 export const metadata = {
   title: "SecZap",
   description: "Virtual Virus detector...",
-  icons: { icon: "/logo.png" },
+  icons: { icon: "/favicon.ico" },
 };
 
 export default async function RootLayout({ children }) {

@@ -57,32 +57,48 @@ const OSINTAnalysis = () => {
   // handling form submission
   const handleAnalyze = async (e) => {
     e.preventDefault();
-    const { target } = formData;
+    const { target, keywords, priority, budget, notes } = formData;
+    const formattedDate = format(date, "yyyy-MM-dd");
 
-    if (!target) {
-      alert("Please enter a valid target URL or file.");
+    if (!target && !file) {
+      alert("Please enter a valid target URL or upload a file.");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      const apiUrl = "https://www.virustotal.com/vtapi/v3/url/scan";
+      const apiUrl = file
+        ? "https://www.virustotal.com/vtapi/v3/file/scan" // file scanning endpoint
+        : "https://www.virustotal.com/vtapi/v3/url/scan"; // URL scanning endpoint
+
+      const form = new FormData();
+      if (file) {
+        form.append("file", file);
+      } else {
+        form.append("url", target);
+      }
+
+      form.append("apikey", VIRUSTOTAL_API_KEY);
+      form.append("serviceType", serviceType);
+      form.append("keywords", keywords || "");
+      form.append("dateRange", formattedDate);
+      form.append("priority", priority);
+      form.append("budget", budget);
+      form.append("notes", notes);
 
       // sending POST request to VirusTotal API
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "x-apikey": VIRUSTOTAL_API_KEY,
-          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams({
-          apikey: VIRUSTOTAL_API_KEY,
-          url: target, // the URL the user provided
-        }),
+        body: form,
       });
 
       const result = await response.json();
+      console.log(result);
+
       setAnalysisResult(result);
       setIsLoading(false);
     } catch (error) {
