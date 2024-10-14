@@ -15,6 +15,14 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPass, setShowPass] = useState("password");
   const [showConfirmPass, setShowConfirmPass] = useState("password");
+
+  const [otp, setOtp] = useState("");
+  const [checkOtpCode, setCheckOtpCode] = useState("");
+
+  const [otpBtn, setOtpBtn] = useState(false);
+  const [otpSuccess, setOtpSuccess] = useState(false);
+  const [sendingOtp, setSendingOtp] = useState(false);
+
   const [disableBtn, setDisableBtn] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -83,6 +91,50 @@ const Register = () => {
     setConfirmPassword(cpswd);
   };
 
+  const handleGetOtp = async (e) => {
+    e.preventDefault();
+
+    if (!name || !email || !password || !confirmPassword) {
+      return toast.error("Please fill all the fields!");
+    }
+    if (password !== confirmPassword) {
+      return toast.error("Passwords does not match!");
+    }
+
+    setSendingOtp(true);
+    // console.log("send otp");
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          otp,
+          checkOtpCode,
+        }),
+      });
+
+      if (res.status === 400) {
+        setSendingOtp(false);
+        toast.error(`${email} is already registered!`);
+      }
+
+      if (res.status == 201) {
+        const otpCheck = await res.json();
+        setCheckOtpCode(otpCheck);
+        setOtpBtn(true);
+        setOtpSuccess(true);
+        toast.success(`OTP has been sent to your ${email}, check your email!`);
+      }
+    } catch (error) {
+      setSendingOtp(false);
+      throw error;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -95,7 +147,7 @@ const Register = () => {
 
     setSubmitting(true);
 
-    const register = async (name, email, password) => {
+    const register = async (name, email, password, otp, checkOtpCode) => {
       try {
         const res = await fetch("/api/auth/register", {
           method: "POST",
@@ -104,6 +156,8 @@ const Register = () => {
             name,
             email,
             password,
+            otp,
+            checkOtpCode,
           }),
         });
 
@@ -126,7 +180,7 @@ const Register = () => {
       }
     };
 
-    toast.promise(register(name, email, password), {
+    toast.promise(register(name, email, password, otp, checkOtpCode), {
       loading: "Registering...",
       success: "Registered successfully!",
       error: (err) => `${err.message}`,
@@ -135,10 +189,11 @@ const Register = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-4 animate-fade-in">
+      <form className="space-y-4 animate-fade-in">
         <input
           type="text"
           placeholder="Name"
+          disabled={otpBtn && otpSuccess}
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -153,6 +208,7 @@ const Register = () => {
         <input
           type="email"
           placeholder="Email"
+          disabled={otpBtn && otpSuccess}
           required
           value={email}
           onChange={handleEmail}
@@ -165,10 +221,13 @@ const Register = () => {
           }}
           className="input-style"
         />
-        <div className="input-style flex gap-2 cursor-text">
+        <div
+          className={`input-style flex gap-2 ${!otpSuccess && "cursor-text"}`}
+        >
           <input
             type={showPass}
             placeholder="Password"
+            disabled={otpBtn && otpSuccess}
             required
             value={password}
             onChange={handlePassword}
@@ -198,10 +257,13 @@ const Register = () => {
             )}
           </div>
         </div>
-        <div className="input-style flex gap-2 cursor-text">
+        <div
+          className={`input-style flex gap-2 ${!otpSuccess && "cursor-text"}`}
+        >
           <input
             type={showConfirmPass}
             placeholder="Confirm Password"
+            disabled={otpBtn && otpSuccess}
             required
             value={confirmPassword}
             onChange={handleConfirmPassword}
@@ -209,7 +271,7 @@ const Register = () => {
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                handleSubmit(e);
+                handleGetOtp(e);
               }
             }}
             className="w-full h-full bg-transparent ring-0 border-none outline-none"
@@ -232,17 +294,52 @@ const Register = () => {
           </div>
         </div>
 
-        <Button
-          disabled={disableBtn || submitting || success}
-          type="submit"
-          className={`w-full ${disableBtn && "animate-pulse"}`}
-        >
-          {submitting
-            ? "Registering..."
-            : success
-            ? "Registered Successfully!"
-            : "Sign Up"}
-        </Button>
+        {!otpBtn || !otpSuccess ? (
+          <Button
+            type="button"
+            onClick={handleGetOtp}
+            disabled={otpBtn || sendingOtp || otpSuccess}
+            className={`w-full ${otpBtn && "animate-pulse"}`}
+          >
+            {sendingOtp
+              ? "Sending OTP..."
+              : otpSuccess
+              ? "Check your E-mail!"
+              : "Send OTP"}
+          </Button>
+        ) : (
+          <>
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              disabled={disableBtn || submitting || success}
+              value={otp}
+              onChange={(e) =>
+                setOtp(e.target.value.replace(/[^\d]/g, "").slice(0, 4))
+              }
+              required
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }
+              }}
+              className="input-style animate-slide-down"
+            />
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              disabled={disableBtn || submitting || success}
+              className={`w-full ${disableBtn && "animate-pulse"}`}
+            >
+              {submitting
+                ? "Registering..."
+                : success
+                ? "Registered Successfully!"
+                : "Sign Up"}
+            </Button>
+          </>
+        )}
       </form>
     </>
   );
