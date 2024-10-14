@@ -6,6 +6,8 @@ import bcrypt from "bcryptjs";
 export const POST = async (request) => {
   const { email, password } = await request.json();
 
+  console.log(email, password);
+
   await connect();
 
   const existingUser = await User.findOne({ email });
@@ -14,8 +16,8 @@ export const POST = async (request) => {
   const hashPassword = await bcrypt.hash(password, 5);
   existingUser.password = hashPassword;
 
-  existingUser.resetToken = undefined;
-  existingUser.resetTokenExpiry = undefined;
+  existingUser.resetPasswordToken = undefined;
+  existingUser.resetPasswordTokenExpiry = undefined;
 
   try {
     await existingUser.save();

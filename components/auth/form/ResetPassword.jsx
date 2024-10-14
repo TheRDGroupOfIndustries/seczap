@@ -12,6 +12,8 @@ export default function ResetPassword(props) {
   const router = useRouter();
   let tokenError = props.setErrorProps;
   let user = props.setUserProps;
+  // console.log(user);
+
   // let verifiedToken = props.setVerifiedToken;
   // let { setUserProps, setErrorProps, setVerifiedToken } = props;
 
@@ -97,13 +99,14 @@ export default function ResetPassword(props) {
         toast.error("Something went wrong!");
       }
       if (res.status === 200) {
-        router.push("/signIn");
+        toast.success("Your password has been rested successfully!");
+        return router.push("/auth/sign-in");
       }
     } catch (error) {
       toast.error("Something went wrong!");
       console.log("Error: ", error);
     } finally {
-      setDisableBtn(false);
+      setResting(false);
     }
   };
 
@@ -147,7 +150,7 @@ export default function ResetPassword(props) {
           <input
             type={showConfirmPass}
             placeholder="Confirm Password"
-            disabled={tokenError || resting}
+            disabled={password.trim() === "" || tokenError || resting}
             required
             value={confirmPassword}
             onChange={handleConfirmPassword}
@@ -155,7 +158,7 @@ export default function ResetPassword(props) {
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                handleGetOtp(e);
+                handleSubmit(e);
               }
             }}
             className="w-full h-full bg-transparent ring-0 border-none outline-none"

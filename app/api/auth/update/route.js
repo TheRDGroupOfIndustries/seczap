@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 export const PUT = async (request) => {
   try {
     const { email, name, password } = await request.json();
+    console.log(email, name, password);
 
     await connect();
 

@@ -33,8 +33,8 @@ export async function POST(request) {
     .digest("hex");
   const passwordResetExpires = Date.now() + 3600000;
 
-  existingUser.resetToken = passwordResetToken;
-  existingUser.resetTokenExpiry = passwordResetExpires;
+  existingUser.resetPasswordToken = passwordResetToken;
+  existingUser.resetPasswordTokenExpiry = passwordResetExpires;
   const resetUrl = `${process.env.HOSTNAME}/auth/reset-password/${resetToken}`;
 
   const body = `<h1 style="color: #333; font-family: 'Arial', sans-serif;">Heya ${

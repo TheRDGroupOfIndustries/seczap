@@ -182,50 +182,58 @@ const Settings = () => {
                   className="w-full px-3 py-2 border rounded"
                   defaultValue={session?.user?.name ?? "Add Name"}
                   // value={name}
-                  onClick={(e) => setName(e.target.value)}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium">Email</label>
                 <input
                   type="email"
+                  disabled
                   defaultValue={session?.user?.email ?? "Add Email"}
                   className="w-full px-3 py-2 border rounded"
                 />
               </div>
-              <div className="input-style flex gap-2 cursor-text">
-                <input
-                  type={showPass ? "text" : "password"}
-                  placeholder={
-                    session?.user?.password ? "Update Password" : "Add Password"
-                  }
-                  required
-                  // defaultValue={session?.user?.password}
-                  value={password}
-                  onChange={handlePassword}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      confirmPasswordInputRef.current.focus();
+              <div>
+                <label className="block text-sm font-medium -mb-2">
+                  Password
+                </label>
+                <div className="input-style flex gap-2 cursor-text">
+                  <input
+                    type={showPass ? "text" : "password"}
+                    placeholder={
+                      session?.user?.password
+                        ? "Update Password"
+                        : "Add Password"
                     }
-                  }}
-                  className="w-full h-full bg-transparent ring-0 border-none outline-none"
-                />
-                <div
-                  onClick={() => setShowPass(!showPass)}
-                  className="w-fit h-fit cursor-pointer flex-center gap-1 ease-in-out duration-200"
-                >
-                  {showPass ? (
-                    <FaRegEyeSlash
-                      size={20}
-                      className="w-full h-full active:scale-75 text-primary-green"
-                    />
-                  ) : (
-                    <FaRegEye
-                      size={20}
-                      className="w-full h-full active:scale-75"
-                    />
-                  )}
+                    required
+                    // defaultValue={session?.user?.password}
+                    value={password}
+                    onChange={handlePassword}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        confirmPasswordInputRef.current.focus();
+                      }
+                    }}
+                    className="w-full h-full bg-transparent ring-0 border-none outline-none"
+                  />
+                  <div
+                    onClick={() => setShowPass(!showPass)}
+                    className="w-fit h-fit cursor-pointer flex-center gap-1 ease-in-out duration-200"
+                  >
+                    {showPass ? (
+                      <FaRegEyeSlash
+                        size={20}
+                        className="w-full h-full active:scale-75 text-primary-green"
+                      />
+                    ) : (
+                      <FaRegEye
+                        size={20}
+                        className="w-full h-full active:scale-75"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
               {passwordPattern.test(password) && (

@@ -28,6 +28,8 @@ export default function ResetPasswordPage({ params }) {
           setError("");
           setVerified(true);
           const userData = await res.json();
+          // console.log(userData);
+
           setUser(userData);
         }
       } catch (error) {
