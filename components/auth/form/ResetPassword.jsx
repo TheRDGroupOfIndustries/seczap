@@ -114,7 +114,7 @@ export default function ResetPassword(props) {
           <input
             type={showPass}
             placeholder="Password"
-            disabled={disableBtn || resting}
+            disabled={tokenError || resting}
             required
             value={password}
             onChange={handlePassword}
@@ -147,7 +147,7 @@ export default function ResetPassword(props) {
           <input
             type={showConfirmPass}
             placeholder="Confirm Password"
-            disabled={disableBtn || resting}
+            disabled={tokenError || resting}
             required
             value={confirmPassword}
             onChange={handleConfirmPassword}
