@@ -258,26 +258,34 @@ const ScanResult = ({ scanResult, isOpen, handleClose }) => {
                       Engine Results
                     </h3>
                     <div className="max-h-[40vh] mr-1 overflow-y-scroll">
-                      {Object.keys(scanResult.attributes.results).map(
-                        (engine) => {
-                          const result = scanResult.attributes.results[engine];
-                          return (
-                            <div
-                              key={engine}
-                              className="p-2 border-b border-gray-200"
-                            >
-                              <h4 className="font-semibold text-md text-black dark:text-white">
-                                {result.engine_name}
-                              </h4>
-                              <p>Version: {result.engine_version || "N/A"}</p>
-                              <p>Last Updated: {result.engine_update}</p>
-                              <p>Category: {result.category}</p>
-                              <p>
-                                Result: {result.result || "No issues detected"}
-                              </p>
-                            </div>
-                          );
-                        }
+                      {Object.keys(scanResult.attributes.results).length > 0 ? (
+                        Object.keys(scanResult.attributes.results).map(
+                          (engine) => {
+                            const result =
+                              scanResult.attributes.results[engine];
+                            return (
+                              <div
+                                key={engine}
+                                className="p-2 border-b border-gray-200"
+                              >
+                                <h4 className="font-semibold text-md text-black dark:text-white">
+                                  {result.engine_name}
+                                </h4>
+                                <p>Version: {result.engine_version || "N/A"}</p>
+                                <p>Last Updated: {result.engine_update}</p>
+                                <p>Category: {result.category}</p>
+                                <p>
+                                  Result:{" "}
+                                  {result.result || "No issues detected"}
+                                </p>
+                              </div>
+                            );
+                          }
+                        )
+                      ) : (
+                        <div className="p-4 text-center text-gray-500">
+                          No scan results available.
+                        </div>
                       )}
                     </div>
                   </div>
