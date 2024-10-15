@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-// import virustotal from "@api/virustotal";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -81,8 +80,6 @@ const Scan = () => {
     const form = new FormData();
     form.append("file", file);
 
-    // const optionsPost = ;
-
     try {
       const response = await fetch("https://www.virustotal.com/api/v3/files", {
         method: "POST",
@@ -94,7 +91,7 @@ const Scan = () => {
       });
 
       const res = await response.json();
-      // console.log(res);
+      console.log(res);
 
       if (!res) return toast.error("Something went wrong!");
 
@@ -110,7 +107,7 @@ const Scan = () => {
       );
 
       const result = await fetchResult.json();
-      // console.log(result);
+      console.log(result);
 
       toast.success("Your Scan analysis is ready!");
       setScanResult(result.data);
