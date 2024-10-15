@@ -70,7 +70,7 @@ const Scan = () => {
   const timeValue = `${hours}:${minutes}`;
 
   // VirusTotal API key
-  const VIRUSTOTAL_API_KEY = process.env.NEXT_PUBLIC_VIRUSTOTAL_API_KEY;
+  // const VIRUSTOTAL_API_KEY = process.env.NEXT_PUBLIC_VIRUSTOTAL_API_KEY;
 
   // handling form submission
   const handleScan = async (e) => {
@@ -85,7 +85,7 @@ const Scan = () => {
         method: "POST",
         headers: {
           accept: "application/json",
-          "x-apikey": VIRUSTOTAL_API_KEY,
+          "x-apikey": "ee962842c867464c2bc8ca720e03e371c16ef25bad870a4d51911aab6ebf9dab",
         },
         body: form,
       });
@@ -101,7 +101,7 @@ const Scan = () => {
           method: "GET",
           headers: {
             accept: "application/json",
-            "x-apikey": VIRUSTOTAL_API_KEY,
+            "x-apikey": "ee962842c867464c2bc8ca720e03e371c16ef25bad870a4d51911aab6ebf9dab",
           },
         }
       );
