@@ -26,6 +26,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { IoScan } from "react-icons/io5";
 import { toast } from "sonner";
+import { scanAnalyse } from "@/utils/virusTotal.action";
 
 const Scan = () => {
   const [open, setOpen] = useState(false);
@@ -69,53 +70,37 @@ const Scan = () => {
   const minutes = scanSchedule.getMinutes().toString().padStart(2, "0");
   const timeValue = `${hours}:${minutes}`;
 
-  // VirusTotal API key
-  // const VIRUSTOTAL_API_KEY = process.env.NEXT_PUBLIC_VIRUSTOTAL_API_KEY;
-
   // handling form submission
   const handleScan = async (e) => {
     e.preventDefault();
+
     setIsLoading(true);
 
-    const form = new FormData();
-    form.append("file", file);
+    const fileForm = new FormData();
+    fileForm.append("file", file);
 
-    try {
-      const response = await fetch("https://www.virustotal.com/api/v3/files", {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "x-apikey": "ee962842c867464c2bc8ca720e03e371c16ef25bad870a4d51911aab6ebf9dab",
-        },
-        body: form,
-      });
-
-      const res = await response.json();
-      console.log(res);
-
-      if (!res) return toast.error("Something went wrong!");
-
-      const fetchResult = await fetch(
-        `https://www.virustotal.com/api/v3/analyses/${res.data.id}`, // NDFmMTJhZTUzYjg0Y2NmYjM4NTc5YTZiOTQ5Mzg2ODU6MTcyODk5OTI3NQ==
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            "x-apikey": "ee962842c867464c2bc8ca720e03e371c16ef25bad870a4d51911aab6ebf9dab",
-          },
+    const startScanning = async (file) => {
+      try {
+        const result = await scanAnalyse(file);
+        // console.log(result);
+        if (!result) {
+          throw new Error("Something went wrong, please try again!");
         }
-      );
 
-      const result = await fetchResult.json();
-      console.log(result);
+        setScanResult(result);
+        return "Your Scan analysis is ready!";
+      } catch (err) {
+        throw error;
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-      toast.success("Your Scan analysis is ready!");
-      setScanResult(result.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
+    toast.promise(startScanning(fileForm), {
+      loading: "Scanning...",
+      success: "Your Scan analysis is ready!",
+      error: (err) => `${err.message}`,
+    });
   };
 
   // console.log(scanResult);

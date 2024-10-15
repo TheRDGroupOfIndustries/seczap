@@ -45,7 +45,7 @@ const OSINTAnalysis = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   // VirusTotal API key
-  const VIRUSTOTAL_API_KEY = process.env.NEXT_PUBLIC_VIRUSTOTAL_API_KEY;
+  // const VIRUSTOTAL_API_KEY = process.env.NEXT_PUBLIC_VIRUSTOTAL_API_KEY;
 
   const handleInputChange = (e) => {
     setFormData({
@@ -79,7 +79,7 @@ const OSINTAnalysis = () => {
         form.append("url", target);
       }
 
-      form.append("apikey", VIRUSTOTAL_API_KEY);
+      form.append("apikey", "VIRUSTOTAL_API_KEY");
       form.append("serviceType", serviceType);
       form.append("keywords", keywords || "");
       form.append("dateRange", formattedDate);
@@ -91,7 +91,7 @@ const OSINTAnalysis = () => {
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
-          "x-apikey": VIRUSTOTAL_API_KEY,
+          "x-apikey": "VIRUSTOTAL_API_KEY",
         },
         body: form,
       });

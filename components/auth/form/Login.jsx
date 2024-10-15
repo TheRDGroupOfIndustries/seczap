@@ -166,7 +166,9 @@ const Login = () => {
           </div>
         </div>
         <div className="flex justify-end text-sm font-medium font-[family-name:var(--font-geist-mono)]">
-          <Link href="/auth/forget-password" className="hover-link">Forgot your password?</Link>
+          <Link href="/auth/forget-password" className="hover-link">
+            Forgot your password?
+          </Link>
         </div>
         <Button
           disabled={disableBtn || submitting || success}
