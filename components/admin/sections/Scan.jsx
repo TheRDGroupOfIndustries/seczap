@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
+// import virustotal from "@api/virustotal";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -17,21 +19,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { IoScan } from "react-icons/io5";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
+import { IoScan } from "react-icons/io5";
+import { toast } from "sonner";
 
 const Scan = () => {
   const [open, setOpen] = useState(false);
 
   const [file, setFile] = useState(null);
   const [scanType, setScanType] = useState("");
-  // const [scanSchedule, setScanSchedule] = useState("");
   const [scanSchedule, setScanSchedule] = useState(new Date());
   const [formattedDateTime, setFormattedDateTime] = useState("");
 
@@ -77,32 +78,50 @@ const Scan = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      const apiUrl = "https://www.virustotal.com/vtapi/v2/url/scan";
+    const form = new FormData();
+    form.append("file", file);
 
-      // sending POST request to VirusTotal API
-      const response = await fetch(apiUrl, {
+    // const optionsPost = ;
+
+    try {
+      const response = await fetch("https://www.virustotal.com/api/v3/files", {
         method: "POST",
         headers: {
+          accept: "application/json",
           "x-apikey": VIRUSTOTAL_API_KEY,
-          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams({
-          apikey: VIRUSTOTAL_API_KEY,
-          url: "target", // the URL the user provided
-        }),
+        body: form,
       });
 
-      const result = await response.json();
-      console.log(result);
+      const res = await response.json();
+      // console.log(res);
 
-      setScanResult(result);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error during analysis:", error);
+      if (!res) return toast.error("Something went wrong!");
+
+      const fetchResult = await fetch(
+        `https://www.virustotal.com/api/v3/analyses/${res.data.id}`, // NDFmMTJhZTUzYjg0Y2NmYjM4NTc5YTZiOTQ5Mzg2ODU6MTcyODk5OTI3NQ==
+        {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "x-apikey": VIRUSTOTAL_API_KEY,
+          },
+        }
+      );
+
+      const result = await fetchResult.json();
+      // console.log(result);
+
+      toast.success("Your Scan analysis is ready!");
+      setScanResult(result.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
       setIsLoading(false);
     }
   };
+
+  // console.log(scanResult);
 
   return (
     <>
@@ -114,6 +133,7 @@ const Scan = () => {
             <div className="relative w-full cursor-pointer flex-center mt-2 p-2 bg-transparent border border-zinc-300 dark:border-zinc-800 rounded-md">
               <input
                 type="file"
+                required
                 onChange={(e) => {
                   const selectedFile = e.target.files?.[0];
                   if (selectedFile) {
@@ -186,7 +206,7 @@ const Scan = () => {
             {isLoading ? "Scaning..." : "Scan"}
           </Button>
           {scanResult && (
-            <Button size="sm" onClick={() => setIsOpen(!isOpen)}>
+            <Button type="button" size="sm" onClick={() => setIsOpen(!isOpen)}>
               View Result
             </Button>
           )}
@@ -205,20 +225,80 @@ const Scan = () => {
 
 export default Scan;
 
-const ScanResult = ({ ScanResult, isOpen, handleClose }) => {
+const ScanResult = ({ scanResult, isOpen, handleClose }) => {
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp * 1000); // converting Unix timestamp to milliseconds
+    return date.toLocaleString();
+  };
+
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={handleClose}>
+      <Dialog
+        open={isOpen}
+        onOpenChange={handleClose}
+        className="max-h-[70vh] overflow-hidden"
+      >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>OSINT Analysis Result</DialogTitle>
-            <DialogDescription>
-              {ScanResult && (
-                <div className="p-4">
-                  {/* <h2 className="text-xl font-bold">Analysis Result</h2> */}
-                  <pre className="mt-4 text-sm">
-                    {JSON.stringify(ScanResult, null, 2)}
-                  </pre>
+            <DialogTitle>SCAN Analysis Result</DialogTitle>
+            <DialogDescription className="max-h-[68vh] mr-2 overflow-y-scroll overflow-x-hidden">
+              {scanResult && (
+                <div className="w-full overflow-hidden">
+                  <div className="">
+                    <p className="text-xs line-clamp-1 flex gap-1">
+                      <strong>ID:</strong> {scanResult.id}
+                    </p>
+                    <p className="text-xs line-clamp-1 flex gap-1">
+                      <strong>Status:</strong> {scanResult.attributes.status}
+                    </p>
+                    <p className="text-xs line-clamp-1 flex gap-1">
+                      <strong>Date:</strong>{" "}
+                      {formatDate(scanResult.attributes.date)}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 mb-4">
+                    <h3 className="text-md font-semibold text-black dark:text-white">
+                      Scan Stats
+                    </h3>
+                    <p>Malicious: {scanResult.attributes.stats.malicious}</p>
+                    <p>Suspicious: {scanResult.attributes.stats.suspicious}</p>
+                    <p>Undetected: {scanResult.attributes.stats.undetected}</p>
+                    <p>Timeout: {scanResult.attributes.stats.timeout}</p>
+                    <p>
+                      Type Unsupported:{" "}
+                      {scanResult.attributes.stats["type-unsupported"]}
+                    </p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-md font-semibold text-black dark:text-white">
+                      Engine Results
+                    </h3>
+                    <div className="max-h-[40vh] mr-1 overflow-y-scroll">
+                      {Object.keys(scanResult.attributes.results).map(
+                        (engine) => {
+                          const result = scanResult.attributes.results[engine];
+                          return (
+                            <div
+                              key={engine}
+                              className="p-2 border-b border-gray-200"
+                            >
+                              <h4 className="font-semibold text-md text-black dark:text-white">
+                                {result.engine_name}
+                              </h4>
+                              <p>Version: {result.engine_version || "N/A"}</p>
+                              <p>Last Updated: {result.engine_update}</p>
+                              <p>Category: {result.category}</p>
+                              <p>
+                                Result: {result.result || "No issues detected"}
+                              </p>
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
             </DialogDescription>
