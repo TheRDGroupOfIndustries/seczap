@@ -26,7 +26,8 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { IoScan } from "react-icons/io5";
 import { toast } from "sonner";
-import { scanAnalyse } from "@/utils/virusTotal.action";
+import { getAnalyse, scanAnalyse } from "@/utils/virusTotal.action";
+import { RiLoaderLine } from "react-icons/ri";
 
 const Scan = () => {
   const [open, setOpen] = useState(false);
@@ -89,7 +90,7 @@ const Scan = () => {
 
         setScanResult(result);
         return "Your Scan analysis is ready!";
-      } catch (err) {
+      } catch (error) {
         throw error;
       } finally {
         setIsLoading(false);
@@ -102,8 +103,6 @@ const Scan = () => {
       error: (err) => `${err.message}`,
     });
   };
-
-  // console.log(scanResult);
 
   return (
     <>
@@ -197,6 +196,7 @@ const Scan = () => {
       {isOpen && scanResult && (
         <ScanResult
           scanResult={scanResult}
+          setScanResult={setScanResult}
           isOpen={isOpen}
           handleClose={() => setIsOpen(!isOpen)}
         />
@@ -207,12 +207,39 @@ const Scan = () => {
 
 export default Scan;
 
-const ScanResult = ({ scanResult, isOpen, handleClose }) => {
+const ScanResult = ({ scanResult, setScanResult, isOpen, handleClose }) => {
+  const [refresh, setRefresh] = useState(false);
+  const id = scanResult.id;
   const formatDate = (timestamp) => {
     const date = new Date(timestamp * 1000); // converting Unix timestamp to milliseconds
     return date.toLocaleString();
   };
 
+  const refetchAnalyse = () => {
+    setRefresh(true);
+    const refreshScanAnalysis = async (id) => {
+      try {
+        const result = await getAnalyse(id);
+        // console.log(result);
+        if (!result) {
+          throw new Error("Something went wrong, please try again!");
+        }
+
+        setScanResult(result);
+        return "Your Scan analysis is ready!";
+      } catch (error) {
+        throw error;
+      } finally {
+        setRefresh(false);
+      }
+    };
+
+    toast.promise(refreshScanAnalysis(id), {
+      loading: "Refetching Scan Analysis...",
+      success: "Your Scan analysis is refreshed!",
+      error: (err) => `${err.message}`,
+    });
+  };
   return (
     <>
       <Dialog
@@ -283,8 +310,21 @@ const ScanResult = ({ scanResult, isOpen, handleClose }) => {
                           }
                         )
                       ) : (
-                        <div className="p-4 text-center text-gray-500">
-                          No scan results available.
+                        <div className="text-center text-gray-500 p-4 space-y-4">
+                          <p>No scan results available.</p>
+                          <Button
+                            onClick={refetchAnalyse}
+                            type="button"
+                            variant="secondary"
+                            className={
+                              refresh && "animate-pulse active:translate-y-0"
+                            }
+                          >
+                            {refresh && (
+                              <RiLoaderLine className="animate-spin mr-1" />
+                            )}
+                            Refresh
+                          </Button>
                         </div>
                       )}
                     </div>

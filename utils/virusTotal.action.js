@@ -33,3 +33,23 @@ export const scanAnalyse = async (file) => {
     console.error(err);
   }
 };
+
+export const getAnalyse = async (id) => {
+  try {
+    const res = await fetch(
+      `https://www.virustotal.com/api/v3/analyses/${id}`, // ex: NDFmMTJhZTUzYjg0Y2NmYjM4NTc5YTZiOTQ5Mzg2ODU6MTcyODk5OTI3NQ==
+      {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          "x-apikey": process.env.VIRUSTOTAL_API_KEY,
+        },
+      }
+    );
+    const result = await res.json();
+    // console.log(result);
+    if (result) return result.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
