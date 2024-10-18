@@ -46,7 +46,7 @@ const Total = () => {
             <ReactCountUp
               amt={t.value}
               duration={1.5}
-              className="w-full text-xl md:text-2xl lg:text-3xl font-bold"
+              className="w-full text-xl md:text-2xl lg:text-3xl font-bold select-text"
             />
           </div>
         ))}

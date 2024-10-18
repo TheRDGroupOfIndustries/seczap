@@ -12,7 +12,7 @@ const Sidebar = ({ sections }) => {
   const pathName = usePathname();
   const { data: session } = useSession();
   return (
-    <aside className="w-fit md:w-60 max-w-lg h-full flex-between flex-col p-2 md:p-4 bg-muted overflow-hidden">
+    <aside className="w-fit md:w-60 max-w-lg h-full select-none flex-between flex-col p-2 md:p-4 bg-muted overflow-hidden">
       <div className="w-full grid justify-center md:justify-start">
         <Link
           href="/"
@@ -24,6 +24,7 @@ const Sidebar = ({ sections }) => {
             alt="logo"
             width="100"
             height="100"
+            priority
             className="w-8 h-8 overflow-hidden"
           />
           <div className="text-xl md:text-2xl lg:text-3xl font-semibold hidden md:block">

@@ -4,7 +4,7 @@ export default function Loader({ className = "h-screen", text }) {
   return (
     <>
       <div
-        className={`w-full ${className} flex-center flex-col gap-4 bg-transparent animate-pulse`}
+        className={`w-full ${className} flex-center flex-col gap-4 bg-transparent animate-pulse select-none`}
       >
         <Image
           src="/logo.png"

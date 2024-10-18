@@ -7,6 +7,7 @@ import { passwordPattern } from "@/components/auth/form/Login";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import Loader from "@/components/ui/loader";
 
 const Settings = () => {
   const { data: session } = useSession(); // console.log(session);
@@ -72,9 +73,14 @@ const Settings = () => {
     if (!email) {
       return toast.error("Please provide email!");
     }
-    // if (!email || !password) {
-    //   return toast.error("Please provide name or password!");
-    // }
+    if (!name || !password) {
+      return toast.error("Please provide name or password!");
+    }
+    if (password) {
+      if (password !== confirmPassword) {
+        return toast.error("Password doesn't match!");
+      }
+    }
     setIsSaving(true);
 
     const update = async (email, password, name) => {
@@ -112,6 +118,7 @@ const Settings = () => {
     });
   };
 
+  if (!session?.user) return <Loader />;
   return (
     <div className="w-full mx-auto">
       <h1 className="text-2xl font-bold mb-4">Settings</h1>
@@ -127,7 +134,7 @@ const Settings = () => {
                 <input
                   type="checkbox"
                   className="form-checkbox"
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
                   checked={theme === "dark"}
                 />
                 <span className="ml-2">Dark Mode</span>
@@ -277,48 +284,48 @@ const Settings = () => {
           </div>
 
           {/* Integrations */}
-          <div className="">
+          <div className="select-none">
             <h4 className="text-lg font-semibold mb-2">Integrations</h4>
             <div className="flex flex-col space-y-2">
               {/* Google Integration */}
-              <label className="inline-flex items-center">
+              <label className="w-fit inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   className="form-checkbox"
-                  checked={session?.user?.integrationsAuth.includes("google")}
+                  checked={session?.user?.integrationsAuth?.includes("google")}
                   readOnly
                 />
                 <span className="ml-2">Google</span>
               </label>
 
               {/* Slack Integration */}
-              <label className="inline-flex items-center">
+              <label className="w-fit inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   className="form-checkbox"
-                  checked={session?.user?.integrationsAuth.includes("slack")}
+                  checked={session?.user?.integrationsAuth?.includes("slack")}
                   readOnly
                 />
                 <span className="ml-2">Slack Integration</span>
               </label>
 
               {/* GitHub Integration */}
-              <label className="inline-flex items-center">
+              <label className="w-fit inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   className="form-checkbox"
-                  checked={session?.user?.integrationsAuth.includes("github")}
+                  checked={session?.user?.integrationsAuth?.includes("github")}
                   readOnly
                 />
                 <span className="ml-2">GitHub Integration</span>
               </label>
 
               {/* Jira Integration */}
-              <label className="inline-flex items-center">
+              <label className="w-fit inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   className="form-checkbox"
-                  checked={session?.user?.integrationsAuth.includes("jira")}
+                  checked={session?.user?.integrationsAuth?.includes("jira")}
                   readOnly
                 />
                 <span className="ml-2">Jira Integration</span>

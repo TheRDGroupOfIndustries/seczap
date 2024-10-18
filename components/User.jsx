@@ -12,13 +12,14 @@ export default function UserHome() {
   const router = useRouter();
 
   return (
-    <main className="w-full h-screen relative flex-center flex-col gap-4 overflow-hidden">
+    <main className="w-full h-screen relative select-none flex-center flex-col gap-4 overflow-hidden">
       <div className="absolute top-2 left-2 flex-center gap-1 animate-slide-down">
         <Image
           src="/logo.png"
           alt="logo"
           width="100"
           height="100"
+          priority
           className="w-8 h-8 overflow-hidden"
         />
         <div className="text-xl md:text-2xl lg:text-3xl font-semibold">

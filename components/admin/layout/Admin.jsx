@@ -12,7 +12,7 @@ const Admin = ({ children }) => {
   if (!session?.user) return router.replace("/");
   return (
     <>
-      <section className="w-full h-screen animate-fade-in flex overflow-hidden">
+      <section className="w-full h-screen animate-fade-in select-none flex overflow-hidden">
         <Sidebar sections={adminSections} />
         <div className="w-full h-full space-y-8 p-2 md:p-4 lg:p-8 overflow-y-scroll lg:overflow-hidden">
           <Total />
