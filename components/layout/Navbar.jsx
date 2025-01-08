@@ -38,7 +38,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="sticky top-0 left-0 right-0 z-50 w-full h-fit select-none bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border-b-2 border-b-sky-600 dark:border-b-sky-800 shadow-lg overflow-hidde">
+      <div className="sticky top-0 left-0 right-0 z-50 animate-slide-down w-full h-fit select-none bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border-b-2 border-b-sky-600 dark:border-b-sky-800 shadow-lg overflow-hidde">
         <div className="w-full h-fit flex-between p-4 md:p-6 lg:px-10 xl:px-12 overflow-hidden">
           <div className="w-fit h-fit flex-center gap-10 lg:gap-14 xl:gap-20">
             <div>
