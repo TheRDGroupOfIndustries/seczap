@@ -73,20 +73,19 @@ export const authOptions = {
     async session({ session, token }) {
       await connect();
       if (typeof token?.user !== "undefined") {
-        const userExists = await User.findOne({ email: token?.user?.email });
+        const userExists = await User.findOne({
+          email: token?.user?.email,
+        }).select("-password");
 
         if (userExists) {
-          session.user = {
-            authUser: token.user,
-            user: userExists,
-          };
-          return session.user;
+          session.user = userExists;
+          return session;
         } else {
-          session.user = { user: token.user };
-          return session.user;
+          session.user = token?.user;
+          return session;
         }
       }
-      return session.user;
+      return session;
     },
   },
 };
