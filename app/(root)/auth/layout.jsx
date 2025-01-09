@@ -8,6 +8,6 @@ export const metadata = {
 
 export default function AuthLayout({ children }) {
   const session = getServerSession();
-  if (session) redirect("/");
+  // if (session && session !== "undefined") redirect("/");
   return <Auth>{children}</Auth>;
 }

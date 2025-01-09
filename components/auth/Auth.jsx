@@ -23,10 +23,10 @@ const Auth = ({ children }) => {
           {isLogin
             ? "Log In"
             : isRegister
-            ? "Sign Up"
-            : isForgetPassword
-            ? "Forget Password"
-            : "Reset Password"}
+              ? "Sign Up"
+              : isForgetPassword
+                ? "Forget Password"
+                : "Reset Password"}
         </h1>
 
         {children}
