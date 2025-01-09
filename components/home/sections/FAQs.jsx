@@ -1,6 +1,6 @@
 "use client";
 
-const FAQs = () => {
+const FAQs = ({ faqsData }) => {
   return (
     <section
       id="faqs"
@@ -8,13 +8,29 @@ const FAQs = () => {
     >
       <div className="flex-center">
         <h2 className="font-extrabold text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-          Frequently Asked Questions
+          {faqsData?.heading}
         </h2>
       </div>
 
       <div className="w-full h-fit grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
         {/* faqs */}
-        <div className="w-full h-full bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden">
+        {faqsData?.faqs?.map((faq, index) => (
+          <div
+            key={index}
+            className="w-full h-full bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+          >
+            <div className="space-y-2 lg:space-y-4">
+              <h4 className="text-white text-md md:text-lg lg:text-xl xl:text-2xl font-semibold">
+                {faq?.question}
+              </h4>
+              <p className="text-sky-500 text-xs md:text-sm lg:text-md xl:text-lg">
+                {faq?.answer}
+              </p>
+            </div>
+          </div>
+        ))}
+
+        {/* <div className="w-full h-full bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden">
           <div className="space-y-2 lg:space-y-4">
             <h4 className="text-white text-md md:text-lg lg:text-xl xl:text-2xl font-semibold">
               Common Security Challenges
@@ -49,19 +65,7 @@ const FAQs = () => {
               soluta exercitationem!
             </p>
           </div>
-        </div>
-        <div className="w-full h-full bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden">
-          <div className="space-y-2 lg:space-y-4">
-            <h4 className="text-white text-md md:text-lg lg:text-xl xl:text-2xl font-semibold">
-              Common Security Challenges
-            </h4>
-            <p className="text-sky-500 text-xs md:text-sm lg:text-md xl:text-lg">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. In, nam
-              accusantium non fugit aliquid officia. Debitis eaque accusantium
-              soluta exercitationem!
-            </p>
-          </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

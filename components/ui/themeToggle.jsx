@@ -5,9 +5,11 @@ import { useTheme } from "next-themes";
 import { BsMoon, BsSun, BsChevronDoubleUp } from "react-icons/bs";
 import { HiOutlineDesktopComputer } from "react-icons/hi";
 import { Button } from "./button";
+import { usePathname } from "next/navigation";
 // import MagneticDiv from "./MagnaticDiv";
 
 export default function ThemeToggle() {
+  const pathname = usePathname();
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -56,33 +58,36 @@ export default function ThemeToggle() {
             <Button
               type="button"
               size="icon"
+              effect="gooeyRight"
               title="Scroll to Top"
-              className="animate-slide-up group overflow-hidden"
+              className="animate-slide-up bg-primary-clr/40 hover:bg-primary-clr/50 ring-1 ring-primary-clr shadow-md backdrop-blur-xl group rounded-full overflow-hidden"
             >
               <div
-                className="cursor-pointer bg-transparent border-none flex flex-col gap-5 transition-all translate-y-5 group-hover:-translate-y-5 ease-in-out duration-200"
+                className="cursor-pointer bg-transparent border-none flex flex-col gap-5 transition-all translate-y-5 group-hover:-translate-y-5 ease-in-out duration-200 overflow-hidden"
                 onClick={goToBtn}
               >
-                <BsChevronDoubleUp className="w-5 h-5 cursor-pointer" />
+                <BsChevronDoubleUp className="w-5 h-5 fill-white cursor-pointer" />
                 <BsChevronDoubleUp className="w-5 h-5 fill-[cyan] cursor-pointer" />
               </div>
             </Button>
           )}
-          <Button
-            type="button"
-            size="icon"
-            title={getThemeTitle()}
-            onClick={() => setTheme(getNextTheme())}
-            className="animate-slide-up group overflow-hidden"
-          >
-            {resolvedTheme === "light" && theme === "light" ? (
-              <BsSun className="cursor-pointer group-hover:fill-[orange]" />
-            ) : resolvedTheme === "dark" && theme === "dark" ? (
-              <BsMoon className="cursor-pointer group-hover:fill-[cyan]" />
-            ) : (
-              <HiOutlineDesktopComputer className="cursor-pointer group-hover:fill-[gray]" />
-            )}
-          </Button>
+          {pathname !== "/" && (
+            <Button
+              type="button"
+              size="icon"
+              title={getThemeTitle()}
+              onClick={() => setTheme(getNextTheme())}
+              className="animate-slide-up group overflow-hidden"
+            >
+              {resolvedTheme === "light" && theme === "light" ? (
+                <BsSun className="cursor-pointer group-hover:fill-[orange]" />
+              ) : resolvedTheme === "dark" && theme === "dark" ? (
+                <BsMoon className="cursor-pointer group-hover:fill-[cyan]" />
+              ) : (
+                <HiOutlineDesktopComputer className="cursor-pointer group-hover:fill-[gray]" />
+              )}
+            </Button>
+          )}
         </div>
       </div>
     </>

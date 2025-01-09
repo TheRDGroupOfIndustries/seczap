@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { SiTicktick } from "react-icons/si";
 
-const AboutUs = () => {
+const AboutUs = ({ aboutUsData }) => {
   return (
     <section
       id="about-us"
@@ -17,49 +17,36 @@ const AboutUs = () => {
       <div className="w-full h-fit flex-center flex-col-reverse md:flex-row gap-2 md:gap-4 lg:gap-6 overflow-hidden">
         <div className="flex-1 w-full h-fit grid items-center space-y-4 md:space-y-6 lg:space-y-8 overflow-hidden">
           <h3 className="font-bold text-white text-lg md:text-xl lg:text-2xl xl:text-3xl text-balanc">
-            Delhi's Leading Cybersecurity Experts
+            {aboutUsData?.heading}
           </h3>
-          <p className="w-full h-fit text-sm lg:text-md xl:text-lg text-sky-600 text-balanc text-justif">
-            At <b>SECZAP</b>, we are a team of dedicated cybersecurity
-            professionals committed to protecting businesses in the digital age.
-            With over a decade of experience in threat detection, incident
-            response, and security consulting, we provide comprehensive
-            solutions that safeguard your digital assests.
-          </p>
+          <p
+            className="w-full h-fit text-sm lg:text-md xl:text-lg text-sky-600 text-balanc text-justif"
+            dangerouslySetInnerHTML={{ __html: aboutUsData?.description }}
+          />
+          {/* <p className="w-full h-fit text-sm lg:text-md xl:text-lg text-sky-600 text-balanc text-justif">
+            {aboutUsData?.description}
+          </p> */}
           <div className="w-full h-fit space-y-2 md:space-y-4 lg:space-y-6">
-            <div className="w-fit h-fit flex-center gap-2">
-              <SiTicktick className="fill-sky-600 text-sky-600" />
-
-              {/* <div className="w-4 h-4 font-bold flex-center bg-sky-600 rounded-full">
-                <MdDone color="black" />
-              </div> */}
-              <p className="text-xs lg:text-sm xl:text-md text-sky-600 text-balance">
-                Expert team with 10+years of industry experience
-              </p>
-            </div>
-            <div className="w-fit h-fit flex-center gap-2">
-              <SiTicktick className="fill-sky-600 text-sky-600" />
-              <p className="text-xs lg:text-sm xl:text-md text-sky-600 text-balance">
-                State-of-the-art security operations center
-              </p>
-            </div>
-            <div className="w-fit h-fit flex-center gap-2">
-              <SiTicktick className="fill-sky-600 text-sky-600" />
-              <p className="text-xs lg:text-sm xl:text-md text-sky-600 text-balance">
-                Certified security professionals
-              </p>
-            </div>
+            {aboutUsData?.features.map((feature, index) => (
+              <div key={index} className="w-fit h-fit flex-center gap-2">
+                <SiTicktick className="fill-sky-600 text-sky-600" />
+                <p className="text-xs lg:text-sm xl:text-md text-sky-600 text-balance">
+                  {feature}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
         <div className="flex-1 w-full h-full lg:h-[50vh] shadow-md rounded-lg overflow-hidden">
-          <Image
-            src="https://www.cambridgehealth.edu/wp-content/uploads/2024/04/it-1.webp"
-            alt="about-banner"
-            width={800}
-            height={800}
-            objectFit="cover"
-            className="w-full h-full object-cover overflow-hidden"
-          />
+          {aboutUsData?.aboutBannerImage && (
+            <Image
+              src={aboutUsData?.aboutBannerImage?.imageURL}
+              alt={aboutUsData?.aboutBannerImage?.alt}
+              width={1000}
+              height={1000}
+              className="w-full h-full object-cover overflow-hidden"
+            />
+          )}
         </div>
       </div>
     </section>

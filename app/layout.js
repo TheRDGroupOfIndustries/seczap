@@ -32,7 +32,7 @@ export default async function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextThemesProvider attribute="class" defaultTheme="light" enableSystem>
+        <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem>
           <AuthProvider session={session}>
             {children}
             <Toaster richColors closeButton />

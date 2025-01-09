@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { GoGraph, GoClockFill } from "react-icons/go";
 import { FaShieldVirus, FaDatabase } from "react-icons/fa6";
-import { BsFillClockFill } from "react-icons/bs";
 
 const GrowingNeed = () => {
   return (
@@ -106,7 +105,6 @@ const GrowingNeed = () => {
             alt="grwoing-need-banner"
             width={1000}
             height={1000}
-            objectFit="cover"
             className="w-full h-full rounded-xl object-cover overflow-hidden"
           />
         </div>
