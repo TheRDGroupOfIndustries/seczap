@@ -15,7 +15,7 @@ import { Menu } from "lucide-react";
 
 const Navbar = () => {
   const router = useRouter();
-  const { data: session, status } = useSession(); console.log(session);
+  const { data: session, status } = useSession(); //console.log(session);
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
