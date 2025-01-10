@@ -14,7 +14,7 @@ const Auth = ({ children }) => {
   const isForgetPassword = pathname === "/auth/forget-password";
   const oAuth = isLogin || isRegister;
   const { status } = useSession(); // console.log(session);
-  if (status === "authenticated") return router.replace("/");
+  // if (status === "authenticated") return router.replace("/");
 
   return (
     <div className="w-full h-screen select-none flex-center flex-col">

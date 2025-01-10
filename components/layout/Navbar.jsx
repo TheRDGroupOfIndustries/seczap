@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeInOut, staggerContainer } from "@/lib/utils";
 import { navLinks } from "@/constant/data";
@@ -11,11 +12,10 @@ import { Button } from "../ui/button";
 import { DialogTitle } from "../ui/dialog";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Menu } from "lucide-react";
-import Image from "next/image";
 
 const Navbar = () => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession(); console.log(session);
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
