@@ -46,7 +46,7 @@ const Navbar = () => {
       variants={staggerContainer(0.2, 0.3)}
       initial="hidden"
       animate="show"
-      className="sticky top-0 left-0 right-0 z-50 w-full bg-primary-clr/80 dark:bg-primary-clr/80 backdrop-blur-md border-b-2 border-b-sky-600 dark:border-b-sky-800 shadow-lg"
+      className="sticky top-0 left-0 right-0 z-[101] w-full bg-primary-clr/80 dark:bg-primary-clr/80 backdrop-blur-md border-b-2 border-b-sky-600 dark:border-b-sky-800 shadow-lg"
     >
       <motion.div
         variants={fadeInOut("down", "spring", 0.2, 0.5)}
@@ -104,7 +104,10 @@ const Navbar = () => {
               {status === "loading" ? "Loading.." : "Get Started"}
             </Button>
           ) : (
-            <Link href="/account/dashboard">
+            <Link
+              href="/account/dashboard"
+              className="hidden min-[854px]:block w-fit h-fit overflow-hidden"
+            >
               <div className="flex-center gap-2 overflow-hidden">
                 <div className="w-10 h-10 rounded-full overflow-hidden">
                   <Image

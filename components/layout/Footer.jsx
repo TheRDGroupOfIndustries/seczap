@@ -1,11 +1,15 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeInOut, staggerContainer } from "@/lib/utils";
 import { navLinks } from "@/constant/data";
 
 const Footer = () => {
+  const pathname = usePathname();
+
+  if (pathname.includes("/studio")) return null;
   return (
     <motion.div
       variants={staggerContainer(0.2, 0.3)}
