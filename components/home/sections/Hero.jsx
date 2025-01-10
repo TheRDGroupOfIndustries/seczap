@@ -16,7 +16,7 @@ const Hero = ({ heroData }) => {
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
       id="hero"
-      className="w-full min-h-fit lg:h-fit lg:max-h-[calc(100vh-80px)] xl:h-[calc(100vh-80px)] select-none bg-gradient-to-tr from-accent to-accent/40 p-4 md:p-6 lg:p-8 xl:p-10 overflow-hidden"
+      className="w-full min-h-fit lg:h-fit lg:max-h-[calc(100vh-63px)] xl:h-[calc(100vh-63px)] select-none bg-gradient-to-tr from-accent to-accent/40 p-4 md:p-6 lg:p-8 xl:p-10 overflow-hidden"
     >
       <div className="w-full h-full flex-center flex-col-reverse md:flex-row gap-2 md:gap-4 lg:gap-6 overflow-hidden">
         <div className="flex-1 w-full h-fit grid items-center space-y-4 md:space-y-6 lg:space-y-8 overflow-hidden">

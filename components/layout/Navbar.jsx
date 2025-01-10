@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -14,9 +14,13 @@ import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Menu } from "lucide-react";
 
 const Navbar = () => {
+  const pathname = usePathname();
   const router = useRouter();
-  const { data: session, status } = useSession(); //console.log(session);
+  const { data: session, status } = useSession(); // console.log(session);
   const [activeSection, setActiveSection] = useState("");
+
+  if (pathname.includes("/studio") && session?.user?.role === "user")
+    router.push("/");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -50,7 +54,7 @@ const Navbar = () => {
     >
       <motion.div
         variants={fadeInOut("down", "spring", 0.2, 0.5)}
-        className="w-full h-fit flex-between gap-4 p-4 md:px-6 lg:px-10 overflow-hidden"
+        className="w-full h-fit flex-between gap-4 p-2 px-4 md:px-6 lg:px-10 overflow-hidden"
       >
         {/* logo */}
         <motion.div

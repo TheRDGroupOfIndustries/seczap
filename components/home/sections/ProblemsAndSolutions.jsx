@@ -15,7 +15,7 @@ const ProblemsAndSolutions = () => {
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
       id="problems-and-solutions"
-      className="w-full min-h-fit lg:h-fit lg:max-h-[calc(100vh-80px)] select-none bg-primary-clr/70 dark:bg-primary-clr/70 backdrop-blur-md p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
+      className="w-full min-h-fit lg:h-fit lg:max-h-[calc(100vh-63px)] select-none bg-primary-clr/70 dark:bg-primary-clr/70 backdrop-blur-md p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
     >
       <motion.div
         variants={fadeInOut("down", "tween", 0.2, 0.5)}
