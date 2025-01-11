@@ -22,8 +22,8 @@ const Footer = () => {
         variants={fadeInOut("up", "spring", 0.2, 0.5)}
         className="w-full h-full space-y-4 p-4 md:p-6 lg:px-10 xl:px-12 overflow-hidden"
       >
-        <div className="w-full h-fit flex justify-between">
-          <div className="flex-1 w-full h-full space-y-4">
+        <div className="w-full h-fit flex flex-col md:flex-row justify-between gap-4 md:gap-8 lg:gap-12">
+          <div className="md:flex-1 w-full h-full space-y-4">
             <motion.h4 variants={fadeInOut("right", "spring", 0.3, 0.5)}>
               <Link
                 href="/"
@@ -34,7 +34,7 @@ const Footer = () => {
             </motion.h4>
             <motion.p
               variants={fadeInOut("right", "tween", 0.3, 0.8)}
-              className="text-blue-400 text-balance"
+              className="text-blue-400 text-balanc"
             >
               Securing the digital future with advance cybersecurity solutions.
             </motion.p>
