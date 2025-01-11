@@ -73,9 +73,11 @@ const Settings = ({ role }) => {
     if (!email) {
       return toast.error("Please provide email!");
     }
-    if (!name || !password) {
-      return toast.error("Please update name or password first!");
+    if (name && name === session?.user?.name) {
+      return toast.error("Please update name first!");
     }
+    // if (!name || !password) {
+    // }
     if (password) {
       if (password !== confirmPassword) {
         return toast.error("Password doesn't match!");
@@ -140,7 +142,8 @@ const Settings = ({ role }) => {
                 <span className="ml-2">Dark Mode</span>
               </label>
               {/* upgrade-features */}
-              {session?.user?.subscription !== "free" && (
+              {(session?.user?.subscription !== "free" ||
+                session?.user?.role === "admin") && (
                 <>
                   <label className="w-fit inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="form-checkbox" />
@@ -155,7 +158,8 @@ const Settings = ({ role }) => {
             </div>
           </div>
           {/* upgrade-features */}
-          {session?.user?.subscription !== "free" && (
+          {(session?.user?.subscription !== "free" ||
+            session?.user?.role === "admin") && (
             // Security Settings
             <div>
               <h4 className="text-lg font-semibold mb-2">Security Settings</h4>

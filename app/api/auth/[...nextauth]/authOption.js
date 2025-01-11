@@ -75,7 +75,7 @@ export const authOptions = {
       if (typeof token?.user !== "undefined") {
         const userExists = await User.findOne({
           email: token?.user?.email,
-        }).select("-password");
+        }); //.select("-password");
 
         if (userExists) {
           session.user = userExists;

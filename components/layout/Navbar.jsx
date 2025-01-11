@@ -50,7 +50,7 @@ const Navbar = () => {
       variants={staggerContainer(0.2, 0.3)}
       initial="hidden"
       animate="show"
-      className="sticky top-0 left-0 right-0 z-[101] w-full bg-primary-clr/80 dark:bg-primary-clr/90 backdrop-blur-md border-b border-b-blue-500/50 dark:border-b-blue-500/50 shadow-lg"
+      className="sticky top-0 left-0 right-0 z-[101] w-full bg-primary-clr/80 dark:bg-primary-clr/90 backdrop-blur-md border-b border-b-blue-500/50 dark:border-b-blue-500/50 text-white shadow-lg"
     >
       <motion.div
         variants={fadeInOut("down", "spring", 0.2, 0.5)}
@@ -124,9 +124,11 @@ const Navbar = () => {
                 </div>
                 <div className="hidden md:block w-fit h-fit space-y-1">
                   <h4 className="line-clamp-1">{session?.user?.name}</h4>
-                  <h6 className="text-xs line-clamp-1">
-                    {session?.user?.role}
-                  </h6>
+                  {session?.user?.role === "admin" && (
+                    <h6 className="text-xs line-clamp-1">
+                      {session?.user?.role}
+                    </h6>
+                  )}
                 </div>
               </div>
             </Link>

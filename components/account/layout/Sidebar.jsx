@@ -12,7 +12,7 @@ const Sidebar = ({ sections }) => {
   const pathName = usePathname();
   const { data: session } = useSession();
   return (
-    <aside className="w-fit md:w-60 max-w-lg h-full select-none flex-between flex-col p-2 md:p-4 bg-muted overflow-hidden">
+    <aside className="w-fit md:w-60 max-w-lg h-full select-none bg-primary-clr text-white flex-between flex-col p-2 md:p-4 overflow-hidden">
       <div className="w-full grid justify-center md:justify-start">
         <Link
           href="/"
@@ -66,7 +66,9 @@ const Sidebar = ({ sections }) => {
           </div>
           <div className="hidden md:block w-fit h-fit space-y-1">
             <h4 className="line-clamp-1">{session?.user?.name}</h4>
-            <h6 className="text-xs line-clamp-1">{session?.user?.role}</h6>
+            {session?.user?.role === "admin" && (
+              <h6 className="text-xs line-clamp-1">{session?.user?.role}</h6>
+            )}
           </div>
         </div>
 
