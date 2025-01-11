@@ -39,7 +39,7 @@ const HowWeDeliverValue = () => {
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
       id="how-we-deliver-value"
-      className="w-full min-h-fit lg:h-fit lg:max-h-[calc(100vh-63px)] select-none p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
+      className="w-full min-h-fit lg:h-fit lg:max-h-[calc(100vh-63px)] select-none bg-gradient-to-b from-primary-clr to-gray-950 p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
     >
       <motion.div
         variants={fadeInOut("down", "tween", 0.2, 0.5)}
@@ -55,7 +55,7 @@ const HowWeDeliverValue = () => {
           <motion.div
             key={index}
             variants={fadeInOut("up", "spring", 0.2, 0.5 + index * 0.2)}
-            className="w-full h-full bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+            className="w-full h-full bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
           >
             <div className="space-y-4 lg:space-y-6">
               <card.icon size={35} className="text-blue-500 fill-blue-500" />

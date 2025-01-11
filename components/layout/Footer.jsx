@@ -16,7 +16,7 @@ const Footer = () => {
       initial="hidden"
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
-      className="relative z-50 w-full h-fit select-none bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border-t-2 border-t-sky-600 dark:border-t-sky-800 shadow-lg overflow-hidden"
+      className="relative z-50 w-full h-fit select-none bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border-t border-t-blue-500/50 dark:border-t-blue-500/50 shadow-lg overflow-hidden"
     >
       <motion.div
         variants={fadeInOut("up", "spring", 0.2, 0.5)}
@@ -34,7 +34,7 @@ const Footer = () => {
             </motion.h4>
             <motion.p
               variants={fadeInOut("right", "tween", 0.3, 0.8)}
-              className="text-sky-500 text-balance"
+              className="text-blue-400 text-balance"
             >
               Securing the digital future with advance cybersecurity solutions.
             </motion.p>
@@ -49,7 +49,7 @@ const Footer = () => {
             </h4>
             <motion.div
               variants={staggerContainer(0.1, 0.2)}
-              className="text-sky-500 grid space-y-2"
+              className="text-blue-400 grid space-y-2"
             >
               {navLinks.map((link, index) => (
                 <motion.div
@@ -73,7 +73,7 @@ const Footer = () => {
             </h4>
             <motion.div
               variants={staggerContainer(0.1, 0.2)}
-              className="text-sky-500 grid space-y-2"
+              className="text-blue-400 grid space-y-2"
             >
               {[
                 "Vulnerability Testing",
@@ -99,7 +99,7 @@ const Footer = () => {
 
         <motion.div
           variants={fadeInOut("up", "tween", 0.5, 0.5)}
-          className="text-sky-500 border-t border-t-sky-900 pt-4"
+          className="text-blue-400 border-t border-t-sky-900 pt-4"
         >
           &copy; {new Date().getFullYear()}{" "}
           <Link href="/" className="w-fit hover-link-underline font-semibold">

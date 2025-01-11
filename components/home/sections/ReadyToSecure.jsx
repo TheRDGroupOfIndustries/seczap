@@ -14,11 +14,11 @@ const ReadyToSecure = ({ readyToSecureData }) => {
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
       id="ready-to-secure"
-      className="w-full h-fit select-none p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 overflow-hidden"
+      className="w-full h-fit select-none bg-gradient-to-b from-primary-clr to-gray-950 p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 overflow-hidden"
     >
       <motion.div
         variants={fadeInOut("up", "spring", 0.2, 0.5)}
-        className="w-full h-fit bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 xl:p-10 overflow-hidden"
+        className="w-full h-fit bg-primary-clr-2/60 dark:bg-primary-clr-2/50 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 xl:p-10 overflow-hidden"
       >
         <motion.div
           variants={staggerContainer(0.1, 0.2)}
@@ -52,7 +52,7 @@ const ReadyToSecure = ({ readyToSecureData }) => {
                   }
                   size="lg"
                   effect="shine"
-                  className="bg-blue-500 hover:bg-blue-500/50 text-white text-md md:text-lg font-bold md:px-4 lg:px-6 xl:px-8"
+                  className="bg-blue-500 hover:bg-blue-500/50 text-white text-md md:text-lg font-bold rounded md:px-4 lg:px-6 xl:px-8 overflow-hidden"
                 >
                   {readyToSecureData?.buttonOne?.text}
                 </Button>
@@ -67,7 +67,7 @@ const ReadyToSecure = ({ readyToSecureData }) => {
                   size="lg"
                   variant="outline"
                   effect="gooeyRight"
-                  className="bg-transparent border-sky-700 text-sky-600 text-md md:text-lg font-bold md:px-4 lg:px-6 xl:px-8"
+                  className="bg-transparent border-sky-700 text-sky-600 text-md md:text-lg font-bold rounded md:px-4 lg:px-6 xl:px-8 overflow-hidden"
                 >
                   {readyToSecureData?.buttonTwo?.text}
                 </Button>
@@ -77,7 +77,7 @@ const ReadyToSecure = ({ readyToSecureData }) => {
 
           <motion.p
             variants={fadeInOut("up", "tween", 0.6, 0.5)}
-            className="w-fit mx-auto text-xs md:text-sm lg:text-md xl:text-lg text-balance text-center text-sky-500"
+            className="w-fit mx-auto text-xs md:text-sm lg:text-md xl:text-lg text-balance text-center text-blue-300"
           >
             {readyToSecureData?.footer}
           </motion.p>

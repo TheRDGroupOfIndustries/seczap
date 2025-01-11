@@ -53,7 +53,7 @@ const Hero = ({ heroData }) => {
                 onClick={() => router.push(heroData?.buttonOne?.link)}
                 size="lg"
                 effect="shine"
-                className="bg-blue-500 hover:bg-blue-500/50 text-white text-md md:text-lg font-bold md:px-4 lg:px-6 xl:px-8"
+                className="bg-blue-500 hover:bg-blue-500/50 text-white text-md md:text-lg font-bold rounded md:px-4 lg:px-6 xl:px-8 overflow-hidden"
               >
                 {heroData?.buttonOne?.text}
               </Button>
@@ -64,7 +64,7 @@ const Hero = ({ heroData }) => {
                 size="lg"
                 variant="outline"
                 effect="gooeyRight"
-                className="bg-transparent border-sky-700 text-sky-600 text-md md:text-lg font-bold md:px-4 lg:px-6 xl:px-8"
+                className="bg-transparent border-sky-700 text-sky-600 text-md md:text-lg font-bold rounded md:px-4 lg:px-6 xl:px-8 overflow-hidden"
               >
                 {heroData?.buttonTwo?.text}
               </Button>

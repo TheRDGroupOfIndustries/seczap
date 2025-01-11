@@ -35,7 +35,8 @@ body {
     --popover: 0 0% 100%; /* #FFFFFF */
     --popover-foreground: 220 13% 25%; /* #1F2937 */
     --primary: 211 92% 67%; /* #60A5FA */
-    --primary-clr: 217 83% 53%; /* #3B82F6 */
+    --primary-clr: 221 39% 11%; /* #3B82F6 */
+    --primary-clr-2: 220 25% 20%; /* #1D4ED8 */
     --primary-foreground: 0 0% 100%; /* #FFFFFF */
     --secondary: 211 75% 90%; /* #DBEAFE */
     --secondary-foreground: 223 64% 29%; /* #1E40AF */
@@ -63,7 +64,8 @@ body {
     --popover: 220 13% 25%; /* #1F2937 */
     --popover-foreground: 220 17% 98%; /* #F9FAFB */
     --primary: 217 83% 53%; /* #3B82F6 */
-    --primary-clr: 220 13% 25%; /* #1D4ED8 */
+    --primary-clr: 221 39% 11%; /* #1D4ED8 */
+    --primary-clr-2: 220 25% 20%; /* #1D4ED8 */
     --primary-foreground: 220 17% 98%; /* #F9FAFB */
     --secondary: 223 64% 29%; /* #1E40AF */
     --secondary-foreground: 211 75% 90%; /* #DBEAFE */

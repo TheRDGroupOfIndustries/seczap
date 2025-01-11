@@ -16,7 +16,7 @@ const ContactUs = () => {
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
       id="contact-us"
-      className="w-full h-fit select-none bg-primary-clr/70 dark:bg-primary-clr/70 backdrop-blur-md p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
+      className="w-full h-fit select-none bg-primary-clr dark:bg-primary-clr p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
     >
       <motion.div
         variants={fadeInOut("down", "tween", 0.2, 0.5)}
@@ -31,7 +31,7 @@ const ContactUs = () => {
         {/* Contact Form */}
         <motion.div
           variants={fadeInOut("right", "spring", 0.3, 0.5)}
-          className="w-full h-full bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+          className="w-full h-full bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
         >
           <motion.div
             variants={staggerContainer(0.1, 0.2)}
@@ -49,7 +49,7 @@ const ContactUs = () => {
               className="w-full h-fit space-y-4"
             >
               <div className="space-y-2">
-                <label htmlFor="name" className="text-white">
+                <label htmlFor="name" className="text-blue-400">
                   Name
                 </label>
                 <input
@@ -58,11 +58,11 @@ const ContactUs = () => {
                   id="name"
                   required
                   // placeholder="Name"
-                  className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded px-2 py-1 overflow-hidden"
+                  className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="email" className="text-white">
+                <label htmlFor="email" className="text-blue-400">
                   Email
                 </label>
                 <input
@@ -71,11 +71,11 @@ const ContactUs = () => {
                   id="email"
                   required
                   // placeholder="Email"
-                  className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded px-2 py-1 overflow-hidden"
+                  className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="message" className="text-white">
+                <label htmlFor="message" className="text-blue-400">
                   Message
                 </label>
                 <textarea
@@ -84,7 +84,7 @@ const ContactUs = () => {
                   required
                   rows={4}
                   // placeholder="Message"
-                  className="w-full text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded px-2 py-1 overflow-hidden"
+                  className="w-full text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
                 />
               </div>
               <motion.div variants={fadeInOut("up", "spring", 0.4, 0.5)}>
@@ -104,7 +104,7 @@ const ContactUs = () => {
         <div className="w-full h-full space-y-4 md:space-y-6 lg:space-y-8 xl:space-y-10 overflow-hidde">
           <motion.div
             variants={fadeInOut("left", "spring", 0.3, 0.5)}
-            className="w-full h-fit bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+            className="w-full h-fit bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
           >
             <motion.div
               variants={staggerContainer(0.1, 0.2)}
@@ -150,7 +150,7 @@ const ContactUs = () => {
                     <h4 className="text-white text-sm md:text-md lg:text-lg">
                       {item.title}
                     </h4>
-                    <p className="text-sky-500 text-balance text-sm md:text-md lg:text-lg">
+                    <p className="text-blue-400 text-balance text-sm md:text-md lg:text-lg">
                       <Link
                         href={item.link}
                         className="w-fit hover-link-underline"
@@ -166,7 +166,7 @@ const ContactUs = () => {
           {/* social links */}
           <motion.div
             variants={fadeInOut("left", "spring", 0.4, 0.5)}
-            className="w-full h-fit bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+            className="w-full h-fit bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
           >
             <motion.div
               variants={staggerContainer(0.1, 0.2)}
@@ -208,6 +208,7 @@ const ContactUs = () => {
                   <Link
                     key={i}
                     href={social?.href}
+                    title={`Follow us on ${social?.id}`}
                     target="_blank"
                     className="relative opacity-80 hover:opacity-100 hover:scale-125 transition-all ease-in-out duration-300"
                   >

@@ -15,7 +15,7 @@ const ProblemsAndSolutions = () => {
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
       id="problems-and-solutions"
-      className="w-full min-h-fit lg:h-fit lg:max-h-[calc(100vh-63px)] select-none bg-primary-clr/70 dark:bg-primary-clr/70 backdrop-blur-md p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
+      className="w-full min-h-fit lg:h-fit lg:max-h-[calc(100vh-63px)] select-none bg-primary-clr dark:bg-primary-clr backdrop-blur-md p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
     >
       <motion.div
         variants={fadeInOut("down", "tween", 0.2, 0.5)}
@@ -29,7 +29,7 @@ const ProblemsAndSolutions = () => {
       <div className="w-full h-fit grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
         <motion.div
           variants={fadeInOut("right", "spring", 0.3, 0.5)}
-          className="w-full h-full bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+          className="w-full h-full bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
         >
           <motion.div
             variants={staggerContainer(0.1, 0.2)}
@@ -88,7 +88,7 @@ const ProblemsAndSolutions = () => {
 
         <motion.div
           variants={fadeInOut("left", "spring", 0.3, 0.5)}
-          className="w-full h-full bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+          className="w-full h-full bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
         >
           <motion.div
             variants={staggerContainer(0.1, 0.2)}

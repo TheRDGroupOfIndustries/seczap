@@ -13,7 +13,7 @@ const AboutUs = ({ aboutUsData }) => {
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
       id="about-us"
-      className="w-full min-h-fit lg:h-fit lg:max-h-[calc(100vh-63px)] select-none bg-primary-clr/90 dark:bg-primary-clr/90 backdrop-blur-md p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
+      className="w-full min-h-fit lg:h-fit lg:max-h-[calc(100vh-63px)] select-none bg-primary-clr dark:bg-primary-clr border-b border-b-primary-clr-2/50 p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
     >
       <div className="flex-center py-1 overflow-hidde">
         <motion.h2

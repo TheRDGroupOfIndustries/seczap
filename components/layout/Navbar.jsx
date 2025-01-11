@@ -16,7 +16,7 @@ import { Menu } from "lucide-react";
 const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { data: session, status } = useSession(); // console.log(session);
+  const { data: session, status } = useSession(); console.log(session);
   const [activeSection, setActiveSection] = useState("");
 
   if (pathname.includes("/studio") && session?.user?.role === "user")
@@ -50,7 +50,7 @@ const Navbar = () => {
       variants={staggerContainer(0.2, 0.3)}
       initial="hidden"
       animate="show"
-      className="sticky top-0 left-0 right-0 z-[101] w-full bg-primary-clr/80 dark:bg-primary-clr/80 backdrop-blur-md border-b-2 border-b-sky-600 dark:border-b-sky-800 shadow-lg"
+      className="sticky top-0 left-0 right-0 z-[101] w-full bg-primary-clr/80 dark:bg-primary-clr/90 backdrop-blur-md border-b border-b-blue-500/50 dark:border-b-blue-500/50 shadow-lg"
     >
       <motion.div
         variants={fadeInOut("down", "spring", 0.2, 0.5)}
@@ -97,7 +97,7 @@ const Navbar = () => {
 
         {/* get started btn */}
         <motion.div variants={fadeInOut("left", "spring", 0.3, 0.5)}>
-          {status === "loading" && !session ? (
+          {status === "loading" || !session ? (
             <Button
               onClick={() => router.push("/auth/sign-in")}
               disabled={status === "loading"}
