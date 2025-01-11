@@ -1,6 +1,9 @@
 "use client";
 
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { fadeInOut, staggerContainer } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -44,60 +47,7 @@ const ContactUs = () => {
               Get in Touch
             </motion.h4>
 
-            <motion.form
-              variants={staggerContainer(0.1, 0.2)}
-              className="w-full h-fit space-y-4"
-            >
-              <div className="space-y-2">
-                <label htmlFor="name" className="text-blue-400">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  required
-                  // placeholder="Name"
-                  className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-blue-400">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  required
-                  // placeholder="Email"
-                  className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-blue-400">
-                  Message
-                </label>
-                <textarea
-                  name="message"
-                  id="message"
-                  required
-                  rows={4}
-                  // placeholder="Message"
-                  className="w-full text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
-                />
-              </div>
-              <motion.div variants={fadeInOut("up", "spring", 0.4, 0.5)}>
-                <Button
-                  type="submit"
-                  size="lg"
-                  effect="gooeyRight"
-                  className="w-full bg-blue-500 hover:bg-blue-500/50 text-white text-md md:text-lg font-bold rounded md:px-4 lg:px-6 xl:px-8"
-                >
-                  Send Message
-                </Button>
-              </motion.div>
-            </motion.form>
+            <ContactForm />
           </motion.div>
         </motion.div>
         {/* contact infor */}
@@ -228,3 +178,180 @@ const ContactUs = () => {
 };
 
 export default ContactUs;
+
+const ContactForm = () => {
+  const { data: session } = useSession();
+  const user_id = session?.user?._id;
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+    if (!e.target.value) {
+      setErrors((prev) => ({ ...prev, name: "Name is required" }));
+    } else {
+      setErrors((prev) => ({ ...prev, name: "" }));
+    }
+  };
+
+  const validateEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if (!e.target.value) {
+      setErrors((prev) => ({ ...prev, email: "Email is required" }));
+    } else if (!validateEmail(e.target.value)) {
+      setErrors((prev) => ({ ...prev, email: "Invalid email format" }));
+    } else {
+      setErrors((prev) => ({ ...prev, email: "" }));
+    }
+  };
+
+  const handleMessageChange = (e) => {
+    setMessage(e.target.value);
+    if (!e.target.value) {
+      setErrors((prev) => ({ ...prev, message: "Message is required" }));
+    } else {
+      setErrors((prev) => ({ ...prev, message: "" }));
+    }
+  };
+
+  const sendContactForm = async (formData) => {
+    const response = await fetch("/api/contact-us/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to send message");
+    }
+    const data = await response.json();
+    if (!data.success) {
+      throw new Error("Failed to send message");
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    let formErrors = {};
+
+    // validating form fields
+    if (!name) formErrors.name = "Name is required";
+    if (!email) formErrors.email = "Email is required";
+    else if (!validateEmail(email)) formErrors.email = "Invalid email format";
+    if (!message) formErrors.message = "Message is required";
+
+    setErrors(formErrors);
+
+    if (Object.keys(formErrors).length === 0) {
+      setIsSubmitting(true);
+
+      try {
+        await toast.promise(
+          sendContactForm({ user_id, name, email, message }),
+          {
+            loading: "Sending message...",
+            success: () => {
+              setName("");
+              setEmail("");
+              setMessage("");
+              return "Message sent successfully! We'll reach out to you very soon.";
+            },
+            error: "Failed to send message. Please try again later.",
+          }
+        );
+      } catch (error) {
+        console.error("Error submitting contact form:", error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
+  return (
+    <motion.form
+      onSubmit={handleSubmit}
+      variants={staggerContainer(0.1, 0.2)}
+      className="w-full h-fit space-y-4"
+    >
+      <div className="space-y-2">
+        <label htmlFor="name" className="text-blue-400">
+          Name
+        </label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          required
+          value={name}
+          onChange={handleNameChange}
+          // placeholder="Name"
+          className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
+        />
+        {errors.name && (
+          <span className="text-red-500 text-sm">{errors.name}</span>
+        )}
+      </div>
+      <div className="space-y-2">
+        <label htmlFor="email" className="text-blue-400">
+          Email
+        </label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          required
+          value={email}
+          onChange={handleEmailChange}
+          // placeholder="Email"
+          className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
+        />
+        {errors.email && (
+          <span className="text-red-500 text-sm">{errors.email}</span>
+        )}
+      </div>
+      <div className="space-y-2">
+        <label htmlFor="message" className="text-blue-400">
+          Message
+        </label>
+        <textarea
+          name="message"
+          id="message"
+          required
+          rows={4}
+          value={message}
+          onChange={handleMessageChange}
+          // placeholder="Message"
+          className="w-full text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
+        />
+        {errors.message && (
+          <span className="text-red-500 text-sm">{errors.message}</span>
+        )}
+      </div>
+      <motion.div variants={fadeInOut("up", "spring", 0.4, 0.5)}>
+        <Button
+          type="submit"
+          disabled={isSubmitting || Object.values(errors).some(Boolean)}
+          size="lg"
+          effect="gooeyRight"
+          className={`w-full bg-blue-500 hover:bg-blue-500/50 text-white text-md md:text-lg font-bold ${
+            (isSubmitting || Object.values(errors).some(Boolean)) &&
+            "opacity-50 cursor-not-allowed active:translate-y-0"
+          } rounded md:px-4 lg:px-6 xl:px-8 overflow-hidden`}
+        >
+          {isSubmitting ? "Submitting..." : "Send Message"}
+        </Button>
+      </motion.div>
+    </motion.form>
+  );
+};
