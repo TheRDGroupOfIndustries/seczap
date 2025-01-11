@@ -6,29 +6,22 @@ import { fadeInOut, staggerContainer } from "@/lib/utils";
 import { GoGraph, GoClockFill } from "react-icons/go";
 import { FaShieldVirus, FaDatabase } from "react-icons/fa6";
 
-const GrowingNeed = () => {
-  const statsCards = [
-    {
-      icon: GoGraph,
-      value: "300%",
-      description: "Increase in cybercrime snice 2020",
-    },
-    {
-      icon: FaShieldVirus,
-      value: "60%",
-      description: "SMEs targeted by cyber attacks",
-    },
-    {
-      icon: FaDatabase,
-      value: "$4.35M",
-      description: "Average cost of a data breach",
-    },
-    {
-      icon: GoClockFill,
-      value: "24/7",
-      description: "Continous threat monitoring",
-    },
-  ];
+const iconMap = {
+  GoGraph,
+  GoClockFill,
+  FaShieldVirus,
+  FaDatabase,
+};
+
+const GrowingNeed = ({ growingNeedData }) => {
+  const { heading, firstSection, growingNeedBannerImage } = growingNeedData;
+  const { needOne, needTwo, needThree, needFour } = firstSection?.needs;
+
+  const statsCards = [needOne, needTwo, needThree, needFour].map((need) => ({
+    icon: iconMap[need.icon],
+    value: need?.title,
+    description: need?.shortDescription,
+  }));
 
   return (
     <motion.section
@@ -44,7 +37,7 @@ const GrowingNeed = () => {
         className="flex-center"
       >
         <h2 className="font-extrabold text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-          The Growing Need for Cybersecurity
+          {heading}
         </h2>
       </motion.div>
 
@@ -59,20 +52,17 @@ const GrowingNeed = () => {
               variants={fadeInOut("up", "tween", 0.4, 0.5)}
               className="text-white text-lg md:text-xl lg:text-2xl font-semibold"
             >
-              The Rising Importance of Cybersecurity in Today's Digital World
+              {firstSection?.subHeading}
             </motion.h4>
             <motion.p
               variants={fadeInOut("up", "tween", 0.5, 0.5)}
               className="w-fit mx-auto text-xs md:text-sm lg:text-md xl:text-lg text-balanc text-sky-500"
             >
-              In an era of unprecedented digital transformation, cybersecurity
-              has become more critical than ever. Organizations face
-              increasingly sophisticated threats while managing complex digital
-              infrastructures and remote workforces.
+              {firstSection?.description}
             </motion.p>
 
             <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 overflow-hidde">
-              {statsCards.map((card, index) => (
+              {statsCards?.map((card, index) => (
                 <motion.div
                   key={index}
                   variants={fadeInOut("up", "spring", 0.2, 0.5 + index * 0.2)}
@@ -84,10 +74,10 @@ const GrowingNeed = () => {
                       className="fill-blue-500 text-blue-500 font-bold"
                     />
                     <div className="font-bold text-lg md:text-xl lg:text-2xl xl:text-3xl">
-                      {card.value}
+                      {card?.value}
                     </div>
                     <p className="text-xs md:text-sm lg:text-md xl:text-lg text-balanc text-center text-blue-500">
-                      {card.description}
+                      {card?.description}
                     </p>
                   </div>
                 </motion.div>
@@ -102,11 +92,8 @@ const GrowingNeed = () => {
           className="flex-1 relative w-full lg:w-fit h-full bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
         >
           <Image
-            src={
-              "https://t4.ftcdn.net/jpg/08/85/37/71/360_F_885377177_UIz6CZXJshXGK150ON8QfPPhhtbxH5fJ.jpg" ||
-              "https://img.freepik.com/premium-photo/global-cyber-threat-map-hightech-map-showing-realtime-global-cyber-threats-with-red-lines-indicati_343960-118556.jpg"
-            }
-            alt="grwoing-need-banner"
+            src={growingNeedBannerImage?.imageURL}
+            alt={growingNeedBannerImage?.alt}
             width={1000}
             height={1000}
             className="w-full h-full rounded-xl object-cover overflow-hidden"

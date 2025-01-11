@@ -71,7 +71,7 @@ export default function ThemeToggle() {
               </div>
             </Button>
           )}
-          {pathname !== "/" && (
+          {(pathname !== "/" || !pathname.includes("/studio")) && (
             <Button
               type="button"
               size="icon"

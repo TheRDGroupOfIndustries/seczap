@@ -12,10 +12,26 @@ export const structure = (S) =>
             .items([
               S.documentTypeListItem("hero").title("Hero Section"),
               S.documentTypeListItem("about").title("About Section"),
+              S.documentTypeListItem("ourServices").title(
+                "Our Services Section"
+              ),
+              S.documentTypeListItem("whyChooesUs").title(
+                "Why Chooes Us Section"
+              ),
+              S.documentTypeListItem("problemsAndSolutions").title(
+                "Problems & Solutions"
+              ),
+              S.documentTypeListItem("howWeDeliverValue").title(
+                "How We Deliver Value"
+              ),
+              S.documentTypeListItem("growingNeed").title("Growing Need"),
               S.documentTypeListItem("readyToSecure").title(
                 "Ready to Secure Section"
               ),
               S.documentTypeListItem("faqs").title("FAQs Section"),
+              S.documentTypeListItem("contactUsInfo").title(
+                "Contact Us Info Section"
+              ),
             ])
         ),
 
@@ -41,8 +57,15 @@ export const structure = (S) =>
           ![
             "hero",
             "about",
+            "ourServices",
+            "whyChooesUs",
+            "problemsAndSolutions",
+            "howWeDeliverValue",
+            "growingNeed",
             "readyToSecure",
             "faqs",
+            "contactUsInfo",
+
             "author",
             "post",
             "category",

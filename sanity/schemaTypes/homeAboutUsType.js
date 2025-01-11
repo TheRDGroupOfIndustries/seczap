@@ -29,6 +29,7 @@ export const homeAboutType = defineType({
           name: "alt",
           type: "string",
           title: "Alternative text",
+          initialValue: "about-us-banner",
           validation: (Rule) => Rule.required(),
         },
       ],

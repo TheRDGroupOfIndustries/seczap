@@ -6,32 +6,14 @@ import { GiCycle } from "react-icons/gi";
 import { PiChatsCircleFill, PiShareNetworkFill } from "react-icons/pi";
 import { FaGraduationCap } from "react-icons/fa6";
 
-const HowWeDeliverValue = () => {
-  const cards = [
-    {
-      icon: GiCycle,
-      title: "Subscription Services",
-      description:
-        "Comprehensive security assessments to identify and eliminate potential threats.",
-    },
-    {
-      icon: PiShareNetworkFill,
-      title: "Project-Based Fees",
-      description: "Advanced open-source intelligence gathering and analysis.",
-    },
-    {
-      icon: PiChatsCircleFill,
-      title: "Consulting Services",
-      description: "Expert digital forensics and incident response services.",
-    },
-    {
-      icon: FaGraduationCap,
-      title: "Training Programs",
-      description:
-        "Continuous surveillance of dark web activities and threats.",
-    },
-  ];
+const iconMap = {
+  GiCycle,
+  PiChatsCircleFill,
+  PiShareNetworkFill,
+  FaGraduationCap,
+};
 
+const HowWeDeliverValue = ({ howWeDeliverValueData }) => {
   return (
     <motion.section
       variants={staggerContainer(0.2, 0.3)}
@@ -46,28 +28,31 @@ const HowWeDeliverValue = () => {
         className="flex-center"
       >
         <h2 className="font-extrabold text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-          How We Deliver Value
+          {howWeDeliverValueData?.heading}
         </h2>
       </motion.div>
 
       <div className="w-full h-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
-        {cards.map((card, index) => (
-          <motion.div
-            key={index}
-            variants={fadeInOut("up", "spring", 0.2, 0.5 + index * 0.2)}
-            className="w-full h-full bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
-          >
-            <div className="space-y-4 lg:space-y-6">
-              <card.icon size={35} className="text-blue-500 fill-blue-500" />
-              <h4 className="text-white text-md md:text-lg lg:text-xl font-extrabold">
-                {card.title}
-              </h4>
-              <p className="text-sky-500 text-balance text-xs md:text-sm lg:text-md">
-                {card.description}
-              </p>
-            </div>
-          </motion.div>
-        ))}
+        {howWeDeliverValueData?.values.map((card, index) => {
+          const Icon = iconMap[card?.icon];
+          return (
+            <motion.div
+              key={index}
+              variants={fadeInOut("up", "spring", 0.2, 0.5 + index * 0.2)}
+              className="w-full h-full bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+            >
+              <div className="space-y-4 lg:space-y-6">
+                <Icon size={35} className="text-blue-500 fill-blue-500" />
+                <h4 className="text-white text-md md:text-lg lg:text-xl font-extrabold">
+                  {card?.head}
+                </h4>
+                <p className="text-sky-500 text-balance text-xs md:text-sm lg:text-md">
+                  {card?.description}
+                </p>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
     </motion.section>
   );

@@ -7,7 +7,22 @@ import { IoWarningSharp } from "react-icons/io5";
 import { MdOutlineSettingsSuggest } from "react-icons/md";
 import { FaUserNinja, FaLock } from "react-icons/fa";
 
-const ProblemsAndSolutions = () => {
+const iconMap = {
+  FaShieldHalved,
+  FaUserSecret,
+  FaUsersGear,
+  IoWarningSharp,
+  MdOutlineSettingsSuggest,
+  FaUserNinja,
+  FaLock,
+};
+
+const ProblemsAndSolutions = ({ problemsAndSolutionsData }) => {
+  const renderIcon = (iconName) => {
+    const Icon = iconMap[iconName];
+    return Icon ? <Icon size={20} className="fill-blue-500" /> : null;
+  };
+
   return (
     <motion.section
       variants={staggerContainer(0.2, 0.3)}
@@ -22,7 +37,7 @@ const ProblemsAndSolutions = () => {
         className="flex-center"
       >
         <h2 className="font-extrabold text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-          Problems & Solutions
+          {problemsAndSolutionsData?.heading}
         </h2>
       </motion.div>
 
@@ -47,42 +62,25 @@ const ProblemsAndSolutions = () => {
               </h4>
             </motion.div>
 
-            {[
-              {
-                icon: <FaShieldHalved size={20} className="fill-blue-500" />,
-                title: "Data Breaches",
-              },
-              {
-                icon: (
-                  <MdOutlineSettingsSuggest
-                    size={20}
-                    className="fill-blue-500"
-                  />
-                ),
-                title: "Ransomware Attacks",
-              },
-              {
-                icon: <FaUserNinja size={20} className="fill-blue-500" />,
-                title: "Social Engineering",
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInOut("up", "tween", 0.2, 0.5 + index * 0.1)}
-                className="w-full h-fit flex gap-4"
-              >
-                {item.icon}
-                <div className="space-y-2">
-                  <h4 className="text-white text-sm md:text-md lg:text-lg font-semibold">
-                    {item.title}
-                  </h4>
-                  <p className="text-sky-500 text-balanc text-sm md:text-md lg:text-lg">
-                    Comprehensive security assessments to identify and eliminate
-                    potential threats.
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+            {problemsAndSolutionsData?.commonSecurityChallenges.problems.map(
+              (problem, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeInOut("up", "tween", 0.2, 0.5 + index * 0.1)}
+                  className="w-full h-fit flex gap-4"
+                >
+                  {renderIcon(problem.icon)}
+                  <div className="space-y-2">
+                    <h4 className="text-white text-sm md:text-md lg:text-lg font-semibold">
+                      {problem.label}
+                    </h4>
+                    <p className="text-sky-500 text-balanc text-sm md:text-md lg:text-lg">
+                      {problem.description}
+                    </p>
+                  </div>
+                </motion.div>
+              )
+            )}
           </motion.div>
         </motion.div>
 
@@ -102,52 +100,29 @@ const ProblemsAndSolutions = () => {
             >
               <FaShieldHalved size={20} className="fill-blue-500" />
               <h4 className="text-blue-500 text-sm md:text-md lg:text-lg">
-                Over Solutions
+                Our Solutions
               </h4>
             </motion.div>
 
-            {[
-              {
-                icon: (
-                  <FaLock size={20} className="fill-blue-500 font-semibold" />
-                ),
-                title: "Advance Encryption",
-              },
-              {
-                icon: (
-                  <FaUserSecret
-                    size={20}
-                    className="fill-blue-500 font-semibold"
-                  />
-                ),
-                title: "24/7 Threat Monitoring",
-              },
-              {
-                icon: (
-                  <FaUsersGear
-                    size={20}
-                    className="fill-blue-500 font-semibold"
-                  />
-                ),
-                title: "Security Training",
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInOut("up", "tween", 0.2, 0.5 + index * 0.1)}
-                className="w-full h-fit flex gap-4"
-              >
-                {item.icon}
-                <div className="space-y-2">
-                  <h4 className="text-white text-sm md:text-md lg:text-lg">
-                    {item.title}
-                  </h4>
-                  <p className="text-sky-500 text-balanc text-sm md:text-md lg:text-lg">
-                    Advanced open-source intelligence gathering and analysis.
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+            {problemsAndSolutionsData?.ourSolutions.solutions.map(
+              (solution, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeInOut("up", "tween", 0.2, 0.5 + index * 0.1)}
+                  className="w-full h-fit flex gap-4"
+                >
+                  {renderIcon(solution.icon)}
+                  <div className="space-y-2">
+                    <h4 className="text-white text-sm md:text-md lg:text-lg">
+                      {solution.label}
+                    </h4>
+                    <p className="text-sky-500 text-balanc text-sm md:text-md lg:text-lg">
+                      {solution.description}
+                    </p>
+                  </div>
+                </motion.div>
+              )
+            )}
           </motion.div>
         </motion.div>
       </div>

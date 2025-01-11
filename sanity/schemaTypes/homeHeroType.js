@@ -65,6 +65,7 @@ export const homeHeroType = defineType({
           name: "alt",
           type: "string",
           title: "Alternative text",
+          initialValue: "hero-banner",
           validation: (Rule) => Rule.required(),
         },
       ],

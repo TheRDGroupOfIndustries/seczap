@@ -88,6 +88,85 @@ export const aboutUsQuery = groq`*[_type == "about"][0] {
   features
 }`;
 
+export const ourServicesQuery = groq`*[_type == "ourServices"][0] {
+  heading,
+  services[] {
+    icon,
+    head,
+    description
+  }
+}`;
+
+export const whyChooseUsQuery = groq`*[_type == "whyChooesUs"][0] {
+  heading,
+  fetaures[] {
+    icon,
+    head,
+    description
+  }
+}`;
+
+export const problemsAndSolutionsQuery = groq`*[_type == "problemsAndSolutions"][0] {
+  heading,
+  commonSecurityChallenges {
+    problems[] {
+      icon,
+      label,
+      description
+    }
+  },
+  ourSolutions {
+    solutions[] {
+      icon,
+      label,
+      description
+    }
+  }
+}`;
+
+export const howWeDeliverValueQuery = groq`*[_type == "howWeDeliverValue"][0] {
+  heading,
+  values[] {
+    icon,
+    head,
+    description
+  }
+}`;
+
+export const growingNeedQuery = groq`*[_type == "growingNeed"][0] {
+  heading,
+  firstSection {
+    subHeading,
+    description,
+    needs {
+      needOne {
+        icon,
+        title,
+        shortDescription
+      },
+      needTwo {
+        icon,
+        title,
+        shortDescription
+      },
+      needThree {
+        icon,
+        title,
+        shortDescription
+      },
+      needFour {
+        icon,
+        title,
+        shortDescription
+      }
+    }
+  },
+  growingNeedBannerImage {
+    "imageURL": asset->url,
+    alt
+  }
+}`;
+
 export const readyToSecureQuery = groq`*[_type == "readyToSecure"][0] {
   heading,
   description,
@@ -107,5 +186,32 @@ export const faqsQuery = groq`*[_type == "faqs"][0] {
   faqs[] {
     question,
     answer
+  }
+}`;
+
+export const contactUsInfoQuery = groq`*[_type == "contactUsInfo"][0] {
+  contactUsInfo {
+    heading,
+    links {
+      address {
+        text,
+        link
+      },
+      phone {
+        text,
+        link
+      },
+      email {
+        text,
+        link
+      }
+    }
+  },
+  socialLinks {
+    heading,
+    links[] {
+      label,
+      link
+    }
   }
 }`;

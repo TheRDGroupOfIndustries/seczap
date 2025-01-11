@@ -11,7 +11,7 @@ import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { MdLocationPin, MdLocalPhone, MdMail } from "react-icons/md";
 
-const ContactUs = () => {
+const ContactUs = ({ contactUsInfoData }) => {
   return (
     <motion.section
       variants={staggerContainer(0.2, 0.5)}
@@ -51,127 +51,7 @@ const ContactUs = () => {
           </motion.div>
         </motion.div>
         {/* contact infor */}
-        <div className="w-full h-full space-y-4 md:space-y-6 lg:space-y-8 xl:space-y-10 overflow-hidde">
-          <motion.div
-            variants={fadeInOut("left", "spring", 0.3, 0.5)}
-            className="w-full h-fit bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
-          >
-            <motion.div
-              variants={staggerContainer(0.1, 0.2)}
-              className="space-y-2 lg:space-y-4"
-            >
-              <motion.h4
-                variants={fadeInOut("down", "tween", 0.2, 0.5)}
-                className="text-white text-lg md:text-xl lg:text-2xl font-semibold"
-              >
-                Contact Information
-              </motion.h4>
-
-              {[
-                {
-                  icon: MdLocationPin,
-                  title: "Address",
-                  content: "123 Cyber Street, Delhi, India",
-                  link: "https://goo.gl/maps/123CyberStreet",
-                },
-                {
-                  icon: MdLocalPhone,
-                  title: "Phone",
-                  content: "+91 987 654 3210",
-                  link: "tel:+919876543210",
-                },
-                {
-                  icon: MdMail,
-                  title: "Email",
-                  content: "info@seczap.com",
-                  link: "mailto:info@seczap.com",
-                },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeInOut("up", "tween", 0.2, 0.5 + index * 0.2)}
-                  className="w-full h-fit flex gap-4"
-                >
-                  <item.icon
-                    size={20}
-                    className="fill-blue-500 font-semibold mt-1"
-                  />
-                  <div className="space-y-2">
-                    <h4 className="text-white text-sm md:text-md lg:text-lg">
-                      {item.title}
-                    </h4>
-                    <p className="text-blue-400 text-balance text-sm md:text-md lg:text-lg">
-                      <Link
-                        href={item.link}
-                        className="w-fit hover-link-underline"
-                      >
-                        {item.content}
-                      </Link>
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
-          {/* social links */}
-          <motion.div
-            variants={fadeInOut("left", "spring", 0.4, 0.5)}
-            className="w-full h-fit bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
-          >
-            <motion.div
-              variants={staggerContainer(0.1, 0.2)}
-              className="space-y-2 lg:space-y-4"
-            >
-              <motion.h4
-                variants={fadeInOut("down", "tween", 0.2, 0.5)}
-                className="text-white text-lg md:text-xl lg:text-2xl font-semibold"
-              >
-                Follow Us
-              </motion.h4>
-
-              <motion.div
-                variants={fadeInOut("up", "spring", 0.3, 0.5)}
-                className="group w-fit h-fit flex gap-4"
-              >
-                {[
-                  {
-                    id: "linkedIn",
-                    href: "https://www.linkedin.com",
-                    icon: FaLinkedin,
-                  },
-                  {
-                    id: "twitter",
-                    href: "https://www.twitter.com",
-                    icon: FaXTwitter,
-                  },
-                  {
-                    id: "facebook",
-                    href: "https://www.facebook.com",
-                    icon: FaFacebook,
-                  },
-                  {
-                    id: "instagram",
-                    href: "https://www.instagram.com",
-                    icon: FaInstagram,
-                  },
-                ].map((social, i) => (
-                  <Link
-                    key={i}
-                    href={social?.href}
-                    title={`Follow us on ${social?.id}`}
-                    target="_blank"
-                    className="relative opacity-80 hover:opacity-100 hover:scale-125 transition-all ease-in-out duration-300"
-                  >
-                    <social.icon
-                      size={25}
-                      className="fill-sky-500 font-semibold"
-                    />
-                  </Link>
-                ))}
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </div>
+        <ContactInfo contactUsInfoData={contactUsInfoData} />
       </div>
     </motion.section>
   );
@@ -354,4 +234,120 @@ const ContactForm = () => {
       </motion.div>
     </motion.form>
   );
+};
+
+const ContactInfo = ({ contactUsInfoData }) => {
+  const { contactUsInfo, socialLinks } = contactUsInfoData;
+
+  return (
+    <div className="w-full h-full space-y-4 md:space-y-6 lg:space-y-8 xl:space-y-10 overflow-hidde">
+      <motion.div
+        variants={fadeInOut("left", "spring", 0.3, 0.5)}
+        className="w-full h-fit bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+      >
+        <motion.div
+          variants={staggerContainer(0.1, 0.2)}
+          className="space-y-2 lg:space-y-4"
+        >
+          <motion.h4
+            variants={fadeInOut("down", "tween", 0.2, 0.5)}
+            className="text-white text-lg md:text-xl lg:text-2xl font-semibold"
+          >
+            {contactUsInfo.heading}
+          </motion.h4>
+
+          {[
+            {
+              icon: MdLocationPin,
+              title: "Address",
+              content: contactUsInfo.links.address.text,
+              link: contactUsInfo.links.address.link,
+            },
+            {
+              icon: MdLocalPhone,
+              title: "Phone",
+              content: contactUsInfo.links.phone.text,
+              link: contactUsInfo.links.phone.link,
+            },
+            {
+              icon: MdMail,
+              title: "Email",
+              content: contactUsInfo.links.email.text,
+              link: contactUsInfo.links.email.link,
+            },
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              variants={fadeInOut("up", "tween", 0.2, 0.5 + index * 0.2)}
+              className="w-full h-fit flex gap-4"
+            >
+              <item.icon
+                size={20}
+                className="fill-blue-500 font-semibold mt-1"
+              />
+              <div className="space-y-2">
+                <h4 className="text-white text-sm md:text-md lg:text-lg">
+                  {item.title}
+                </h4>
+                <p className="text-blue-400 text-balance text-sm md:text-md lg:text-lg">
+                  <Link href={item.link} className="w-fit hover-link-underline">
+                    {item.content}
+                  </Link>
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
+      {/* social links */}
+      <motion.div
+        variants={fadeInOut("left", "spring", 0.4, 0.5)}
+        className="w-full h-fit bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+      >
+        <motion.div
+          variants={staggerContainer(0.1, 0.2)}
+          className="space-y-2 lg:space-y-4"
+        >
+          <motion.h4
+            variants={fadeInOut("down", "tween", 0.2, 0.5)}
+            className="text-white text-lg md:text-xl lg:text-2xl font-semibold"
+          >
+            {socialLinks.heading}
+          </motion.h4>
+
+          <motion.div
+            variants={fadeInOut("up", "spring", 0.3, 0.5)}
+            className="group w-fit h-fit flex gap-4"
+          >
+            {socialLinks.links.map((social, i) => (
+              <Link
+                key={i}
+                href={social.link}
+                title={`Follow us on ${social.label}`}
+                target="_blank"
+                className="relative opacity-80 hover:opacity-100 hover:scale-125 transition-all ease-in-out duration-300"
+              >
+                {getSocialIcon(social.label)}
+              </Link>
+            ))}
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+};
+
+const getSocialIcon = (label) => {
+  const normalizedLabel = label.toLowerCase();
+
+  if (normalizedLabel.includes("linkedin"))
+    return <FaLinkedin size={25} className="fill-sky-500 font-semibold" />;
+  if (normalizedLabel.includes("twitter") || normalizedLabel.includes("x"))
+    return <FaXTwitter size={25} className="fill-sky-500 font-semibold" />;
+  if (normalizedLabel.includes("facebook") || normalizedLabel.includes("fb"))
+    return <FaFacebook size={25} className="fill-sky-500 font-semibold" />;
+  if (normalizedLabel.includes("instagram") || normalizedLabel.includes("ig"))
+    return <FaInstagram size={25} className="fill-sky-500 font-semibold" />;
+
+  return <FaLinkedin size={25} className="fill-sky-500 font-semibold" />;
 };
