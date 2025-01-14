@@ -18,7 +18,7 @@ const Helpdesk = () => {
   return (
     <>
       <section className="w-full h-fit bg-background/80 backdrop-blur-sm p-2 md:p-4 lg:p-6 space-y-4 md:sapce-y-6 lg:space-y-8 rounded-lg overflow-hidden">
-        <h3 className="font-bold text-md md:text-lg lg:text-xl">
+        <h3 className="font-bold text-md md:text-lg lg:text-xl xl:text-2xl">
           Contact Support
         </h3>
 
@@ -265,7 +265,7 @@ const HelpdeskForm = () => {
   return (
     <form onSubmit={handleSubmit} className="w-full h-fit space-y-4">
       <div className="space-y-2">
-        <label htmlFor="name" className="text-blue-400">
+        <label htmlFor="name" className="dark:text-blue-200">
           Name
         </label>
         <input
@@ -276,14 +276,14 @@ const HelpdeskForm = () => {
           value={name}
           onChange={handleNameChange}
           placeholder="Enter Name"
-          className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
+          className="input-style"
         />
         {errors.name && (
           <span className="text-red-500 text-sm">{errors.name}</span>
         )}
       </div>
       <div className="space-y-2">
-        <label htmlFor="email" className="text-blue-400">
+        <label htmlFor="email" className="dark:text-blue-200">
           Email
         </label>
         <input
@@ -294,7 +294,7 @@ const HelpdeskForm = () => {
           value={email}
           onChange={handleEmailChange}
           placeholder="Enter Email"
-          className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
+          className="input-style"
         />
         {errors.email && (
           <span className="text-red-500 text-sm">{errors.email}</span>
@@ -302,7 +302,7 @@ const HelpdeskForm = () => {
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="subject" className="text-blue-400">
+        <label htmlFor="subject" className="dark:text-blue-200">
           Subject
         </label>
         <input
@@ -313,18 +313,18 @@ const HelpdeskForm = () => {
           value={subject}
           onChange={handleSubjectChange}
           placeholder="Enter Subject"
-          className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
+          className="input-style"
         />
         {errors.subject && (
           <span className="text-red-500 text-sm">{errors.subject}</span>
         )}
       </div>
       <div className="space-y-2">
-        <label htmlFor="priority" className="text-blue-400">
+        <label htmlFor="priority" className="dark:text-blue-200">
           Priority
         </label>
         <Select value={priority} onValueChange={setPriority}>
-          <SelectTrigger className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden">
+          <SelectTrigger className="input-style">
             <SelectValue placeholder="Select priority" />
           </SelectTrigger>
           <SelectContent>
@@ -338,7 +338,7 @@ const HelpdeskForm = () => {
         )}
       </div>
       <div className="space-y-2">
-        <label htmlFor="message" className="text-blue-400">
+        <label htmlFor="message" className="dark:text-blue-200">
           Message
         </label>
         <textarea
@@ -349,19 +349,21 @@ const HelpdeskForm = () => {
           value={message}
           onChange={handleMessageChange}
           placeholder="Enter Message"
-          className="w-full text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden"
+          className="w-full text-foreground bg-primary/50 dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded p-2 overflow-hidden"
         />
         {errors.message && (
           <span className="text-red-500 text-sm">{errors.message}</span>
         )}
       </div>
       <div className="space-y-2">
-        <label className="text-blue-400">Attachments</label>
+        <label className="dark:text-blue-200">Attachments</label>
         <div
           className={`w-full h-32 border-2 border-dashed rounded-lg flex flex-col items-center justify-center ${
             isUploading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
           } ${
-            isDragging ? "border-blue-500 bg-blue-500/10" : "border-blue-900/50"
+            isDragging
+              ? "border-blue-500 bg-blue-500/10"
+              : "border-blue-900/50 text-foreground bg-primary/50"
           }`}
           onDragOver={!isUploading ? handleDragOver : undefined}
           onDragLeave={!isUploading ? handleDragLeave : undefined}
@@ -372,13 +374,13 @@ const HelpdeskForm = () => {
               : undefined
           }
         >
-          <Upload className="w-6 h-6 text-blue-400 mb-2" />
-          <p className="text-sm text-blue-400">
+          <Upload className="w-6 h-6 dark:text-blue-200 mb-2" />
+          <p className="text-sm dark:text-blue-200">
             {isUploading
               ? "Uploading files..."
               : "Drop files here or click to upload (Max 5 files)"}
           </p>
-          <p className="text-xs text-blue-400/70 mt-1">
+          <p className="text-xs dark:text-blue-200/70 mt-1">
             Max file size: 5MB each
           </p>
           <input
@@ -398,7 +400,7 @@ const HelpdeskForm = () => {
                 key={index}
                 className="flex items-center justify-between bg-primary-clr/50 p-2 rounded"
               >
-                <span className="text-sm text-blue-400 truncate">
+                <span className="text-sm dark:text-blue-200 truncate">
                   {file.name}
                 </span>
                 <button

@@ -9,7 +9,7 @@ import TopNavbar from "./TopNavbar";
 const Account = ({ children }) => {
   const router = useRouter();
   const { data: session } = useSession(); // console.log(session);
-  if (!session?.user) return router.replace("/");
+  // if (!session?.user) return router.replace("/");
   return (
     <>
       <section className="relative w-full h-screen select-none flex animate-fade-in bg-gradient-to-br from-background from-20% via-primary/50 to-background to-90% overflow-hidden">

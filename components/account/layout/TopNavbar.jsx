@@ -15,7 +15,7 @@ const TopNavbar = () => {
             <FaBell size={20} />
           </div>
 
-          <div className="flex-center gap-2 p-1 cursor-pointer hover:bg-primary/40 backdrop-blur-md rounded-lg overflow-hidden">
+          <div className="flex-center gap-2 p-1 cursor-pointer hover:bg-primary/40 backdrop-blur-md rounded-lg ease-in-out duration-300 overflow-hidden">
             <div className="w-10 h-10 rounded-full overflow-hidden">
               <Image
                 src={session?.user?.image ?? "/user.png"}

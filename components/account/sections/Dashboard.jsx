@@ -147,10 +147,10 @@ const services = [
     title: "Vulnerability Testing",
     description:
       "Comprehensive security assessment to identify and fix system vulnerabilities.",
-    bgColor: "bg-indigo-500/15",
-    ringColor: "ring-blue-300/30",
-    textColor: "text-sky-500",
-    descriptionColor: "text-blue-200",
+    bgColor: "bg-blue-500/20 dark:bg-blue-500/15",
+    ringColor: "ring-blue-300/50 dark:ring-blue-300/30",
+    textColor: "text-blue-500",
+    descriptionColor: "text-blue-400 dark:text-blue-200",
   },
   {
     icon: IoSearch,
@@ -158,20 +158,20 @@ const services = [
     title: "Cyber Forensics",
     description:
       "Digital evidence analysis and investigation for security incidents.",
-    bgColor: "bg-green-500/10",
-    ringColor: "ring-green-300/30",
+    bgColor: "bg-green-500/15 dark:bg-green-500/15",
+    ringColor: "ring-green-300/50 dark:ring-green-300/30",
     textColor: "text-green-500",
-    descriptionColor: "text-green-200",
+    descriptionColor: "text-green-400 dark:text-green-200",
   },
   {
     icon: TfiWorld,
     href: "/account/dashboard#service",
     title: "OSINT Investigation",
     description: "Open-source intelligence gathering and threat analysis.",
-    bgColor: "bg-purple-500/20",
-    ringColor: "ring-purple-300/30",
+    bgColor: "bg-purple-500/20 dark:bg-purple-500/15",
+    ringColor: "ring-purple-300/50 dark:ring-purple-300/30",
     textColor: "text-purple-500",
-    descriptionColor: "text-purple-200",
+    descriptionColor: "text-purple-400 dark:text-purple-200",
   },
   {
     icon: FaUserSecret,
@@ -179,10 +179,10 @@ const services = [
     title: "Dark Web Monitoring",
     description:
       "Continuous surveillance of dark web for data breaches and threats.",
-    bgColor: "bg-orange-500/10",
-    ringColor: "ring-orange-300/30",
+    bgColor: "bg-orange-500/20 dark:bg-orange-500/15",
+    ringColor: "ring-orange-300/50 dark:ring-orange-300/30",
     textColor: "text-orange-500",
-    descriptionColor: "text-orange-200",
+    descriptionColor: "text-orange-400 dark:text-orange-200",
   },
 ];
 

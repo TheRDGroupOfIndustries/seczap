@@ -26,7 +26,7 @@ import {
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { TbBoxMargin } from "react-icons/tb";
 
-const OSINTAnalysis = ({ role }) => {
+const OSINTAnalysis = () => {
   const [formData, setFormData] = useState({
     serviceType: "",
     target: "",

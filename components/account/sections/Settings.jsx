@@ -96,7 +96,7 @@ const SettingsUpdateForm = () => {
               Language
             </label>
             <Select value={language} onValueChange={setLanguage}>
-              <SelectTrigger className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden">
+              <SelectTrigger className="input-style">
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
               <SelectContent>
@@ -116,7 +116,7 @@ const SettingsUpdateForm = () => {
               onValueChange={setTimeZone}
               name="time-zone"
             >
-              <SelectTrigger className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden">
+              <SelectTrigger className="input-style">
                 <SelectValue placeholder="Select time zone" />
               </SelectTrigger>
               <SelectContent>
@@ -137,7 +137,7 @@ const SettingsUpdateForm = () => {
             value={securityLevel}
             onValueChange={setSecurityLevel}
           >
-            <SelectTrigger className="w-full h-10 text-white bg-primary-clr dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded px-2 py-1 overflow-hidden">
+            <SelectTrigger className="input-style">
               <SelectValue placeholder="Select security level" />
             </SelectTrigger>
             <SelectContent>
