@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import ContactUs from "@/models/ContactUs";
-import { transporter } from "../../core";
+import { emailTransporter } from "@/app/api/core";
 
 export const POST = async (request) => {
   try {
@@ -59,8 +59,8 @@ export const POST = async (request) => {
     };
 
     await Promise.all([
-      transporter.sendMail(mailOptionsToSelf),
-      transporter.sendMail(mailOptionsToUser),
+      emailTransporter.sendMail(mailOptionsToSelf),
+      emailTransporter.sendMail(mailOptionsToUser),
     ]);
 
     return NextResponse.json(

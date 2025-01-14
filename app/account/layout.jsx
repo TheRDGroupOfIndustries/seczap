@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import Admin from "@/components/account/layout/Admin";
+import Account from "@/components/account/layout/Account";
 
 export const metadata = {
-  title: "SecZap - Admin",
+  title: "SecZap - Account",
 };
 
-export default function AdminLayout({ children }) {
+export default function AccountLayout({ children }) {
   const session = getServerSession();
-  if (!session) redirect("/");
-  return <Admin>{children}</Admin>;
+  // if (!session) redirect("/");
+  return <Account>{children}</Account>;
 }

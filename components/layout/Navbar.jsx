@@ -102,7 +102,7 @@ const Navbar = () => {
               onClick={() => router.push("/auth/sign-in")}
               disabled={status === "loading"}
               title={status === "loading" ? "Loading..." : "Login"}
-              size="lg"
+              // size="lg"
               className="hidden min-[854px]:block bg-blue-500 hover:bg-blue-600 text-white font-bold"
             >
               {status === "loading" ? "Loading.." : "Get Started"}

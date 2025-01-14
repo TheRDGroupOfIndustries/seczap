@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import User from "@/models/User";
 import connect from "@/utils/db";
 import crypto from "crypto";
-import { transporter } from "../../core";
+import { emailTransporter } from "../../core";
 
 export async function POST(request) {
   const { email } = await request.json();
@@ -50,7 +50,7 @@ export async function POST(request) {
     await existingUser.save();
 
     // sending email to user
-    await transporter.sendMail({
+    await emailTransporter.sendMail({
       from: process.env.GMAIL_USER,
       to: email,
       subject: "SecZap - Reset Password",

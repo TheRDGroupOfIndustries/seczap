@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
-import { transporter } from "../../core";
+import { emailTransporter } from "../../core";
 
 export const POST = async (request) => {
   const { name, email, password, otp, checkOtpCode } = await request.json();
@@ -27,7 +27,7 @@ export const POST = async (request) => {
     const body = `<h1 style="color: #333; font-family: 'Arial', sans-serif;">Heya ${name}!!</h1>
     <span style="color: #ccc; font-size: 18px; font-family: 'Arial', sans-serif;">Here's an OTP for your email verification <b style="color: #2fff00;">${otpCode}</b><br /></span>`;
 
-    await transporter.sendMail({
+    await emailTransporter.sendMail({
       from: process.env.GMAIL_USER,
       to: email,
       subject: "SecZap - Verify Email",

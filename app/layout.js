@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import AuthProvider from "@/context/SessionProvider";
-import ThemeToggle from "@/components/ui/themeToggle";
+// import ThemeToggle from "@/components/ui/themeToggle";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -80,7 +80,7 @@ export default async function RootLayout({ children }) {
           <AuthProvider session={session}>
             {children}
             <Toaster richColors closeButton />
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
           </AuthProvider>
         </NextThemesProvider>
       </body>

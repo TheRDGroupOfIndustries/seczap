@@ -3,21 +3,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { GiArmorUpgrade } from "react-icons/gi";
 import { HiOutlineLogout } from "react-icons/hi";
 
 const Sidebar = ({ sections }) => {
   const pathName = usePathname();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   return (
-    <aside className="w-fit md:w-60 max-w-lg h-full select-none bg-primary-clr text-white flex-between flex-col p-2 md:p-4 overflow-hidden">
-      <div className="w-full grid justify-center md:justify-start">
+    <aside className="sticky top-0 left-0 z-[101] w-fit md:w-60 max-w-lg h-screen select-none bg-background border-r border-primary/50 text-foreground flex-between flex-col overflow-hidde">
+      <div className="w-full h-fit grid justify-center md:justify-start overflow-hidden">
         <Link
           href="/"
           title="Home"
-          className="flex items-center animate-slide-down"
+          className="w-full flex items-center animate-slide-down p-2 py-5 md:p-4"
         >
           <Image
             src="/logo.png"
@@ -25,23 +25,23 @@ const Sidebar = ({ sections }) => {
             width="100"
             height="100"
             priority
-            className="w-8 h-8 overflow-hidden"
+            className="w-8 h-8 md:hidden overflow-hidden"
           />
-          <div className="text-xl md:text-2xl lg:text-3xl font-semibold hidden md:block">
-            <span className="text-primary-green">Sec</span>zap
-          </div>
+          <h2 className="hidden md:block text-xl md:text-2xl lg:text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-br from-blue-200 to-primary to-60%">
+            SecZap
+          </h2>
         </Link>
-        <div className="w-full h-fit space-y-2 mt-4 animate-slide-right">
+        <div className="w-full h-fit space-y-2 mt-12 animate-slide-right">
           {sections.map((sec, index) => {
             const isActive = pathName === sec.href;
             return (
               <Link
                 key={index}
                 href={sec.href}
-                className={`flex items-center gap-3 px-2 py-2 text-md font-medium transition-colors hover:text-primary-green group ${
+                className={`w-full md:w-60 md:max-w-lg flex items-center gap-3 px-2 py-2 text-md font-medium transition-colors group ${
                   isActive
-                    ? "text-primary-green fill-primary-green underline underline-offset-8"
-                    : ""
+                    ? "text-primary fill-primary md:bg-primary/20"
+                    : "hover:underline underline-offset-8"
                 } ease-in-out duration-200`}
               >
                 <sec.icon size={20} className="scale-125 md:scale-100" />
@@ -53,8 +53,8 @@ const Sidebar = ({ sections }) => {
           })}
         </div>
       </div>
-      <div className="w-full space-y-4 animate-slide-up">
-        <div className="flex items-center gap-2 md:bg-green-500/15 backdrop-blur-sm rounded-xl md:shadow md:p-2">
+      <div className="w-full space-y-4 animate-slide-up p-2 md:p-4 overflow-hidden">
+        {/* <div className="flex items-center gap-2 md:bg-green-500/15 backdrop-blur-sm rounded-xl md:shadow md:p-2">
           <div className="w-10 h-10 rounded-full overflow-hidden">
             <Image
               src={session?.user?.image ?? "/user.png"}
@@ -70,18 +70,23 @@ const Sidebar = ({ sections }) => {
               <h6 className="text-xs line-clamp-1">{session?.user?.role}</h6>
             )}
           </div>
-        </div>
+        </div> */}
 
         <div className="w-full flex flex-col md:flex-row gap-1">
-          <Button className="w-full font-semibold p-0 md:px-4 md:py-2">
+          {/* <Button className="w-full font-semibold p-0 md:px-4 md:py-2">
             <GiArmorUpgrade
               size={20}
               className="md:hidden scale-105 md:scale-100 md:mr-1"
             />
             <span className="hidden md:inline">Upgrade to Pro</span>
-          </Button>
-          <Button title="Logout" onClick={() => signOut()} className="md:p-1">
-            <HiOutlineLogout size={20} />
+          </Button> */}
+          <Button
+            title="Logout"
+            onClick={() => signOut()}
+            className="md:p- w-full"
+          >
+            <HiOutlineLogout size={20} />{" "}
+            <span className="hidden md:inline">Logout</span>
           </Button>
         </div>
       </div>
