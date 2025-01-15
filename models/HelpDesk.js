@@ -12,7 +12,7 @@ const helpDeskSchema = new Schema(
       required: true,
     },
     email: {
-      unique: true,
+      // unique: true,
       type: String,
       required: true,
     },

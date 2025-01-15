@@ -38,12 +38,33 @@ const HelpdeskForm = () => {
   const [message, setMessage] = useState("");
   const [subject, setSubject] = useState("");
   const [priority, setPriority] = useState("");
-  const [attachments, setAttachments] = useState([]); // Changed from attachment to attachments
+  const [attachments, setAttachments] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const ALLOWED_FILE_TYPES = [
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "text/plain",
+    "image/png",
+    "image/jpeg",
+  ];
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const MAX_FILES = 5;
+
+  const validateFile = (file) => {
+    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+      return "Invalid file type";
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      return "File size exceeds 5MB";
+    }
+    return null;
+  };
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -81,26 +102,34 @@ const HelpdeskForm = () => {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    const validFiles = files.filter((file) => file.size <= 5 * 1024 * 1024);
+    handleFiles(files);
+  };
 
-    if (validFiles.length + attachments.length > 5) {
+  const handleFiles = (files) => {
+    const newErrors = [];
+    const validFiles = [];
+
+    files.forEach((file) => {
+      const error = validateFile(file);
+      if (error) {
+        newErrors.push(`${file.name}: ${error}`);
+      } else if (validFiles.length + attachments.length >= MAX_FILES) {
+        newErrors.push(`${file.name}: Maximum ${MAX_FILES} files allowed`);
+      } else {
+        validFiles.push(file);
+      }
+    });
+
+    if (newErrors.length > 0) {
       setErrors((prev) => ({
         ...prev,
-        attachment: "Maximum 5 files allowed",
+        attachment: newErrors.join(", "),
       }));
-      return;
     }
 
-    if (files.length !== validFiles.length) {
-      setErrors((prev) => ({
-        ...prev,
-        attachment: "Some files exceed 5MB limit",
-      }));
-    } else {
-      setErrors((prev) => ({ ...prev, attachment: "" }));
+    if (validFiles.length > 0) {
+      setAttachments((prev) => [...prev, ...validFiles]);
     }
-
-    setAttachments((prev) => [...prev, ...validFiles].slice(0, 5));
   };
 
   const handleDragOver = (e) => {
@@ -117,26 +146,7 @@ const HelpdeskForm = () => {
     e.preventDefault();
     setIsDragging(false);
     const files = Array.from(e.dataTransfer.files);
-    const validFiles = files.filter((file) => file.size <= 5 * 1024 * 1024);
-
-    if (validFiles.length + attachments.length > 5) {
-      setErrors((prev) => ({
-        ...prev,
-        attachment: "Maximum 5 files allowed",
-      }));
-      return;
-    }
-
-    if (files.length !== validFiles.length) {
-      setErrors((prev) => ({
-        ...prev,
-        attachment: "Some files exceed 5MB limit",
-      }));
-    } else {
-      setErrors((prev) => ({ ...prev, attachment: "" }));
-    }
-
-    setAttachments((prev) => [...prev, ...validFiles].slice(0, 5));
+    handleFiles(files);
   };
 
   const removeFile = (index) => {
@@ -159,24 +169,21 @@ const HelpdeskForm = () => {
     if (!files.length) return [];
     setIsUploading(true);
 
-    const filesFormData = new FormData();
-    files.forEach((file) => {
-      filesFormData.append("files", file);
-    });
-
     try {
+      const filesFormData = new FormData();
+      files.forEach((file) => filesFormData.append("files", file));
+
       const uploadedUrls = await uploadMultipleNewFiles(filesFormData);
 
-      // formatting files with required metadata
-      const formattedFiles = files.map((file, index) => ({
+      return files.map((file, index) => ({
         name: file.name,
-        size: `${Math.round(file.size / 1024)}KB`,
+        size: file.size,
+        type: file.type,
         url: uploadedUrls[index],
       }));
-
-      return formattedFiles;
     } catch (error) {
       console.error("Upload error:", error);
+      toast.error("File upload failed. Please try again.");
       throw new Error("File upload failed");
     } finally {
       setIsUploading(false);
@@ -184,82 +191,91 @@ const HelpdeskForm = () => {
   };
 
   const sendHelpDeskContactForm = async (formData) => {
-    const response = await fetch("/api/account/help-desk/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await fetch("/api/account/help-desk/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to send message");
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Failed to send message");
+      }
+
+      return true;
+    } catch (error) {
+      console.error("API error:", error);
+      throw error;
     }
-    const data = await response.json();
-    if (!data.success) {
-      throw new Error("Failed to send message");
-    }
-    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let formErrors = {};
-
-    // keeping all validations except attachments
-    if (!subject) formErrors.subject = "Subject is required";
-    if (!priority) formErrors.priority = "Priority is required";
-    if (!name) formErrors.name = "Name is required";
-    if (!email) formErrors.email = "Email is required";
-    else if (!validateEmail(email)) formErrors.email = "Invalid email format";
-    if (!message) formErrors.message = "Message is required";
-
-    setErrors(formErrors);
-
-    if (Object.keys(formErrors).length === 0) {
-      setIsSubmitting(true);
-
-      try {
-        let uploadedFiles = [];
-
-        // Optional file upload
-        if (attachments.length > 0) {
-          uploadedFiles = await toast.promise(handleFileUpload(attachments), {
-            loading: "Uploading files...",
-            success: "Files uploaded successfully",
-            error: "File upload failed",
-          });
-        }
-
-        await toast.promise(
-          sendHelpDeskContactForm({
-            user_id,
-            name,
-            email,
-            subject,
-            priority,
-            message,
-            attachments: uploadedFiles,
-          }),
-          {
-            loading: "Sending message...",
-            success: () => {
-              setName("");
-              setEmail("");
-              setMessage("");
-              setSubject("");
-              setPriority("");
-              setAttachments([]);
-              return "Message sent successfully! We'll reach out to you very soon.";
-            },
-            error: "Failed to send message. Please try again later.",
-          }
-        );
-      } catch (error) {
-        console.error("Error submitting form:", error);
-      } finally {
-        setIsSubmitting(false);
-      }
+    // Validate form
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
     }
+
+    setIsSubmitting(true);
+
+    try {
+      // First upload files if any
+      let uploadedFiles = [];
+      if (attachments.length > 0) {
+        uploadedFiles = await handleFileUpload(attachments);
+      }
+
+      // Then submit the form
+      await toast.promise(
+        sendHelpDeskContactForm({
+          user_id,
+          name,
+          email,
+          subject,
+          priority,
+          message,
+          attachments: uploadedFiles,
+        }),
+        {
+          loading: "Sending your request...",
+          success: "Request submitted successfully!",
+          error: "Failed to submit request. Please try again.",
+        }
+      );
+
+      // Reset form on success
+      resetForm();
+    } catch (error) {
+      console.error("Submission error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!name) errors.name = "Name is required";
+    if (!email) errors.email = "Email is required";
+    else if (!validateEmail(email)) errors.email = "Invalid email format";
+    if (!subject) errors.subject = "Subject is required";
+    if (!priority) errors.priority = "Priority is required";
+    if (!message) errors.message = "Message is required";
+    return errors;
+  };
+
+  const resetForm = () => {
+    setName("");
+    setEmail("");
+    setMessage("");
+    setSubject("");
+    setPriority("");
+    setAttachments([]);
+    setErrors({});
   };
 
   return (
@@ -361,24 +377,24 @@ const HelpdeskForm = () => {
           className={`w-full h-32 border-2 border-dashed rounded-lg flex flex-col items-center justify-center ${
             isUploading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
           } ${
-            isDragging
-              ? "border-blue-500 bg-blue-500/10"
-              : "border-blue-900/50 text-foreground bg-primary/50"
+            isDragging ?
+              "border-blue-500 bg-blue-500/10"
+            : "border-blue-900/50 text-foreground bg-primary/50"
           }`}
           onDragOver={!isUploading ? handleDragOver : undefined}
           onDragLeave={!isUploading ? handleDragLeave : undefined}
           onDrop={!isUploading ? handleDrop : undefined}
           onClick={
-            !isUploading
-              ? () => document.getElementById("file-upload").click()
-              : undefined
+            !isUploading ?
+              () => document.getElementById("file-upload").click()
+            : undefined
           }
         >
           <Upload className="w-6 h-6 dark:text-blue-200 mb-2" />
           <p className="text-sm dark:text-blue-200">
-            {isUploading
-              ? "Uploading files..."
-              : "Drop files here or click to upload (Max 5 files)"}
+            {isUploading ?
+              "Uploading files..."
+            : "Drop files here or click to upload (Max 5 files)"}
           </p>
           <p className="text-xs dark:text-blue-200/70 mt-1">
             Max file size: 5MB each

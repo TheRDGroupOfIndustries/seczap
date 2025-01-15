@@ -17,7 +17,7 @@ export const scanAnalyse = async (file) => {
     if (!res) return null;
 
     const fetchResult = await fetch(
-      `https://www.virustotal.com/api/v3/analyses/${res.data.id}`, // NDFmMTJhZTUzYjg0Y2NmYjM4NTc5YTZiOTQ5Mzg2ODU6MTcyODk5OTI3NQ==
+      `https://www.virustotal.com/api/v3/analyses/${res.data.id}`, // ex: NDFmMTJhZTUzYjg0Y2NmYjM4NTc5YTZiOTQ5Mzg2ODU6MTcyODk5OTI3NQ==
       {
         method: "GET",
         headers: {

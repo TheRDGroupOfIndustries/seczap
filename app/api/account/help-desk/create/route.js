@@ -7,6 +7,16 @@ export const POST = async (request) => {
   try {
     const { user_id, name, email, subject, priority, message, attachments } =
       await request.json();
+    console.log("Request body:", {
+      user_id,
+      name,
+      email,
+      subject,
+      priority,
+      message,
+      attachments,
+    });
+
     await connect();
 
     const newHelpDesk = HelpDesk({
@@ -31,8 +41,9 @@ export const POST = async (request) => {
       );
     }
 
-    const attachmentsList = attachments?.length
-      ? `<p><strong>Attachments:</strong></p>
+    const attachmentsList =
+      attachments?.length ?
+        `<p><strong>Attachments:</strong></p>
          <ul>${attachments.map((file) => `<li>${file.name} (${file.size})</li>`).join("")}</ul>`
       : "";
 
@@ -89,7 +100,7 @@ export const POST = async (request) => {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error in help desk ticket creation:", error);
+    console.log("Error in help desk ticket creation:", error);
     return NextResponse.json(
       {
         success: false,

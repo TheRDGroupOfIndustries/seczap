@@ -1,7 +1,9 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { uploadNewFile } from "@/utils/actions/fileUploads";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -17,7 +19,7 @@ const OSINTCases = () => {
   return (
     <>
       <section className="w-full h-fit bg-background/80 backdrop-blur-sm p-2 md:p-4 lg:p-6 space-y-4 md:sapce-y-6 lg:space-y-8 rounded-lg overflow-hidden">
-        <h3 className="font-bold text-md md:text-lg lg:text-xl xl:text-2xl text-blue-400">
+        <h3 className="font-bold text-md md:text-lg lg:text-xl xl:text-2xl ">
           OSINT Cases Input
         </h3>
         {/* <hr className="border-t-2 border-blue-400/30" /> */}
@@ -30,6 +32,9 @@ const OSINTCases = () => {
 export default OSINTCases;
 
 const OSINTCasesInputForm = () => {
+  const { data: session } = useSession();
+  const user_id = session?.user?._id;
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     caseType: "",
     dataSources: {
@@ -40,12 +45,19 @@ const OSINTCasesInputForm = () => {
     },
     target: "",
     keywords: "",
-    budget: "",
+    budget: {
+      currency: "₹",
+      amount: "",
+    },
     priority: "",
     extraNotes: "",
+    caseDocument: {
+      name: "",
+      size: "",
+      file: null,
+    },
   });
 
-  const [attachments, setAttachments] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -98,29 +110,48 @@ const OSINTCasesInputForm = () => {
   };
 
   const handleFiles = (files) => {
-    const validFiles = files.filter((file) => {
-      const isValidSize = file.size <= 5 * 1024 * 1024; // 5MB
-      const isValidType = /\.(pdf|doc|docx|txt|png|jpg|jpeg)$/i.test(file.name);
-      return isValidSize && isValidType;
-    });
+    const file = files[0];
+    if (!file) return;
 
-    if (attachments.length + validFiles.length > 5) {
-      toast.error("Maximum 5 files allowed");
+    const isValidSize = file.size <= 5 * 1024 * 1024;
+    const isValidType = /\.(pdf|doc|docx|txt|png|jpg|jpeg)$/i.test(file.name);
+
+    if (!isValidSize || !isValidType) {
+      toast.error("Invalid file type or size");
       return;
     }
 
-    setAttachments((prev) => [...prev, ...validFiles]);
+    const fileSize =
+      file.size < 1024 * 1024 ?
+        `${(file.size / 1024).toFixed(2)} KB`
+      : `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+
+    setFormData((prev) => ({
+      ...prev,
+      caseDocument: {
+        name: file.name,
+        size: fileSize,
+        file: file,
+      },
+    }));
   };
 
-  const removeFile = (index) => {
-    setAttachments((prev) => prev.filter((_, i) => i !== index));
+  const removeFile = () => {
+    setFormData((prev) => ({
+      ...prev,
+      caseDocument: {
+        name: "",
+        size: "",
+        file: null,
+      },
+    }));
   };
 
   const validateForm = () => {
     const newErrors = {};
     if (!formData.caseType) newErrors.caseType = "Case type is required";
     if (!formData.target) newErrors.target = "Target is required";
-    if (!formData.budget) newErrors.budget = "Budget is required";
+    if (!formData.budget.amount) newErrors.budget = "Budget amount is required";
     if (!formData.priority) newErrors.priority = "Priority is required";
 
     const hasSelectedSource = Object.values(formData.dataSources).some(
@@ -133,6 +164,46 @@ const OSINTCasesInputForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Add currency conversion function
+  const convertCurrency = (amount, fromCurrency, toCurrency) => {
+    // Using approximate conversion rates
+    const rates = {
+      "₹": { $: 0.012 }, // 1 INR = 0.012 USD
+      $: { "₹": 83.33 }, // 1 USD = 83.33 INR
+    };
+
+    if (fromCurrency === toCurrency) return amount;
+    return (amount * rates[fromCurrency][toCurrency]).toFixed(2);
+  };
+
+  // Update budget change handler
+  const handleBudgetChange = (field, value) => {
+    setFormData((prev) => {
+      if (field === "currency" && prev.budget.amount) {
+        // Convert amount when currency changes
+        const convertedAmount = convertCurrency(
+          prev.budget.amount,
+          prev.budget.currency,
+          value
+        );
+        return {
+          ...prev,
+          budget: {
+            currency: value,
+            amount: convertedAmount,
+          },
+        };
+      }
+      return {
+        ...prev,
+        budget: {
+          ...prev.budget,
+          [field]: value,
+        },
+      };
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
@@ -140,23 +211,103 @@ const OSINTCasesInputForm = () => {
       return;
     }
 
-    setIsUploading(true);
-    try {
-      // TODO: Implement your API call here
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulated API call
-      toast.success("OSINT investigation started successfully");
-    } catch (error) {
-      toast.error("Failed to start investigation");
-    } finally {
-      setIsUploading(false);
-    }
+    setIsSubmitting(true);
+    const createOSINTCase = async () => {
+      try {
+        // uploading file if exists
+        let fileUrl = null;
+        if (formData.caseDocument.file) {
+          const fileFormData = new FormData();
+          fileFormData.append("file", formData.caseDocument.file);
+          fileUrl = await uploadNewFile(fileFormData);
+          console.log("fileUrl", fileUrl);
+        }
+
+        const keywordsArray =
+          formData.keywords ?
+            formData.keywords.split(",").map((k) => k.trim())
+          : [];
+
+        const requestBody = {
+          user_id,
+          caseType: formData.caseType,
+          dataSorce: {
+            google: formData.dataSources.google,
+            linkedIn: formData.dataSources.linkedin,
+            twitter: formData.dataSources.twitter,
+            whois: formData.dataSources.whois,
+          },
+          target: formData.target,
+          budget: {
+            currency: formData.budget.currency,
+            amount: Number(formData.budget.amount),
+          },
+          priority: formData.priority,
+          keywords: keywordsArray,
+          extraNotes: formData.extraNotes,
+          caseDocument:
+            fileUrl ?
+              {
+                name: formData.caseDocument.name,
+                size: formData.caseDocument.size,
+                url: fileUrl,
+              }
+            : null,
+        };
+
+        const response = await fetch("/api/account/osint-case/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+        });
+
+        const data = await response.json();
+        if (!data.success) throw new Error(data.message);
+
+        setFormData({
+          caseType: "",
+          dataSources: {
+            linkedin: false,
+            twitter: false,
+            whois: false,
+            google: false,
+          },
+          target: "",
+          keywords: "",
+          budget: {
+            currency: "₹",
+            amount: "",
+          },
+          priority: "",
+          extraNotes: "",
+          caseDocument: {
+            name: "",
+            size: "",
+            file: null,
+          },
+        });
+
+        return data.message;
+      } catch (error) {
+        console.log("osint case error", error);
+        throw new Error(error.message);
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+
+    toast.promise(createOSINTCase(), {
+      loading: "Creating OSINT case...",
+      success: (message) => `Success! ${message}`,
+      error: (err) => `Error: ${err.message}`,
+    });
   };
 
   return (
     <form onSubmit={handleSubmit} className="w-full h-fit space-y-4">
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/ rounded-lg overflow-hidden">
-          <label htmlFor="case-type" className="text-blue-400">
+          <label htmlFor="case-type" className="">
             Case Type{" "}
             {errors.caseType && <span className="text-red-500 text-sm">*</span>}
           </label>
@@ -182,7 +333,7 @@ const OSINTCasesInputForm = () => {
           </Select>
         </div>
         <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/ rounded-lg overflow-hidden">
-          <label className="text-blue-400">
+          <label className="">
             Data Sources{" "}
             {errors.dataSources && (
               <span className="text-red-500 text-sm">*</span>
@@ -197,7 +348,7 @@ const OSINTCasesInputForm = () => {
             ].map((source) => (
               <label
                 key={source.name}
-                className="flex items-center gap-2 cursor-pointer select-none text-blue-400 p-2 rounded-md hover:bg-blue-500/10 transition-all duration-200"
+                className="flex items-center gap-2 cursor-pointer select-none p-2 rounded-md hover:bg-blue-500/10 transition-all duration-200"
               >
                 <input
                   type="checkbox"
@@ -220,7 +371,7 @@ const OSINTCasesInputForm = () => {
       </div>
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/ rounded-lg overflow-hidden">
-          <label htmlFor="target" className="text-blue-400">
+          <label htmlFor="target" className="">
             Target{" "}
             {errors.target && <span className="text-red-500 text-sm">*</span>}
           </label>
@@ -236,7 +387,7 @@ const OSINTCasesInputForm = () => {
           />
         </div>
         <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/ rounded-lg overflow-hidden">
-          <label htmlFor="keywords" className="text-blue-400">
+          <label htmlFor="keywords" className="">
             Keywords (Optional)
           </label>
           <input
@@ -252,23 +403,45 @@ const OSINTCasesInputForm = () => {
       </div>
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/ rounded-lg overflow-hidden">
-          <label htmlFor="budget" className="text-blue-400">
+          <label htmlFor="budget" className="">
             Budget{" "}
             {errors.budget && <span className="text-red-500 text-sm">*</span>}
           </label>
-          <input
-            type="text"
-            required
-            name="budget"
-            id="budget"
-            value={formData.budget}
-            onChange={handleInputChange}
-            placeholder="Enter budget in INR or USD"
-            className="input-style"
-          />
+          <div className="flex gap-2 w-full text-foreground bg-primary/50 dark:bg-gray-900 backdrop-blur-md border border-blue-950/50 ring-1 ring-blue-900/50 rounded overflow-hidden">
+            <select
+              value={formData.budget.currency}
+              onChange={(e) => handleBudgetChange("currency", e.target.value)}
+              className="w-fit bg-primary/50 dark:bg-primary/10 border border-blue-400/50 rounded-sm p-2 outline-none"
+            >
+              <option
+                value="₹"
+                className="bg-primary/50 dark:bg-primary/10 text-background"
+              >
+                ₹ INR
+              </option>
+              <option
+                value="$"
+                className="bg-primary/50 dark:bg-primary/10 text-background"
+              >
+                $ USD
+              </option>
+            </select>
+            <input
+              type="text"
+              required
+              name="budget-amount"
+              id="budget-amount"
+              value={formData.budget.amount}
+              onChange={(e) =>
+                handleBudgetChange("amount", e.target.value.replace(/\D/g, ""))
+              }
+              placeholder="Enter amount"
+              className="flex-1 w-full h-full bg-transparent outline-none p-2"
+            />
+          </div>
         </div>
         <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/ rounded-lg overflow-hidden">
-          <label htmlFor="priority" className="text-blue-400">
+          <label htmlFor="priority" className="">
             Priority{" "}
             {errors.priority && <span className="text-red-500 text-sm">*</span>}
           </label>
@@ -280,39 +453,40 @@ const OSINTCasesInputForm = () => {
               <SelectValue placeholder="Select priority" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="primary">Primary</SelectItem>
-              <SelectItem value="secondary">Secondary</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="low">Low</SelectItem>
             </SelectContent>
           </Select>
         </div>
       </div>
       <div className="grid md:grid-cols-2 gap-4">
-        <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/ rounded-lg overflow-hidden">
-          <label htmlFor="priority" className="text-blue-400">
+        <div className="h-full space-y-2 p-2 md:p-4 lg:p-6 bg-primary/ rounded-lg overflow-hidden">
+          <label htmlFor="priority" className="">
             Case Document (Optional)
           </label>
           <div
-            className={`w-full h-32 border-2 border-dashed rounded-lg flex flex-col items-center justify-center ${
+            className={`w-full h-28 border-2 border-dashed rounded-lg flex flex-col items-center justify-center ${
               isUploading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
             } ${
-              isDragging
-                ? "border-blue-500 bg-blue-500/10"
-                : "border-blue-900/50 text-foreground bg-primary/50"
+              isDragging ?
+                "border-blue-500 bg-blue-500/10"
+              : "border-blue-900/50 text-foreground bg-primary/50 dark:bg-primary/10"
             }`}
             onDragOver={!isUploading ? handleDragOver : undefined}
             onDragLeave={!isUploading ? handleDragLeave : undefined}
             onDrop={!isUploading ? handleDrop : undefined}
             onClick={
-              !isUploading
-                ? () => document.getElementById("file-upload").click()
-                : undefined
+              !isUploading ?
+                () => document.getElementById("file-upload").click()
+              : undefined
             }
           >
             <Upload className="w-6 h-6  mb-2" />
             <p className="text-sm ">
-              {isUploading
-                ? "Uploading files..."
-                : "Drop files here or click to upload (Max 5 files)"}
+              {isUploading ?
+                "Uploading files..."
+              : "Drop files here or click to upload (Max 5 files)"}
             </p>
             <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">
               Max file size: 5MB each
@@ -327,34 +501,29 @@ const OSINTCasesInputForm = () => {
               disabled={isUploading}
             />
           </div>
-          {attachments.length > 0 && (
-            <div className="mt-2 space-y-2">
-              {attachments.map((file, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between bg-primary-clr/50 p-2 rounded"
+          {formData.caseDocument.name && (
+            <div className="mt-2">
+              <div className="flex items-center justify-between bg-primary-clr/50 p-2 rounded">
+                <span className="text-sm  truncate">
+                  {formData.caseDocument.name} ({formData.caseDocument.size})
+                </span>
+                <button
+                  type="button"
+                  onClick={removeFile}
+                  className="text-red-400 hover:text-red-500 text-lg"
+                  disabled={isUploading}
                 >
-                  <span className="text-sm text-blue-400 truncate">
-                    {file.name}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => removeFile(index)}
-                    className="text-red-400 hover:text-red-500 text-lg"
-                    disabled={isUploading}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
+                  ×
+                </button>
+              </div>
             </div>
           )}
           {errors.attachment && (
             <span className="text-red-500 text-sm">{errors.attachment}</span>
           )}
         </div>
-        <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/ rounded-lg overflow-hidden">
-          <label htmlFor="extra-notes" className="text-blue-400">
+        <div className="h-full space-y-2 p-2 md:p-4 lg:p-6 bg-primary/ rounded-lg overflow-hidden">
+          <label htmlFor="extra-notes" className="">
             Extra Notes (Optional)
           </label>
           <textarea
@@ -369,16 +538,20 @@ const OSINTCasesInputForm = () => {
         </div>
       </div>
 
-      <div className="w-full h-fit mt-2 flex justify-end">
-        <Button
-          type="submit"
-          size="lg"
-          effect="gooeyRight"
-          className={`w-fit bg-blue-500 hover:bg-blue-500/50 text-white text-md md:text-lg font-bold rounded md:px-4 lg:px-6 xl:px-8 overflow-hidden `}
-        >
-          <IoSearch size={28} /> Start OSINT Investigation
-        </Button>
-      </div>
+      {/* <div className="w-full h-fit mt-2 flex justify-end"> */}
+      <Button
+        type="submit"
+        size="lg"
+        effect="gooeyRight"
+        disabled={isSubmitting}
+        className={`w-fit bg-blue-500 hover:bg-blue-500/50 text-white text-md md:text-lg font-bold rounded md:px-4 lg:px-6 xl:px-8 overflow-hidden ${
+          isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+        }`}
+      >
+        <IoSearch size={28} />
+        {isSubmitting ? "OSINT Investigating..." : "Start OSINT Investigation"}
+      </Button>
+      {/* </div> */}
     </form>
   );
 };
