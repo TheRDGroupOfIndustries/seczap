@@ -1,11 +1,11 @@
 "use server";
 import { utapi } from "@/server/uploadthing";
 
-export const uploadNewFile = async (formData: FormData) => {
+export const uploadNewFile = async (formData) => {
   console.log("uploadNewFile : ", formData);
 
   try {
-    const file = formData.get("file") as File;
+    const file = formData.get("file");
     if (!file) throw new Error("No file provided");
 
     const { data } = await utapi.uploadFiles(file);
@@ -16,11 +16,11 @@ export const uploadNewFile = async (formData: FormData) => {
   }
 };
 
-export const uploadMultipleNewFiles = async (formData: FormData) => {
+export const uploadMultipleNewFiles = async (formData) => {
   console.log("uploadMultipleNewFiles : ", formData);
 
   try {
-    const files = formData.getAll("files") as File[];
+    const files = formData.getAll("files");
     if (!files || files.length === 0) throw new Error("No files provided");
 
     const uploadedFiles = await utapi.uploadFiles(files);
@@ -33,7 +33,7 @@ export const uploadMultipleNewFiles = async (formData: FormData) => {
   }
 };
 
-export const removeFile = async (file: string) => {
+export const removeFile = async (file) => {
   try {
     const res = await utapi.deleteFiles(file);
 
@@ -44,7 +44,7 @@ export const removeFile = async (file: string) => {
   }
 };
 
-export const removeMultipleFiles = async (files: string[]) => {
+export const removeMultipleFiles = async (files) => {
   try {
     const res = await utapi.deleteFiles(files);
     return res.success;

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useTheme } from "next-themes";
+import { languages } from "countries-list";
 import { toast } from "sonner";
+import moment from "moment-timezone";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -12,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { useAccountSettings } from "@/context/AccountSettingsProvider";
 
 const Settings = () => {
   return (
@@ -30,34 +32,59 @@ const Settings = () => {
 export default Settings;
 
 const SettingsUpdateForm = () => {
-  const { theme, setTheme } = useTheme();
-  const [emailNotification, setEmailNotification] = useState(true);
-  const [language, setLanguage] = useState("english");
-  const [timeZone, setTimeZone] = useState("UTC");
-  const [securityLevel, setSecurityLevel] = useState("standard");
+  const {
+    theme: initialTheme,
+    emailNotification: initialEmailNotification,
+    language: initialLanguage,
+    timeZone: initialTimeZone,
+    securityLevel: initialSecurityLevel,
+    saveSettings,
+  } = useAccountSettings();
+
+  const [settings, setSettings] = useState({
+    theme: initialTheme,
+    emailNotification: initialEmailNotification,
+    language: initialLanguage,
+    timeZone: initialTimeZone,
+    securityLevel: initialSecurityLevel,
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSettingChange = (key, value) => {
+    setSettings((prev) => ({ ...prev, [key]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    await toast.promise(
-      new Promise((resolve, reject) => {
-        // Simulated API call
-        setTimeout(() => {
-          // Simulate successful update
-          resolve();
-        }, 1000);
-      }),
-      {
-        loading: "Updating settings...",
-        success: "Settings updated successfully",
-        error: "Failed to update settings",
+    try {
+      const result = await saveSettings(settings);
+      if (result.success) {
+        toast.success(result.message || "Settings updated successfully");
+      } else {
+        toast.error(result.error || "Failed to update settings");
       }
-    );
-
-    setIsSubmitting(false);
+    } catch (error) {
+      toast.error("An unexpected error occurred");
+      console.error("Settings update error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  const languageOptions = Object.entries(languages).map(([code, lang]) => ({
+    value: code.toLowerCase(),
+    label: lang.name,
+  }));
+
+  const timezoneOptions = moment.tz.names().map((tz) => {
+    const offset = moment.tz(tz).format("Z");
+    return {
+      value: tz,
+      label: `${tz} (UTC${offset})`,
+    };
+  });
 
   return (
     <>
@@ -70,9 +97,9 @@ const SettingsUpdateForm = () => {
               </label>
               <Switch
                 id="dark-mode"
-                checked={theme === "dark"}
-                onCheckedChange={() =>
-                  setTheme(theme === "dark" ? "light" : "dark")
+                checked={settings.theme === "dark"}
+                onCheckedChange={(checked) =>
+                  handleSettingChange("theme", checked ? "dark" : "light")
                 }
               />
             </div>
@@ -84,8 +111,10 @@ const SettingsUpdateForm = () => {
               </label>
               <Switch
                 id="email-notification"
-                checked={emailNotification}
-                onCheckedChange={setEmailNotification}
+                checked={settings.emailNotification}
+                onCheckedChange={(checked) =>
+                  handleSettingChange("emailNotification", checked)
+                }
               />
             </div>
           </div>
@@ -95,15 +124,19 @@ const SettingsUpdateForm = () => {
             <label htmlFor="language" className="text-blue-400">
               Language
             </label>
-            <Select value={language} onValueChange={setLanguage}>
+            <Select
+              value={settings.language}
+              onValueChange={(value) => handleSettingChange("language", value)}
+            >
               <SelectTrigger className="input-style">
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="english">English</SelectItem>
-                <SelectItem value="spanish">Spanish</SelectItem>
-                <SelectItem value="french">French</SelectItem>
-                <SelectItem value="german">German</SelectItem>
+                {languageOptions.map((lang) => (
+                  <SelectItem key={lang.value} value={lang.value}>
+                    {lang.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -112,18 +145,19 @@ const SettingsUpdateForm = () => {
               Time Zone
             </label>
             <Select
-              value={timeZone}
-              onValueChange={setTimeZone}
+              value={settings.timeZone}
+              onValueChange={(value) => handleSettingChange("timeZone", value)}
               name="time-zone"
             >
               <SelectTrigger className="input-style">
                 <SelectValue placeholder="Select time zone" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="UTC">UTC</SelectItem>
-                <SelectItem value="EST">EST (UTC-5)</SelectItem>
-                <SelectItem value="PST">PST (UTC-8)</SelectItem>
-                <SelectItem value="IST">IST (UTC+5:30)</SelectItem>
+                {timezoneOptions.map((tz) => (
+                  <SelectItem key={tz.value} value={tz.value}>
+                    {tz.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -134,8 +168,10 @@ const SettingsUpdateForm = () => {
           </label>
           <Select
             name="security-level"
-            value={securityLevel}
-            onValueChange={setSecurityLevel}
+            value={settings.securityLevel}
+            onValueChange={(value) =>
+              handleSettingChange("securityLevel", value)
+            }
           >
             <SelectTrigger className="input-style">
               <SelectValue placeholder="Select security level" />

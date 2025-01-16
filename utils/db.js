@@ -30,6 +30,8 @@ const connect = async () => {
 
     isConnected = true;
     console.log("MongoDB connected");
+
+    // await updateUserSettings();
     // await updateUsersIntegrationsAndSubscription();
   } catch (error) {
     throw new Error("Error connecting to Mongoose");
@@ -37,6 +39,48 @@ const connect = async () => {
 };
 
 export default connect;
+
+// const updateUserSettings = async () => {
+//   try {
+//     console.log("Starting user settings update...");
+
+//     // First, check if there are any users without settings
+//     const usersWithoutSettings = await mongoose.connection.db
+//       .collection("Users")
+//       .countDocuments({ settings: { $exists: false } });
+
+//     console.log(`\nFound ${usersWithoutSettings} users without settings`);
+
+//     if (usersWithoutSettings > 0) {
+//       const result = await mongoose.connection.db
+//         .collection("Users")
+//         .updateMany(
+//           {
+//             $or: [{ settings: { $exists: false } }, { settings: null }],
+//           },
+//           {
+//             $set: {
+//               settings: {
+//                 theme: "dark",
+//                 emailNotification: false,
+//                 language: "en",
+//                 timeZone: "Asia/Kolkata",
+//                 securityLevel: "standard",
+//               },
+//             },
+//           },
+//           { upsert: false }
+//         );
+
+//       console.log("\n\nSettings update completed:");
+//       console.log(`- Matched count: ${result.matchedCount}`);
+//       console.log(`- Modified count: ${result.modifiedCount}\n`);
+//     }
+//   } catch (error) {
+//     console.error("\nError in updateUserSettings:", error);
+//     throw new Error("Failed to update user settings");
+//   }
+// };
 
 // const updateUsersIntegrationsAndSubscription = async () => {
 //   try {

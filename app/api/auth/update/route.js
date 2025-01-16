@@ -5,8 +5,8 @@ import bcrypt from "bcryptjs";
 
 export const PUT = async (request) => {
   try {
-    const { email, name, password } = await request.json();
-    console.log(email, name, password);
+    const { email, name, password, settings } = await request.json();
+    console.log(email, name, password, settings);
 
     await connect();
 
@@ -28,6 +28,28 @@ export const PUT = async (request) => {
         existingUser.integrationsAuth.push("email-password");
       }
       updatedFields.push("password");
+    }
+
+    if (settings) {
+      const validSettings = [
+        "theme",
+        "emailNotification",
+        "language",
+        "timeZone",
+        "securityLevel",
+      ];
+      const settingsUpdates = Object.keys(settings).filter(
+        (key) =>
+          validSettings.includes(key) &&
+          existingUser.settings[key] !== settings[key]
+      );
+
+      if (settingsUpdates.length > 0) {
+        settingsUpdates.forEach((key) => {
+          existingUser.settings[key] = settings[key];
+        });
+        updatedFields.push("settings");
+      }
     }
 
     await existingUser.save();

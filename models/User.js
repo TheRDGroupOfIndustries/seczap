@@ -50,6 +50,35 @@ const userSchema = new Schema(
       type: Date,
       required: false,
     },
+    settings: {
+      theme: {
+        type: String,
+        required: true,
+        default: "dark",
+      },
+      emailNotification: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
+
+      language: {
+        type: String,
+        required: true,
+        default: "en",
+      },
+      timeZone: {
+        type: String,
+        required: true,
+        default: "Asia/Kolkata",
+      },
+      securityLevel: {
+        type: String,
+        enum: ["standard", "high", "maximum"],
+        required: true,
+        default: "standard",
+      },
+    },
   },
   { timestamps: true }
 );

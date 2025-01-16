@@ -72,9 +72,9 @@ const Navbar = () => {
           >
             {navLinks.map((link, index) => {
               const isActive =
-                activeSection === "hero"
-                  ? link.href === "/"
-                  : link.href === "/#" + activeSection;
+                activeSection === "hero" ?
+                  link.href === "/"
+                : link.href === "/#" + activeSection;
               return (
                 <motion.div
                   key={index}
@@ -97,7 +97,7 @@ const Navbar = () => {
 
         {/* get started btn */}
         <motion.div variants={fadeInOut("left", "spring", 0.3, 0.5)}>
-          {status === "loading" || !session ? (
+          {status === "loading" || !session ?
             <Button
               onClick={() => router.push("/auth/sign-in")}
               disabled={status === "loading"}
@@ -107,32 +107,38 @@ const Navbar = () => {
             >
               {status === "loading" ? "Loading.." : "Get Started"}
             </Button>
-          ) : (
-            <Link
+          : <Link
               href="/account/dashboard"
               className="hidden min-[854px]:block w-fit h-fit overflow-hidden"
             >
-              <div className="flex-center gap-2 overflow-hidden">
+              <div className="w-fit h-fit flex-center gap-2 group overflow-hidden">
                 <div className="w-10 h-10 rounded-full overflow-hidden">
                   <Image
                     src={session?.user?.image ?? "/user.png"}
                     alt="Profile Image"
                     width={200}
                     height={200}
-                    className="w-10 h-10 rounded-full object-cover overflow-hidden"
+                    className="w-10 h-10 rounded-full object-cover group-hover:scale-110 ease-in-out duration-300 overflow-hidden"
                   />
                 </div>
-                <div className="hidden md:block w-fit h-fit space-y-1">
-                  <h4 className="line-clamp-1">{session?.user?.name}</h4>
-                  {session?.user?.role === "admin" && (
-                    <h6 className="text-xs line-clamp-1">
-                      {session?.user?.role}
+                <div className="hidden md:block relative w-fit h-fit space-y-1 overflow-hidden">
+                  <div className="relative z-10 w-20 h-fit bg-primary-clr/80 dark:bg-primary-clr/90 backdrop-blur-md group-hover:-translate-y-[100%] ease-in-out transform transition-all duration-500">
+                    <h4 className="line-clamp-1">{session?.user?.name}</h4>
+                    {session?.user?.role === "admin" && (
+                      <h6 className="text-xs line-clamp-1">
+                        {session?.user?.role}
+                      </h6>
+                    )}
+                  </div>
+                  <div className="absolute inset-0 z-0">
+                    <h6 className="w-fit text-sm line-clamp-1 mt-1 border-b border-dashed">
+                      Dashboard
                     </h6>
-                  )}
+                  </div>
                 </div>
               </div>
             </Link>
-          )}
+          }
         </motion.div>
 
         {/* mobile navigation */}
@@ -163,9 +169,9 @@ const Navbar = () => {
 
                   {navLinks.map((link, index) => {
                     const isActive =
-                      activeSection === "hero"
-                        ? link.href === "/"
-                        : link.href === "/#" + activeSection;
+                      activeSection === "hero" ?
+                        link.href === "/"
+                      : link.href === "/#" + activeSection;
                     return (
                       <motion.div
                         key={index}
@@ -199,27 +205,25 @@ const Navbar = () => {
                     <Button
                       onClick={() =>
                         router.push(
-                          status === "loading"
-                            ? "/"
-                            : session
-                              ? "/account/dashboard"
-                              : "/auth/sign-in"
+                          status === "loading" ? "/"
+                          : session ? "/account/dashboard"
+                          : "/auth/sign-in"
                         )
                       }
                       disabled={status === "loading"}
                       title={
-                        status === "authenticated"
-                          ? "Go to Dashboard"
-                          : "Login first"
+                        status === "authenticated" ? "Go to Dashboard" : (
+                          "Login first"
+                        )
                       }
                       size="lg"
                       className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold mt-4"
                     >
-                      {status === "loading"
-                        ? "Loading.."
-                        : session
-                          ? "Dashboard"
-                          : "Get Started"}
+                      {status === "loading" ?
+                        "Loading.."
+                      : session ?
+                        "Dashboard"
+                      : "Get Started"}
                     </Button>
                   </SheetClose>
                 </motion.div>
