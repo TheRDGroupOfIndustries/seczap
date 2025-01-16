@@ -8,7 +8,7 @@ const AuthProvider = ({ children, session }) => {
 
   useEffect(() => {
     let intervalId;
-    // updating the session every 2 seconds
+    // updating the session every 2 seconds..
     const checkSession = async () => {
       if (!currentSession?.user?._id) {
         const updatedSession = await getSession();
