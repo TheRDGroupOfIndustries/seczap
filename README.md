@@ -1,6 +1,3 @@
-Here's the updated `README.md` file with content tailored for **SecZap** based on the information provided in the PDF:
-
-```markdown
 # SecZap | Advanced Cybersecurity Solutions
 
 Welcome to **SecZap**, a cutting-edge cybersecurity and web intelligence platform that safeguards digital assets through advanced security solutions and open-source intelligence (OSINT).
@@ -86,7 +83,6 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 ---
 
 > **SecZap**: Protecting your digital world with intelligence and precision.
-```
 
 ### Key Updates:
 1. **About SecZap**: Added a detailed section about the company, including who they are and what they do.
