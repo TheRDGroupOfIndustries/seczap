@@ -115,7 +115,7 @@ const Dashboard = () => {
   return (
     <div className="w-full h-fit space-y-4 overflow-hidden">
       <Total />
-      <div className="w-full h-fit grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="w-full h-fit animate-slide-up grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Total Scans Line Chart */}
         <div className="chart-container h-full bg-background/80 backdrop-blur-sm text-foreground p-2 md:p-4 rounded-lg overflow-hidden">
           <h2 className="text-md md:text-lg lg:text-xl font-bold">
@@ -249,7 +249,7 @@ const services = [
 
 const TryOurServices = () => {
   return (
-    <div className="w-full h-fit bg-background/80 backdrop-blur-sm p-2 md:p-4 lg:p-6 space-y-2 md:sapce-y-4 rounded-lg overflow-hidden">
+    <div className="w-full h-fit animate-slide-up bg-background/80 backdrop-blur-sm p-2 md:p-4 lg:p-6 space-y-2 md:sapce-y-4 rounded-lg overflow-hidden">
       <h3>Try Our Other Services</h3>
       <div className="w-full h-fit grid md:grid-cols-2 gap-4 p-1 overflow-hidden">
         {services.map((service, index) => {

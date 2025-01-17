@@ -12,7 +12,7 @@ const Sidebar = ({ sections }) => {
   const pathName = usePathname();
   // const { data: session } = useSession();
   return (
-    <aside className="sticky top-0 left-0 z-[101] w-fit md:w-60 max-w-lg h-screen select-none bg-background border-r border-primary/50 text-foreground flex-between flex-col overflow-hidde">
+    <aside className="sticky top-0 left-0 z-[101] animate-slide-right w-fit md:w-60 max-w-lg h-screen select-none bg-background border-r border-primary/50 text-foreground flex-between flex-col overflow-hidde">
       <div className="w-full h-fit grid justify-center md:justify-start overflow-hidden">
         <Link
           href="/"

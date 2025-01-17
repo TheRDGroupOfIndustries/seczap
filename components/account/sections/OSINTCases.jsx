@@ -18,8 +18,8 @@ import { IoSearch } from "react-icons/io5";
 const OSINTCases = () => {
   return (
     <>
-      <section className="w-full h-fit bg-background/80 backdrop-blur-sm p-2 md:p-4 lg:p-6 space-y-4 md:sapce-y-6 lg:space-y-8 rounded-lg overflow-hidden">
-        <h3 className="font-bold text-md md:text-lg lg:text-xl xl:text-2xl ">
+      <section className="w-full h-fit animate-slide-down bg-background/80 backdrop-blur-sm p-2 md:p-4 lg:p-6 space-y-4 md:sapce-y-6 lg:space-y-8 rounded-lg overflow-hidden">
+        <h3 className="animate-slide-down font-bold text-md md:text-lg lg:text-xl xl:text-2xl">
           OSINT Cases Input
         </h3>
         {/* <hr className="border-t-2 border-blue-400/30" /> */}
@@ -304,7 +304,10 @@ const OSINTCasesInputForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full h-fit space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full h-fit space-y-4 animate-slide-up overflow-hidden"
+    >
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/ rounded-lg overflow-hidden">
           <label htmlFor="case-type" className="">

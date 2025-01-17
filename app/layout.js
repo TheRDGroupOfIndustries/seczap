@@ -13,6 +13,9 @@ const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
 });
 
+export const viewport = {
+  themeColor: "dark",
+};
 export const metadata = {
   title: "SecZap | Advanced Cybersecurity Solutions",
   description:

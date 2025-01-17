@@ -8,6 +8,6 @@ export const metadata = {
 
 export default function AccountLayout({ children }) {
   const session = getServerSession();
-  // if (!session) redirect("/");
+  if (!session) redirect("/");
   return <Account>{children}</Account>;
 }

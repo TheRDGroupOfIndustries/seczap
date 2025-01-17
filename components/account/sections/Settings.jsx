@@ -18,8 +18,8 @@ import { useAccountSettings } from "@/context/AccountSettingsProvider";
 const Settings = () => {
   return (
     <>
-      <section className="w-full h-fit bg-background/80 backdrop-blur-sm p-2 md:p-4 lg:p-6 space-y-4 md:sapce-y-6 lg:space-y-8 rounded-lg overflow-hidden">
-        <h3 className="font-bold text-md md:text-lg lg:text-xl xl:text-2xl text-blue-400">
+      <section className="w-full h-fit animate-slide-down bg-background/80 backdrop-blur-sm p-2 md:p-4 lg:p-6 space-y-4 md:sapce-y-6 lg:space-y-8 rounded-lg overflow-hidden">
+        <h3 className="animate-slide-down font-bold text-md md:text-lg lg:text-xl xl:text-2xl text-blue-400">
           Settings
         </h3>
         <hr className="border-t-2 border-blue-400/30" />
@@ -88,7 +88,7 @@ const SettingsUpdateForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="w-full h-fit space-y-4">
+      <form onSubmit={handleSubmit} className="w-full h-fit space-y-4 animate-slide-up overflow-hidden">
         <div className="grid md:grid-cols-2 gap-4">
           <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/5 rounded-lg overflow-hidden">
             <div className="flex items-center justify-between">
