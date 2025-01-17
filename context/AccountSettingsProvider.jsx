@@ -54,7 +54,6 @@ const AccountSettingsProvider = ({ children }) => {
   );
 
   const saveSettings = async (newSettings) => {
-    // Check if any settings have actually changed
     const hasChanges = Object.entries(newSettings).some(([key, value]) => {
       switch (key) {
         case "theme":
@@ -89,7 +88,6 @@ const AccountSettingsProvider = ({ children }) => {
       });
 
       if (response.ok) {
-        // Update local state only after successful API call
         if (newSettings.theme) setTheme(newSettings.theme);
         if (newSettings.emailNotification !== undefined)
           setEmailNotification(newSettings.emailNotification);
@@ -98,7 +96,7 @@ const AccountSettingsProvider = ({ children }) => {
         if (newSettings.securityLevel)
           setSecurityLevel(newSettings.securityLevel);
 
-        return { success: true };
+        return { success: true, message: "Settings updated successfully!" };
       } else {
         throw new Error("Failed to update settings");
       }

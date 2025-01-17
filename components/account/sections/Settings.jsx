@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { languages } from "countries-list";
+// import { languages } from "countries-list";
 import { toast } from "sonner";
 import moment from "moment-timezone";
 import { Button } from "@/components/ui/button";
@@ -73,10 +73,10 @@ const SettingsUpdateForm = () => {
     }
   };
 
-  const languageOptions = Object.entries(languages).map(([code, lang]) => ({
-    value: code.toLowerCase(),
-    label: lang.name,
-  }));
+  // const languageOptions = Object.entries(languages).map(([code, lang]) => ({
+  //   value: code.toLowerCase(),
+  //   label: lang.name,
+  // }));
 
   const timezoneOptions = moment.tz.names().map((tz) => {
     const offset = moment.tz(tz).format("Z");
@@ -120,7 +120,8 @@ const SettingsUpdateForm = () => {
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
-          <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/5 rounded-lg overflow-hidden">
+          {/* language translatoin select */}
+          {/* <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/5 rounded-lg overflow-hidden">
             <label htmlFor="language" className="text-blue-400">
               Language
             </label>
@@ -139,7 +140,7 @@ const SettingsUpdateForm = () => {
                 ))}
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
           <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/5 rounded-lg overflow-hidden">
             <label htmlFor="time-zone" className="text-blue-400">
               Time Zone
@@ -161,29 +162,29 @@ const SettingsUpdateForm = () => {
               </SelectContent>
             </Select>
           </div>
-        </div>
-        <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/5 rounded-lg overflow-hidden">
-          <label htmlFor="security-level" className="text-blue-400">
-            Security Level
-          </label>
-          <Select
-            name="security-level"
-            value={settings.securityLevel}
-            onValueChange={(value) =>
-              handleSettingChange("securityLevel", value)
-            }
-          >
-            <SelectTrigger className="input-style">
-              <SelectValue placeholder="Select security level" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="standard">Standard (2FA)</SelectItem>
-              <SelectItem value="high">High (2FA + Biometric)</SelectItem>
-              <SelectItem value="maximum">
-                Maximum (2FA + Biometric + Hardware Key)
-              </SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/5 rounded-lg overflow-hidden">
+            <label htmlFor="security-level" className="text-blue-400">
+              Security Level
+            </label>
+            <Select
+              name="security-level"
+              value={settings.securityLevel}
+              onValueChange={(value) =>
+                handleSettingChange("securityLevel", value)
+              }
+            >
+              <SelectTrigger className="input-style">
+                <SelectValue placeholder="Select security level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="standard">Standard (2FA)</SelectItem>
+                <SelectItem value="high">High (2FA + Biometric)</SelectItem>
+                <SelectItem value="maximum">
+                  Maximum (2FA + Biometric + Hardware Key)
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <div>
