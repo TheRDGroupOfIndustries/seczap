@@ -4,7 +4,7 @@ import HelpDesk from "@/models/HelpDesk";
 
 export const GET = async (request, { params }) => {
   try {
-    const { user_id } = params;
+    const { user_id } = await params;
 
     if (!user_id) {
       return NextResponse.json(
@@ -14,7 +14,9 @@ export const GET = async (request, { params }) => {
     }
 
     await connect();
-    const userRecords = await HelpDesk.find({ user_id }).sort({ createdAt: -1 });
+    const userRecords = await HelpDesk.find({ user_id }).sort({
+      createdAt: -1,
+    });
 
     if (!userRecords || userRecords.length === 0) {
       return NextResponse.json(

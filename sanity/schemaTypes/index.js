@@ -7,7 +7,7 @@ import { homeAboutType } from "./homeAboutUsType";
 import { homeOurServicesType } from "./homeOurServicesType";
 import { homeWhyChooesUsType } from "./homeWhyChooesUsType";
 import { homeProblemsAndSolutionsType } from "./homeProblemsAndSolutionsType";
-import { homeHowWeDeliverValueType } from "./homeHowWeDeliverValueType";
+// import { homeHowWeDeliverValueType } from "./homeHowWeDeliverValueType";
 import { homeGrowingNeedType } from "./homeGrowingNeedType";
 import { homeReadyToSecureType } from "./homeReadyToSecureType";
 import { homeFAQsType } from "./homeFAQsType";
@@ -25,7 +25,7 @@ export const schema = {
     homeOurServicesType,
     homeWhyChooesUsType,
     homeProblemsAndSolutionsType,
-    homeHowWeDeliverValueType,
+    // homeHowWeDeliverValueType,
     homeGrowingNeedType,
     homeReadyToSecureType,
     homeFAQsType,

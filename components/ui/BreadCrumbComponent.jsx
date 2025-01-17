@@ -21,7 +21,7 @@ const Breadcrumbs = () => {
     <Breadcrumb className="mb-5 md:mb-10 animate-slide-down">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <Link href="/" className="hover-underline-lr hover:text-primary">
+          <Link href="/" className="hover-link-underline hover:text-primary">
             Home
           </Link>
         </BreadcrumbItem>
@@ -32,18 +32,17 @@ const Breadcrumbs = () => {
           const href = `/${pathSegments.slice(0, index + 1).join("/")}`;
           return (
             <BreadcrumbItem key={index}>
-              {index < pathSegments.length - 1 ? (
+              {index < pathSegments.length - 1 ?
                 <Link
                   href={href}
-                  className="hover-underline-lr hover:text-primary"
+                  className="hover-link-underline hover:text-primary"
                 >
                   {capitalizeString(segment.replace(/-/g, " "))}{" "}
                 </Link>
-              ) : (
-                <BreadcrumbPage className="text-primary">
+              : <BreadcrumbPage className="text-primary">
                   {capitalizeString(segment.replace(/-/g, " "))}
                 </BreadcrumbPage>
-              )}
+              }
               {index < pathSegments.length - 1 && <BreadcrumbSeparator />}
             </BreadcrumbItem>
           );

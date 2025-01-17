@@ -115,7 +115,7 @@ const Dashboard = () => {
   return (
     <div className="w-full h-fit space-y-4 overflow-hidden">
       <Total />
-      <div className="w-full h-fit animate-slide-up grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="w-full h-fit animate-slide-down grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Total Scans Line Chart */}
         <div className="chart-container h-full bg-background/80 backdrop-blur-sm text-foreground p-2 md:p-4 rounded-lg overflow-hidden">
           <h2 className="text-md md:text-lg lg:text-xl font-bold">

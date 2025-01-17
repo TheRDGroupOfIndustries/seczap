@@ -4,7 +4,7 @@ import OSINTCase from "@/models/OSINTCase";
 
 export const GET = async (request, { params }) => {
   try {
-    const { user_id } = params;
+    const { user_id } = await params;
 
     if (!user_id) {
       return NextResponse.json(

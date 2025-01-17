@@ -21,7 +21,7 @@ import ContactUs from "./sections/ContactUs";
 import OurServices from "./sections/OurServices";
 import WhyChooseUs from "./sections/WhyChooseUs";
 import ProblemsAndSolutions from "./sections/ProblemsAndSolutions";
-import HowWeDeliverValue from "./sections/HowWeDeliverValue";
+// import HowWeDeliverValue from "./sections/HowWeDeliverValue";
 import GrowingNeed from "./sections/GrowingNeed";
 import ReadyToSecure from "./sections/ReadyToSecure";
 import FAQs from "./sections/FAQs";
@@ -50,7 +50,7 @@ const Home = async () => {
     ourServicesData,
     whyChooseUsData,
     problemsAndSolutionsData,
-    howWeDeliverValueData,
+    // howWeDeliverValueData,
     growingNeedData,
     readyToSecureData,
     faqsData,
@@ -61,7 +61,7 @@ const Home = async () => {
     fetchSectionData(ourServicesQuery, "ourServices"),
     fetchSectionData(whyChooseUsQuery, "whyChooseUs"),
     fetchSectionData(problemsAndSolutionsQuery, "problemsAndSolutions"),
-    fetchSectionData(howWeDeliverValueQuery, "howWeDeliverValue"),
+    // fetchSectionData(howWeDeliverValueQuery, "howWeDeliverValue"),
     fetchSectionData(growingNeedQuery, "growingNeed"),
     fetchSectionData(readyToSecureQuery, "readyToSecure"),
     fetchSectionData(faqsQuery, "faqs"),
@@ -96,9 +96,9 @@ const Home = async () => {
         />
       </SectionWrapper>
 
-      <SectionWrapper>
+      {/* <SectionWrapper>
         <HowWeDeliverValue howWeDeliverValueData={howWeDeliverValueData} />
-      </SectionWrapper>
+      </SectionWrapper> */}
 
       <SectionWrapper>
         <GrowingNeed growingNeedData={growingNeedData} />

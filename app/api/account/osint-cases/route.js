@@ -16,6 +16,7 @@ export const GET = async (request) => {
     const totalRecords = await OSINTCase.countDocuments();
 
     const allRecords = await OSINTCase.find({})
+      .select("_id caseType priority budget")
       .sort({ [sortBy]: order })
       .skip(skip)
       .limit(limit);
@@ -27,17 +28,19 @@ export const GET = async (request) => {
       );
     }
 
-    return NextResponse.json({
-      success: true,
-      data: allRecords,
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(totalRecords / limit),
-        totalRecords,
-        hasMore: page * limit < totalRecords,
+    return NextResponse.json(
+      {
+        success: true,
+        data: allRecords,
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(totalRecords / limit),
+          totalRecords,
+          hasMore: page * limit < totalRecords,
+        },
       },
-    }, { status: 200 });
-
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error in help desk route:", error);
     return NextResponse.json(

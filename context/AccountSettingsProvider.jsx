@@ -44,14 +44,14 @@ const AccountSettingsProvider = ({ children }) => {
     }
   }, [session, setTheme]);
 
-  console.log(
-    "account settings",
-    theme,
-    emailNotification,
-    language,
-    timeZone,
-    securityLevel
-  );
+  // console.log(
+  //   "account settings",
+  //   theme,
+  //   emailNotification,
+  //   language,
+  //   timeZone,
+  //   securityLevel
+  // );
 
   const saveSettings = async (newSettings) => {
     const hasChanges = Object.entries(newSettings).some(([key, value]) => {

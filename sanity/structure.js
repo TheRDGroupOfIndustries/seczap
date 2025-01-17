@@ -21,9 +21,9 @@ export const structure = (S) =>
               S.documentTypeListItem("problemsAndSolutions").title(
                 "Problems & Solutions"
               ),
-              S.documentTypeListItem("howWeDeliverValue").title(
-                "How We Deliver Value"
-              ),
+              // S.documentTypeListItem("howWeDeliverValue").title(
+              //   "How We Deliver Value"
+              // ),
               S.documentTypeListItem("growingNeed").title("Growing Need"),
               S.documentTypeListItem("readyToSecure").title(
                 "Ready to Secure Section"
@@ -60,7 +60,7 @@ export const structure = (S) =>
             "ourServices",
             "whyChooesUs",
             "problemsAndSolutions",
-            "howWeDeliverValue",
+            // "howWeDeliverValue",
             "growingNeed",
             "readyToSecure",
             "faqs",

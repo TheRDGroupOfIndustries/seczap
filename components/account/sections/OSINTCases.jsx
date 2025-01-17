@@ -14,16 +14,24 @@ import {
 } from "@/components/ui/select";
 import { Upload } from "lucide-react";
 import { IoSearch } from "react-icons/io5";
+import OSINTCasesList from "./admin/osnitCase/OSINTCasesList";
 
 const OSINTCases = () => {
+  const { data: session } = useSession();
+
   return (
     <>
       <section className="w-full h-fit animate-slide-down bg-background/80 backdrop-blur-sm p-2 md:p-4 lg:p-6 space-y-4 md:sapce-y-6 lg:space-y-8 rounded-lg overflow-hidden">
         <h3 className="animate-slide-down font-bold text-md md:text-lg lg:text-xl xl:text-2xl">
-          OSINT Cases Input
+          OSINT Cases {session?.user?.role !== "admin" && "Input"}
         </h3>
-        {/* <hr className="border-t-2 border-blue-400/30" /> */}
-        <OSINTCasesInputForm />
+        {session?.user?.role !== "admin" ?
+          <OSINTCasesInputForm userId={session?.user?._id} />
+        : <>
+            <hr className="border-t-2 border-blue-400/30" />
+            <OSINTCasesList />
+          </>
+        }
       </section>
     </>
   );
@@ -31,9 +39,8 @@ const OSINTCases = () => {
 
 export default OSINTCases;
 
-const OSINTCasesInputForm = () => {
-  const { data: session } = useSession();
-  const user_id = session?.user?._id;
+const OSINTCasesInputForm = ({ userId }) => {
+  const user_id = userId;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     caseType: "",
@@ -255,7 +262,7 @@ const OSINTCasesInputForm = () => {
             : null,
         };
 
-        const response = await fetch("/api/account/osint-case/create", {
+        const response = await fetch("/api/account/osint-cases/create", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(requestBody),
