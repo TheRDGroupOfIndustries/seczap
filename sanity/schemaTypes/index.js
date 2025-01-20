@@ -1,17 +1,18 @@
-import { postType } from "./postType";
-import { categoryType } from "./categoryType";
+import { postType } from "./blogTypes/postType";
+import { categoryType } from "./blogTypes/categoryType";
 import { blockContentType } from "./blockContentType";
-import { authorType } from "./authorType";
-import { homeHeroType } from "./homeHeroType";
-import { homeAboutType } from "./homeAboutUsType";
-import { homeOurServicesType } from "./homeOurServicesType";
-import { homeWhyChooesUsType } from "./homeWhyChooesUsType";
-import { homeProblemsAndSolutionsType } from "./homeProblemsAndSolutionsType";
+import { authorType } from "./blogTypes/authorType";
+import { homeHeroType } from "./homePageTypes/homeHeroType";
+import { homeAboutType } from "./homePageTypes/homeAboutUsType";
+import { homeOurServicesType } from "./homePageTypes/homeOurServicesType";
+import { homeWhyChooesUsType } from "./homePageTypes/homeWhyChooesUsType";
+import { homeProblemsAndSolutionsType } from "./homePageTypes/homeProblemsAndSolutionsType";
 // import { homeHowWeDeliverValueType } from "./homeHowWeDeliverValueType";
-import { homeGrowingNeedType } from "./homeGrowingNeedType";
-import { homeReadyToSecureType } from "./homeReadyToSecureType";
-import { homeFAQsType } from "./homeFAQsType";
-import { homeContactUsType } from "./homeContactUsType";
+import { homeGrowingNeedType } from "./homePageTypes/homeGrowingNeedType";
+import { homeReadyToSecureType } from "./homePageTypes/homeReadyToSecureType";
+import { homeFAQsType } from "./homePageTypes/homeFAQsType";
+import { homeContactUsType } from "./homePageTypes/homeContactUsType";
+import { dynamicPageType } from "./pagesTypes/dynamicPageType";
 
 export const schema = {
   types: [
@@ -30,5 +31,7 @@ export const schema = {
     homeReadyToSecureType,
     homeFAQsType,
     homeContactUsType,
+
+    dynamicPageType,
   ],
 };

@@ -215,3 +215,28 @@ export const contactUsInfoQuery = groq`*[_type == "contactUsInfo"][0] {
     }
   }
 }`;
+
+export const dynamicPagesQuery = groq`*[_type == "dynamicPage"] {
+  _id,
+  title,
+  "slug": slug.current
+}`;
+
+export const singleDynamicPageQuery = groq`*[_type == "dynamicPage" && slug.current == $slug][0] {
+  _id,
+  title,
+  "slug": slug.current,
+  body[] {
+    ...,
+    _type == "image" => {
+      ...,
+      "url": asset->url,
+      "metadata": asset->metadata
+    },
+    _type == "link" => {
+      ...,
+      href,
+      text
+    }
+  }
+}`;
