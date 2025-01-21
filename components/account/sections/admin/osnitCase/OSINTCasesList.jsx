@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { reverseSlug } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import ReactCountUp from "@/components/ui/countUp";
 import {
@@ -10,12 +11,13 @@ import {
   MdOutlineKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
 } from "react-icons/md";
-import { reverseSlug } from "@/lib/utils";
+import { RiLoaderLine } from "react-icons/ri";
 
 const OSINTCasesList = () => {
   const router = useRouter();
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
@@ -39,7 +41,13 @@ const OSINTCasesList = () => {
       console.error("Error fetching cases:", error);
     } finally {
       setLoading(false);
+      setRefresh(false);
     }
+  };
+
+  const handleRefresh = () => {
+    setRefresh(true);
+    fetchCases(pagination.currentPage);
   };
 
   useEffect(() => {
@@ -82,7 +90,7 @@ const OSINTCasesList = () => {
                     {reverseSlug(item?.caseType) || item?.caseType}
                   </td>
                   <td className="p-3">{getPriorityBadge(item?.priority)}</td>
-                  <td className="p-3 text-sm text-gray-600">
+                  <td className="p-3 text-sm font-semibold font-sans">
                     <ReactCountUp
                       amt={item?.budget?.amount}
                       prefix={item?.budget?.currency}
@@ -108,16 +116,31 @@ const OSINTCasesList = () => {
         </table>
       </div>
 
-      {/* Updated Pagination Controls */}
       {pagination && (
-        <div className="w-full p-4 flex justify-between items-center border-t border-zinc-400 dark:border-zinc-600">
+        <div className="w-full p-4 flex-between border-t border-zinc-400 dark:border-zinc-600">
+          {/* <div className="w-fit flex-center gap-4"> */}
+          <Button
+            onClick={handleRefresh}
+            type="button"
+            variant="secondary"
+            size="sm"
+            effect="gooeyLeft"
+            disabled={loading || refresh || cases.length === 0}
+            className={refresh ? "animate-pulse" : ""}
+          >
+            {refresh && <RiLoaderLine className="animate-spin mr-2" />}
+            Refresh
+          </Button>
           <div className="text-sm text-zinc-600 dark:text-zinc-400">
             Page {pagination.currentPage} of {pagination.totalPages}
           </div>
+          {/* </div> */}
+
           <div className="flex items-center gap-2">
             <Button
               size="icon"
               variant="outline"
+              effect="gooeyLeft"
               onClick={() => fetchCases(1)}
               disabled={pagination.currentPage === 1}
               title="Go to First Page"
@@ -128,6 +151,7 @@ const OSINTCasesList = () => {
             <Button
               size="icon"
               variant="outline"
+              effect="gooeyLeft"
               onClick={() => fetchCases(pagination.currentPage - 1)}
               disabled={pagination.currentPage === 1}
               title="Go to Previous Page"
@@ -157,6 +181,7 @@ const OSINTCasesList = () => {
             <Button
               size="icon"
               variant="outline"
+              effect="gooeyLeft"
               onClick={() => fetchCases(pagination.currentPage + 1)}
               disabled={!pagination.hasMore}
               title="Go to Next Page"
@@ -167,6 +192,7 @@ const OSINTCasesList = () => {
             <Button
               size="icon"
               variant="outline"
+              effect="gooeyLeft"
               onClick={() => fetchCases(pagination.totalPages)}
               disabled={!pagination.hasMore}
               title="Go to Last Page"
