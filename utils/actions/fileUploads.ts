@@ -1,26 +1,33 @@
 "use server";
-import { utapi } from "@/server/uploadthing";
 
-export const uploadNewFile = async (formData) => {
-  console.log("uploadNewFile : ", formData);
+import { utapi } from "@/server/uploadthing";
+import { UploadedFileData } from "uploadthing/types";
+interface fileTypeData extends UploadedFileData {
+  url: string;
+  title: string;
+  description: string;
+  lastModified: number;
+  size: number;
+}
+export const uploadNewFile = async (formData: FormData) => {
+  console.log("uploading file: ", formData);
 
   try {
-    const file = formData.get("file");
+    const file = formData.get("file") as File;
     if (!file) throw new Error("No file provided");
 
     const { data } = await utapi.uploadFiles(file);
-    return data?.url || null;
+    console.log("uploaded link", data);
+    return data as fileTypeData;
   } catch (error) {
     console.error("Error uploading file:", error);
     throw new Error("File upload failed");
   }
 };
 
-export const uploadMultipleNewFiles = async (formData) => {
-  console.log("uploadMultipleNewFiles : ", formData);
-
+export const uploadMultipleNewFiles = async (formData: FormData) => {
   try {
-    const files = formData.getAll("files");
+    const files = formData.getAll("files") as File[];
     if (!files || files.length === 0) throw new Error("No files provided");
 
     const uploadedFiles = await utapi.uploadFiles(files);
@@ -33,7 +40,7 @@ export const uploadMultipleNewFiles = async (formData) => {
   }
 };
 
-export const removeFile = async (file) => {
+export const removeFile = async (file: string) => {
   try {
     const res = await utapi.deleteFiles(file);
 
@@ -44,7 +51,7 @@ export const removeFile = async (file) => {
   }
 };
 
-export const removeMultipleFiles = async (files) => {
+export const removeMultipleFiles = async (files: string[]) => {
   try {
     const res = await utapi.deleteFiles(files);
     return res.success;

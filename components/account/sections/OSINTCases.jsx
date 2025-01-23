@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { uploadNewFile } from "@/utils/actions/fileUploads";
+import { uploadNewFile } from "@/utils/actions/fileUploads.ts";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -121,10 +121,9 @@ const OSINTCasesInputForm = ({ userId }) => {
     if (!file) return;
 
     const isValidSize = file.size <= 5 * 1024 * 1024;
-    const isValidType = /\.(pdf|doc|docx|txt|png|jpg|jpeg)$/i.test(file.name);
 
-    if (!isValidSize || !isValidType) {
-      toast.error("Invalid file type or size");
+    if (!isValidSize) {
+      toast.error("File size must be less than 5MB");
       return;
     }
 
@@ -221,13 +220,25 @@ const OSINTCasesInputForm = ({ userId }) => {
     setIsSubmitting(true);
     const createOSINTCase = async () => {
       try {
-        // uploading file if exists
+        // checking if theres a file to upload
         let fileUrl = null;
         if (formData.caseDocument.file) {
-          const fileFormData = new FormData();
-          fileFormData.append("file", formData.caseDocument.file);
-          fileUrl = await uploadNewFile(fileFormData);
-          console.log("fileUrl", fileUrl);
+          try {
+            const fileFormData = new FormData();
+            fileFormData.append("file", formData.caseDocument.file);
+            const uploadedFileData = await uploadNewFile(fileFormData);
+            fileUrl = uploadedFileData?.url;
+            // console.log("File upload success:", fileUrl);
+
+            if (!fileUrl) {
+              throw new Error("File upload failed, please try again.");
+            }
+          } catch (error) {
+            console.error("File upload error:", error);
+            toast.error("File upload failed. Please try again.");
+            setIsSubmitting(false);
+            return;
+          }
         }
 
         const keywordsArray =
@@ -271,6 +282,7 @@ const OSINTCasesInputForm = ({ userId }) => {
         const data = await response.json();
         if (!data.success) throw new Error(data.message);
 
+        // Reset form after successful submission
         setFormData({
           caseType: "",
           dataSources: {
@@ -296,7 +308,7 @@ const OSINTCasesInputForm = ({ userId }) => {
 
         return data.message;
       } catch (error) {
-        console.log("osint case error", error);
+        console.error("OSINT case error:", error);
         throw new Error(error.message);
       } finally {
         setIsSubmitting(false);
@@ -351,10 +363,10 @@ const OSINTCasesInputForm = ({ userId }) => {
           </label>
           <div className="grid md:grid-cols-2 gap-2">
             {[
+              { name: "google", label: "Google" },
               { name: "linkedin", label: "LinkedIn" },
               { name: "twitter", label: "Twitter" },
               { name: "whois", label: "WHOIS" },
-              { name: "google", label: "Google" },
             ].map((source) => (
               <label
                 key={source.name}
@@ -406,7 +418,7 @@ const OSINTCasesInputForm = ({ userId }) => {
             id="keywords"
             value={formData.keywords}
             onChange={handleInputChange}
-            placeholder="Enter keywords spearated by commas (,)"
+            placeholder="Enter keywords spearated by commas (,) e.g. name,email,phone"
             className="input-style"
           />
         </div>
@@ -506,8 +518,6 @@ const OSINTCasesInputForm = ({ userId }) => {
               id="file-upload"
               className="hidden"
               onChange={handleFileChange}
-              accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg"
-              multiple
               disabled={isUploading}
             />
           </div>

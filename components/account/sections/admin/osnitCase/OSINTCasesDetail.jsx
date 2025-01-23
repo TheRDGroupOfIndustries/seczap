@@ -5,10 +5,10 @@ import Link from "next/link";
 import Breadcrumbs from "@/components/ui/BreadCrumbComponent";
 import ReactCountUp from "@/components/ui/countUp";
 import { toast } from "sonner";
-import { getPriorityBadge } from "./OSINTCasesList";
+import { getPriorityBadge, getStatusBadge } from "./OSINTCasesList";
 
 const OSINTCasesDetail = ({ section, id }) => {
-  const [osintCase, setOsintCase] = useState(null);
+  const [osintCase, setOsintCase] = useState(null); //console.log("osintCase", osintCase);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -79,14 +79,19 @@ const OSINTCasesDetail = ({ section, id }) => {
                     </h2>
                   )}
                   {osintCase?.priority && (
-                    <span className="w-fit h-fit flex-center">
+                    <span className="w-fit h-fit flex-center gap-1">
                       Priority : {getPriorityBadge(osintCase?.priority)}
                     </span>
                   )}
                 </div>
                 <div className="text-right">
+                  {osintCase?.status && (
+                    <span className="w-fit h-fit flex-center gap-1">
+                      Status : {getStatusBadge(osintCase?.status)}
+                    </span>
+                  )}
                   {osintCase?.createdAt && (
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-muted-foreground mt-2">
                       Created:{" "}
                       {new Date(osintCase.createdAt).toLocaleDateString()}
                     </p>
@@ -102,14 +107,40 @@ const OSINTCasesDetail = ({ section, id }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* left column */}
+
                 <div className="w-full h-full space-y-4">
+                  <div className="bg-card p-4 rounded-lg">
+                    <h3 className="font-semibold mb-3">Case Details</h3>
+                    <div className="space-y-2">
+                      {osintCase?.caseType && (
+                        <p className="text-sm">
+                          Type:
+                          <span className="ml-1 text-md md:text-lg lg:text-xl font-semibold">
+                            {osintCase.caseType.replace("-", " ").toUpperCase()}
+                          </span>
+                        </p>
+                      )}
+                      {osintCase?.budget?.amount && (
+                        <p className="text-sm">
+                          Budget:
+                          <ReactCountUp
+                            amt={osintCase.budget.amount}
+                            prefix={osintCase.budget.currency}
+                            className="ml-1 text-sm md:text-md lg:text-lg font-semibold"
+                          />
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
                   {osintCase?.target && (
                     <div className="bg-card p-4 rounded-lg">
                       <div className="flex justify-between items-center mb-3">
                         <h3 className="font-semibold">Target Information</h3>
                         <button
                           onClick={() => handleCopy(osintCase.target)}
-                          className="text-xs px-2 py-1 rounded bg-secondary hover:bg-secondary/80 transition-colors"
+                          disabled={copied}
+                          className={`select-none text-xs px-2 py-1 rounded bg-secondary/70 hover:bg-secondary hover:scale-110 ${!copied && "active:translate-y-1"} transition-all ease-in-out duration-200`}
                         >
                           {copied ? "Copied!" : "Copy"}
                         </button>
@@ -145,30 +176,6 @@ const OSINTCasesDetail = ({ section, id }) => {
                       </div>
                     </div>
                   )}
-
-                  <div className="bg-card p-4 rounded-lg">
-                    <h3 className="font-semibold mb-3">Case Details</h3>
-                    <div className="space-y-2">
-                      {osintCase?.caseType && (
-                        <p className="text-sm">
-                          Type:
-                          <span className="ml-1 text-md md:text-lg lg:text-xl font-semibold">
-                            {osintCase.caseType.replace("-", " ").toUpperCase()}
-                          </span>
-                        </p>
-                      )}
-                      {osintCase?.budget?.amount && (
-                        <p className="text-sm">
-                          Budget:
-                          <ReactCountUp
-                            amt={osintCase.budget.amount}
-                            prefix={osintCase.budget.currency}
-                            className="ml-1 text-sm md:text-md lg:text-lg font-semibold"
-                          />
-                        </p>
-                      )}
-                    </div>
-                  </div>
 
                   {osintCase?.keywords?.length > 0 && (
                     <div className="bg-card p-4 rounded-lg">

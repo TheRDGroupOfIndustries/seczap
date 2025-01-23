@@ -18,6 +18,7 @@ const OSINTCasesList = () => {
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
+  const [loadingCase, setLoadingCase] = useState(null);
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
@@ -32,6 +33,7 @@ const OSINTCasesList = () => {
         `/api/account/osint-cases?page=${newPage}&limit=10&sortBy=createdAt&order=desc`
       );
       const data = await response.json();
+      // console.log("OSINT Cases:", data);
 
       if (data.success) {
         setCases(data.data);
@@ -54,6 +56,31 @@ const OSINTCasesList = () => {
     fetchCases();
   }, []);
 
+  const handleViewCase = async (id, status) => {
+    setLoadingCase(id);
+    if (status === "pending") {
+      try {
+        const response = await fetch("/api/account/osint-cases/put", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id,
+            status: "viewed",
+          }),
+        });
+        if (!response.ok) {
+          throw new Error("Failed to update case status");
+        }
+      } catch (error) {
+        console.error("Error updating case status:", error);
+      }
+    }
+    router.push(`/account/osint-cases/${id}`);
+    setLoadingCase(null);
+  };
+
   // console.log("OSINT Cases:", cases);
 
   return (
@@ -65,6 +92,7 @@ const OSINTCasesList = () => {
               <th className="text-left p-3 font-semibold">Case Type</th>
               <th className="text-left p-3 font-semibold">Priority</th>
               <th className="text-left p-3 font-semibold">Budget</th>
+              <th className="text-left p-3 font-semibold">Status</th>
               <th className="text-left p-3 font-semibold">Action</th>
             </tr>
           </thead>
@@ -96,17 +124,19 @@ const OSINTCasesList = () => {
                       prefix={item?.budget?.currency}
                     />
                   </td>
+                  <td className="p-3">{getStatusBadge(item?.status)}</td>
                   <td className="p-3">
                     <Button
                       type="button"
-                      onClick={() =>
-                        router.push(`/account/osint-cases/${item?._id}`)
-                      }
+                      onClick={() => handleViewCase(item?._id, item?.status)}
                       variant="ghost"
                       effect="gooeyRight"
                       size="sm"
+                      disabled={loadingCase === item?._id}
                     >
-                      View
+                      {loadingCase === item?._id ?
+                        <RiLoaderLine className="animate-spin mr-2" />
+                      : "View"}
                     </Button>
                   </td>
                 </tr>
@@ -220,6 +250,24 @@ export const getPriorityBadge = (priority) => {
       className={`capitalize font-semibold px-2 py-1 rounded-full text-xs ${badgeClasses[priority]}`}
     >
       {priority}
+    </span>
+  );
+};
+
+export const getStatusBadge = (status) => {
+  const badgeClasses = {
+    pending: "bg-orange-100 text-orange-800",
+    viewed: "bg-blue-100 text-blue-800",
+    "in-progress": "bg-yellow-100 text-yellow-800",
+    completed: "bg-green-100 text-green-800",
+  };
+  return (
+    <span
+      className={`capitalize font-semibold px-2 py-1 rounded-full text-xs ${
+        badgeClasses[status] || "bg-gray-100 text-gray-800"
+      }`}
+    >
+      {status ? status.replace("-", " ") : "unknown"}
     </span>
   );
 };

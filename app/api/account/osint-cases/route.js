@@ -16,7 +16,7 @@ export const GET = async (request) => {
     const totalRecords = await OSINTCase.countDocuments();
 
     const allRecords = await OSINTCase.find({})
-      .select("_id caseType priority budget")
+      .select("_id caseType priority budget status")
       .sort({ [sortBy]: order })
       .skip(skip)
       .limit(limit);

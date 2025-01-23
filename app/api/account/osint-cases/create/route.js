@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import OSINTCase from "@/models/OSINTCase";
 import { emailTransporter } from "@/app/api/core";
+import mongoose from "mongoose";
 
 export const POST = async (request) => {
   try {
@@ -17,7 +18,15 @@ export const POST = async (request) => {
       caseDocument,
     } = await request.json();
 
-    // validating required fields
+    // Validate user_id is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(user_id)) {
+      return NextResponse.json(
+        { success: false, message: "Invalid user ID format" },
+        { status: 400 }
+      );
+    }
+
+    // validate required fields
     if (
       !user_id ||
       !caseType ||
@@ -29,16 +38,25 @@ export const POST = async (request) => {
       return NextResponse.json(
         {
           success: false,
-          message: "Missing required fields",
+          message:
+            "Required fields missing: user_id, caseType, target, budget (currency and amount), and priority are required",
         },
         { status: 400 }
       );
     }
 
-    // validating enum values
+    // Validate budget amount is a number
+    if (isNaN(budget.amount)) {
+      return NextResponse.json(
+        { success: false, message: "Budget amount must be a number" },
+        { status: 400 }
+      );
+    }
+
+    // validate enums
     if (!["₹", "$"].includes(budget?.currency)) {
       return NextResponse.json(
-        { success: false, message: "Invalid currency type" },
+        { success: false, message: "Currency must be either '₹' or '$'" },
         { status: 400 }
       );
     }
@@ -52,14 +70,17 @@ export const POST = async (request) => {
       ].includes(caseType)
     ) {
       return NextResponse.json(
-        { success: false, message: "Invalid case type" },
+        { success: false, message: "Invalid case type provided" },
         { status: 400 }
       );
     }
 
     if (!["low", "medium", "high"].includes(priority)) {
       return NextResponse.json(
-        { success: false, message: "Invalid priority level" },
+        {
+          success: false,
+          message: "Priority must be either 'low', 'medium', or 'high'",
+        },
         { status: 400 }
       );
     }
@@ -76,15 +97,18 @@ export const POST = async (request) => {
         whois: !!dataSorce?.whois,
       },
       target,
-      budget,
+      budget: {
+        currency: budget.currency,
+        amount: Number(budget.amount),
+      },
       priority,
       keywords: Array.isArray(keywords) ? keywords : [],
       extraNotes: extraNotes || "",
       caseDocument: caseDocument || { name: "", size: "", url: "" },
+      status: "pending", // Set default status
     });
 
     const savedCase = await newOSINTCase.save();
-
     if (!savedCase) {
       return NextResponse.json(
         { success: false, message: "Failed to create OSINT case" },

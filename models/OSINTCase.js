@@ -44,6 +44,13 @@ const osintCaseSchema = new Schema(
       size: { type: String, required: false },
       url: { type: String, required: false },
     },
+
+    status: {
+      type: String,
+      required: true,
+      default: "pending",
+      enum: ["pending", "viewed", "in-progress", "completed"],
+    },
   },
   { timestamps: true }
 );
