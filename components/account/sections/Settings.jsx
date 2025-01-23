@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 // import { languages } from "countries-list";
+import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import moment from "moment-timezone";
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,7 @@ const Settings = () => {
 export default Settings;
 
 const SettingsUpdateForm = () => {
+  const { theme, setTheme } = useTheme();
   const {
     theme: initialTheme,
     emailNotification: initialEmailNotification,
@@ -88,7 +90,10 @@ const SettingsUpdateForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="w-full h-fit space-y-4 animate-slide-up overflow-hidden">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full h-fit space-y-4 animate-slide-up overflow-hidden"
+      >
         <div className="grid md:grid-cols-2 gap-4">
           <div className="space-y-2 p-2 md:p-4 lg:p-6 bg-primary/5 rounded-lg overflow-hidden">
             <div className="flex items-center justify-between">
@@ -98,9 +103,11 @@ const SettingsUpdateForm = () => {
               <Switch
                 id="dark-mode"
                 checked={settings.theme === "dark"}
-                onCheckedChange={(checked) =>
-                  handleSettingChange("theme", checked ? "dark" : "light")
-                }
+                onCheckedChange={(checked) => {
+                  const newTheme = checked ? "dark" : "light";
+                  setTheme(newTheme);
+                  handleSettingChange("theme", newTheme);
+                }}
               />
             </div>
           </div>

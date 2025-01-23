@@ -5,6 +5,11 @@ import Link from "next/link";
 import Breadcrumbs from "@/components/ui/BreadCrumbComponent";
 import ReactCountUp from "@/components/ui/countUp";
 import { toast } from "sonner";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { getPriorityBadge, getStatusBadge } from "./OSINTCasesList";
 
 const OSINTCasesDetail = ({ section, id }) => {
@@ -12,17 +17,54 @@ const OSINTCasesDetail = ({ section, id }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleCopy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
       toast.success("Target URL has been copied to clipboard");
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopied(false), 3000);
     } catch (err) {
       console.error("Failed to copy text: ", err);
       toast.error("Failed to copy text to clipboard");
     }
+  };
+
+  const updateCaseStatus = async (newStatus) => {
+    if (newStatus === osintCase.status || updatingStatus) return;
+
+    setIsPopoverOpen(false);
+    setUpdatingStatus(true);
+
+    await toast.promise(
+      (async () => {
+        const response = await fetch("/api/account/osint-cases/put", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id,
+            status: newStatus,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to update case status");
+        }
+
+        setOsintCase((prev) => ({ ...prev, status: newStatus }));
+      })(),
+      {
+        loading: `Updating status to ${newStatus}...`,
+        success: `Status updated to ${newStatus}`,
+        error: "Failed to update status",
+      }
+    );
+
+    setUpdatingStatus(false);
   };
 
   useEffect(() => {
@@ -61,7 +103,6 @@ const OSINTCasesDetail = ({ section, id }) => {
     <>
       <section className="w-full h-fit space-y-4 md:sapce-y-6 lg:space-y-8 overflow-hidden">
         <Breadcrumbs />
-        {/* <div className="w-full h-fit flex-between gap-4"> */}
         <h3 className="animate-slide-down font-bold text-md md:text-lg lg:text-xl xl:text-2xl">
           OSINT Case Details
         </h3>
@@ -70,7 +111,7 @@ const OSINTCasesDetail = ({ section, id }) => {
         <div className="w-full h-fit select-text animate-slide-up bg-background/80 backdrop-blur-sm p-2 md:p-4 lg:p-6 space-y-4 md:space-y-6 lg:space-y-8 rounded-lg overflow-hidden">
           {osintCase && (
             <div className="space-y-6">
-              {/* Header Section */}
+              {/* header section */}
               <div className="flex justify-between items-start">
                 <div>
                   {osintCase?._id && (
@@ -87,7 +128,50 @@ const OSINTCasesDetail = ({ section, id }) => {
                 <div className="text-right">
                   {osintCase?.status && (
                     <span className="w-fit h-fit flex-center gap-1">
-                      Status : {getStatusBadge(osintCase?.status)}
+                      Status :
+                      <Popover
+                        open={isPopoverOpen}
+                        onOpenChange={setIsPopoverOpen}
+                      >
+                        <PopoverTrigger
+                          className="hover:opacity-80 disabled:cursor-not-allowed"
+                          disabled={updatingStatus}
+                        >
+                          <div className="flex items-center gap-2">
+                            {getStatusBadge(osintCase?.status)}
+                            {updatingStatus && (
+                              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-primary border-r-transparent" />
+                            )}
+                          </div>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-fit p-2 bg-transparent backdrop-blur-lg">
+                          <div className="flex flex-col gap-2">
+                            {["viewed", "in-progress", "completed"].map(
+                              (status) => (
+                                <button
+                                  key={status}
+                                  className={`px-3 py-1.5 rounded-md text-sm capitalize hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed ${
+                                    status === osintCase.status ?
+                                      "bg-secondary"
+                                    : ""
+                                  }`}
+                                  onClick={() => updateCaseStatus(status)}
+                                  disabled={
+                                    updatingStatus ||
+                                    status === osintCase.status
+                                  }
+                                >
+                                  {status}
+                                  {updatingStatus &&
+                                    status === osintCase.status && (
+                                      <span className="ml-2 inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-r-transparent" />
+                                    )}
+                                </button>
+                              )
+                            )}
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </span>
                   )}
                   {osintCase?.createdAt && (

@@ -80,7 +80,12 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <Meta />
       <body className={`${roboto.className} antialiased`}>
-        <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem>
+        <NextThemesProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem={true}
+          // disableTransitionOnChange
+        >
           <AuthProvider session={session}>
             {children}
             <Toaster richColors closeButton />

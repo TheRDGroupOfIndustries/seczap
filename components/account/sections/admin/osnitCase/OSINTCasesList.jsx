@@ -247,7 +247,7 @@ export const getPriorityBadge = (priority) => {
   };
   return (
     <span
-      className={`capitalize font-semibold px-2 py-1 rounded-full text-xs ${badgeClasses[priority]}`}
+      className={`capitalize select-none font-semibold px-2 py-1 rounded-full text-xs ${badgeClasses[priority]}`}
     >
       {priority}
     </span>
@@ -263,7 +263,7 @@ export const getStatusBadge = (status) => {
   };
   return (
     <span
-      className={`capitalize font-semibold px-2 py-1 rounded-full text-xs ${
+      className={`capitalize select-none font-semibold px-2 py-1 rounded-full text-xs ${
         badgeClasses[status] || "bg-gray-100 text-gray-800"
       }`}
     >

@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { useSession } from "next-auth/react";
 
-const AccountSettingsContext = createContext({});
+const AccountSettingsContext = createContext();
 
 export const useAccountSettings = () => {
   const context = useContext(AccountSettingsContext);
@@ -18,7 +18,7 @@ export const useAccountSettings = () => {
 
 const AccountSettingsProvider = ({ children }) => {
   const { data: session } = useSession();
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, forcedTheme } = useTheme();
   const [emailNotification, setEmailNotification] = useState(
     session?.user?.settings?.emailNotification ?? false
   );
@@ -32,17 +32,22 @@ const AccountSettingsProvider = ({ children }) => {
     session?.user?.settings?.securityLevel ?? "standard"
   );
 
-  useEffect(() => {
-    if (session?.user?.settings) {
-      const { settings } = session.user;
-      if (settings.theme) setTheme(settings.theme);
-      if (settings.emailNotification !== undefined)
-        setEmailNotification(settings.emailNotification);
-      if (settings.language) setLanguage(settings.language);
-      if (settings.timeZone) setTimeZone(settings.timeZone);
-      if (settings.securityLevel) setSecurityLevel(settings.securityLevel);
-    }
-  }, [session, setTheme]);
+  // useEffect(() => {
+  //   if (session?.user?.settings?.theme) {
+  //     setTheme(session.user.settings.theme);
+  //   }
+  //   if (session?.user?.settings) {
+  //     const { settings } = session.user;
+  //     if (settings.theme) {
+  //       setTheme(settings.theme);
+  //     }
+  //     if (settings.emailNotification !== undefined)
+  //       setEmailNotification(settings.emailNotification);
+  //     if (settings.language) setLanguage(settings.language);
+  //     if (settings.timeZone) setTimeZone(settings.timeZone);
+  //     if (settings.securityLevel) setSecurityLevel(settings.securityLevel);
+  //   }
+  // }, [session, setTheme]);
 
   // console.log(
   //   "account settings",
@@ -88,7 +93,9 @@ const AccountSettingsProvider = ({ children }) => {
       });
 
       if (response.ok) {
-        if (newSettings.theme) setTheme(newSettings.theme);
+        if (newSettings.theme) {
+          setTheme(newSettings.theme);
+        }
         if (newSettings.emailNotification !== undefined)
           setEmailNotification(newSettings.emailNotification);
         if (newSettings.language) setLanguage(newSettings.language);

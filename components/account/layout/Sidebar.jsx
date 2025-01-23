@@ -31,7 +31,7 @@ const Sidebar = ({ sections }) => {
             SecZap
           </h2>
         </Link>
-        <div className="w-full h-fit space-y-2 mt-12 animate-slide-right">
+        <div className="w-full h-fit space-y-2 mt-12 animate-slide-right p-2">
           {sections.map((sec, index) => {
             const isActive = pathName === sec.href;
             return (
@@ -39,13 +39,15 @@ const Sidebar = ({ sections }) => {
                 key={index}
                 href={sec.href}
                 className={`w-full md:w-60 md:max-w-lg flex items-center gap-3 px-2 py-2 text-md font-medium transition-colors group ${
-                  isActive
-                    ? "text-primary fill-primary md:bg-primary/20"
-                    : "hover:underline underline-offset-8"
+                  isActive ?
+                    "text-primary fill-primary md:bg-primary/20"
+                  : "hover:underlin underline-offset-8"
                 } ease-in-out duration-200`}
               >
                 <sec.icon size={20} className="scale-125 md:scale-100" />
-                <span className="hidden md:block group-hover:translate-x-1 ease-in-out duration-300">
+                <span
+                  className={`hidden md:block ${!isActive && "group-hover-link-underline"} group-hover:translate-x-1 ease-in-out duration-300`}
+                >
                   {sec.head}
                 </span>
               </Link>

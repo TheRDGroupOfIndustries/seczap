@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { FaBell } from "react-icons/fa";
 
 const TopNavbar = () => {
@@ -15,23 +16,27 @@ const TopNavbar = () => {
             <FaBell size={20} />
           </div>
 
-          <div className="flex-center gap-2 p-1 cursor-pointer hover:bg-primary/40 hover:backdrop-blur-md rounded-lg ease-in-out duration-300 overflow-hidden">
-            <div className="w-10 h-10 rounded-full overflow-hidden">
-              <Image
-                src={session?.user?.image ?? "/user.png"}
-                alt="Profile Image"
-                width="200"
-                height="200"
-                className="w-10 h-10 rounded-full object-cover overflow-hidden"
-              />
+          <Link href="/account/settings">
+            <div className="flex-center gap-2 p-1 cursor-pointer hover:bg-primary/40 hover:backdrop-blur-md rounded-lg ease-in-out duration-300 overflow-hidden">
+              <div className="w-10 h-10 rounded-full overflow-hidden">
+                <Image
+                  src={session?.user?.image ?? "/user.png"}
+                  alt="Profile Image"
+                  width="200"
+                  height="200"
+                  className="w-10 h-10 rounded-full object-cover overflow-hidden"
+                />
+              </div>
+              <div className="hidden md:block w-fit h-fit space-y-1">
+                <h4 className="line-clamp-1">{session?.user?.name}</h4>
+                {session?.user?.role === "admin" && (
+                  <h6 className="text-xs line-clamp-1">
+                    {session?.user?.role}
+                  </h6>
+                )}
+              </div>
             </div>
-            <div className="hidden md:block w-fit h-fit space-y-1">
-              <h4 className="line-clamp-1">{session?.user?.name}</h4>
-              {session?.user?.role === "admin" && (
-                <h6 className="text-xs line-clamp-1">{session?.user?.role}</h6>
-              )}
-            </div>
-          </div>
+          </Link>
         </div>
       </div>
     </>
