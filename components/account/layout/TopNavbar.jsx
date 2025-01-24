@@ -1,15 +1,12 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { FaBell } from "react-icons/fa";
 
 const TopNavbar = () => {
   const { data: session } = useSession(); // console.log(session);
-  const router = useRouter();
-  if (!session?.user) router.push("/");
 
   return (
     <>

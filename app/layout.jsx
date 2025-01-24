@@ -77,7 +77,7 @@ export default async function RootLayout({ children }) {
   const session = await getServerSession();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <Meta />
       <body className={`${roboto.className} antialiased`}>
         <NextThemesProvider
