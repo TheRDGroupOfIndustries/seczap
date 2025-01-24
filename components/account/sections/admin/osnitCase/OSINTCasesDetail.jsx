@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Breadcrumbs from "@/components/ui/BreadCrumbComponent";
+import Image from "next/image";
 import ReactCountUp from "@/components/ui/countUp";
+import Breadcrumbs from "@/components/ui/BreadCrumbComponent";
 import { toast } from "sonner";
 import {
   Popover,
@@ -11,8 +12,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { getPriorityBadge, getStatusBadge } from "./OSINTCasesList";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Check, Copy } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const OSINTCasesDetail = ({ section, id }) => {
+const OSINTCasesDetail = ({ id }) => {
   const [osintCase, setOsintCase] = useState(null); //console.log("osintCase", osintCase);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -94,7 +103,7 @@ const OSINTCasesDetail = ({ section, id }) => {
     }
   }, [id]);
 
-  if (section !== "osint-cases" || !id) return <div>Invalid Section</div>;
+  // if (section !== "osint-cases" || !id) return <div>Invalid Section</div>;
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -138,7 +147,18 @@ const OSINTCasesDetail = ({ section, id }) => {
                           disabled={updatingStatus}
                         >
                           <div className="flex items-center gap-2">
-                            {getStatusBadge(osintCase?.status)}
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  {getStatusBadge(osintCase?.status)}
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p className="select-none">
+                                    Click to change case status
+                                  </p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                             {updatingStatus && (
                               <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-primary border-r-transparent" />
                             )}
@@ -221,13 +241,25 @@ const OSINTCasesDetail = ({ section, id }) => {
                     <div className="bg-card p-4 rounded-lg">
                       <div className="flex justify-between items-center mb-3">
                         <h3 className="font-semibold">Target Information</h3>
-                        <button
-                          onClick={() => handleCopy(osintCase.target)}
-                          disabled={copied}
-                          className={`select-none text-xs px-2 py-1 rounded bg-secondary/70 hover:bg-secondary hover:scale-110 ${!copied && "active:translate-y-1"} transition-all ease-in-out duration-200`}
-                        >
-                          {copied ? "Copied!" : "Copy"}
-                        </button>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              {copied ?
+                                <Check size={16} className="text-green-500" />
+                              : <Copy
+                                  size={16}
+                                  className="cursor-pointer hover:text-gray-200 hover:scale-110 active:scale-95 transition-all ease-in-out duration-200"
+                                  onClick={() => handleCopy(osintCase.target)}
+                                />
+                              }
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="select-none">
+                                {copied ? "Copied!" : "Copy Target URL"}
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </div>
                       <p className="text-sm break-all">{osintCase.target}</p>
                     </div>
@@ -252,9 +284,15 @@ const OSINTCasesDetail = ({ section, id }) => {
                             href={osintCase.caseDocument.url}
                             download={osintCase.caseDocument.name}
                             target="_self"
-                            className="ml-4 px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                            // className="ml-4 select-none px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                           >
-                            Download
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              effect="gooeyRight"
+                            >
+                              Download
+                            </Button>
                           </Link>
                         )}
                       </div>
@@ -313,9 +351,11 @@ const OSINTCasesDetail = ({ section, id }) => {
                       </h3>
                       <div className="flex items-center gap-3">
                         {osintCase.user_id.image && (
-                          <img
-                            src={osintCase.user_id.image}
+                          <Image
+                            src={osintCase.user_id.image || "/user.png"}
                             alt={osintCase.user_id.name || "User"}
+                            width={100}
+                            height={100}
                             className="w-10 h-10 rounded-full"
                           />
                         )}
@@ -328,7 +368,7 @@ const OSINTCasesDetail = ({ section, id }) => {
                                 </p>
                                 {osintCase.user_id.role && (
                                   <span
-                                    className={`px-2 py-0.5 text-xs rounded-full ${
+                                    className={`px-2 py-0.5 text-xs rounded-full select-none ${
                                       osintCase.user_id.role === "admin" ?
                                         "bg-purple-100 text-purple-800"
                                       : "bg-blue-100 text-blue-800"
@@ -343,6 +383,8 @@ const OSINTCasesDetail = ({ section, id }) => {
                               <p className="text-sm text-muted-foreground line-clamp-1">
                                 <Link
                                   href={`mailto:${osintCase.user_id.email}`}
+                                  target="_blank"
+                                  title="Send Email"
                                   className="w-fit hover-link-underline hover:text-primary"
                                 >
                                   {osintCase.user_id.email}
@@ -353,7 +395,7 @@ const OSINTCasesDetail = ({ section, id }) => {
 
                           {osintCase.user_id.subscription && (
                             <span
-                              className={`w-fit h-fit inline-block px-2 py-0.5 text-xs rounded-full ${
+                              className={`w-fit h-fit inline-block px-2 py-0.5 text-xs rounded-full select-none ${
                                 osintCase.user_id.subscription === "free" ?
                                   "bg-gray-100 text-gray-800"
                                 : "bg-green-100 text-green-800"
