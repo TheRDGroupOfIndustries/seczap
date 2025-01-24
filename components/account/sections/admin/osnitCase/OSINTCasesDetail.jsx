@@ -21,7 +21,7 @@ import {
 import { Check, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const OSINTCasesDetail = ({ id }) => {
+const OSINTCasesDetail = ({ section, id }) => {
   const [osintCase, setOsintCase] = useState(null); //console.log("osintCase", osintCase);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -103,7 +103,7 @@ const OSINTCasesDetail = ({ id }) => {
     }
   }, [id]);
 
-  // if (section !== "osint-cases" || !id) return <div>Invalid Section</div>;
+  if (section !== "osint-cases" || !id) return <div>Invalid Section</div>;
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;

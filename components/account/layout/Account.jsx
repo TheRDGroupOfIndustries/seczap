@@ -1,16 +1,11 @@
 "use client";
 
-// import { useSession } from "next-auth/react";
-// import { useRouter } from "next/navigation";
 import { adminSections } from "@/lib/sections";
 import AccountSettingsProvider from "@/context/AccountSettingsProvider";
 import Sidebar from "./Sidebar";
 import TopNavbar from "./TopNavbar";
 
 const Account = ({ children }) => {
-  // const router = useRouter();
-  // const { data: session } = useSession(); // console.log(session);
-  // if (!session?.user) router.push("/");
   return (
     <>
       <AccountSettingsProvider>
