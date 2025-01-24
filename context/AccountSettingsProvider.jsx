@@ -18,7 +18,7 @@ export const useAccountSettings = () => {
 
 const AccountSettingsProvider = ({ children }) => {
   const { data: session } = useSession();
-  const { theme, setTheme, forcedTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [emailNotification, setEmailNotification] = useState(
     session?.user?.settings?.emailNotification ?? false
   );

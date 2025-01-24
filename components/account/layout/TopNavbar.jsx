@@ -1,12 +1,12 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { FaBell } from "react-icons/fa";
 
 const TopNavbar = () => {
-  const { data: session, status } = useSession(); // console.log(session);
+  const { data: session } = useSession(); // console.log(session);
 
   return (
     <>

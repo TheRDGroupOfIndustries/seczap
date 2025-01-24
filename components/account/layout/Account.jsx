@@ -10,7 +10,7 @@ import TopNavbar from "./TopNavbar";
 const Account = ({ children }) => {
   const router = useRouter();
   const { data: session } = useSession(); // console.log(session);
-  if (!session?.user) router.replace("/");
+  if (!session?.user) router.push("/");
   return (
     <>
       <AccountSettingsProvider>
