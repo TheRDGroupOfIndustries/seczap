@@ -57,7 +57,7 @@ function Number({ mv, number }) {
   });
 
   return (
-    <motion.span style={{ y }} className="absolute inset-0 flex-center">
+    <motion.span style={{ y }} className="absolute inset-0 flex-center font-iceland">
       {number}
     </motion.span>
   );

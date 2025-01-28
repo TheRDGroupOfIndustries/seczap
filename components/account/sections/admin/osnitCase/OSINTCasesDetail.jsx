@@ -18,8 +18,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Check, Copy } from "lucide-react";
+import { ArrowBigRight, Check, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { RiArrowRightLine } from "react-icons/ri";
 
 const OSINTCasesDetail = ({ section, id }) => {
   const [osintCase, setOsintCase] = useState(null); //console.log("osintCase", osintCase);
@@ -368,7 +369,7 @@ const OSINTCasesDetail = ({ section, id }) => {
                                 </p>
                                 {osintCase.user_id.role && (
                                   <span
-                                    className={`px-2 py-0.5 text-xs rounded-full select-none ${
+                                    className={`px-2 py-0.5 text-xs font-orbitron capitalize font-extrabold rounded-full select-none ${
                                       osintCase.user_id.role === "admin" ?
                                         "bg-purple-100 text-purple-800"
                                       : "bg-blue-100 text-blue-800"
@@ -380,31 +381,54 @@ const OSINTCasesDetail = ({ section, id }) => {
                               </div>
                             )}
                             {osintCase.user_id.email && (
-                              <p className="text-sm text-muted-foreground line-clamp-1">
-                                <Link
-                                  href={`mailto:${osintCase.user_id.email}`}
-                                  target="_blank"
-                                  title="Send Email"
-                                  className="w-fit hover-link-underline hover:text-primary"
-                                >
-                                  {osintCase.user_id.email}
-                                </Link>
+                              <p className="w-fit h-fit text-sm text-muted-foreground line-clamp-1 overflow-hidden">
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger>
+                                      <Link
+                                        href={`mailto:${osintCase.user_id.email}`}
+                                        target="_blank"
+                                        // title="Send Email"
+                                        className="w-fit flex-center group -translate-x-5 hover:translate-x-0 ease-in-out duration-200 overflow-hidden"
+                                      >
+                                        <RiArrowRightLine />
+                                        <span className="group-hover-link-underline font-iceland text-lg">
+                                          {osintCase.user_id.email}
+                                        </span>
+                                      </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent
+                                      side="bottom"
+                                      className="px-0 bg-transparent backdrop-blur-md"
+                                    >
+                                      <Link
+                                        href={`mailto:${osintCase.user_id.email}`}
+                                        target="_blank"
+                                        title="click to send email"
+                                        className="px-3 py-1.5 select-none font-orbitron text-primary"
+                                      >
+                                        Send Email
+                                      </Link>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
                               </p>
                             )}
                           </div>
 
-                          {osintCase.user_id.subscription && (
-                            <span
-                              className={`w-fit h-fit inline-block px-2 py-0.5 text-xs rounded-full select-none ${
-                                osintCase.user_id.subscription === "free" ?
-                                  "bg-gray-100 text-gray-800"
-                                : "bg-green-100 text-green-800"
-                              }`}
-                            >
-                              {osintCase.user_id.subscription.toUpperCase()}{" "}
-                              Plan
-                            </span>
-                          )}
+                          {osintCase.user_id.role !== "admin" &&
+                            osintCase.user_id.subscription && (
+                              <span
+                                className={`w-fit h-fit inline-block px-2 py-0.5 text-base font-iceland rounded-full select-none ${
+                                  osintCase.user_id.subscription === "free" ?
+                                    "bg-gray-100 text-gray-800"
+                                  : "bg-green-100 text-green-800"
+                                }`}
+                              >
+                                {osintCase.user_id.subscription.toUpperCase()}{" "}
+                                Plan
+                              </span>
+                            )}
                         </div>
                       </div>
                     </div>

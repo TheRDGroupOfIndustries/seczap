@@ -89,11 +89,21 @@ const OSINTCasesList = () => {
         <table className="w-full">
           <thead className="sticky top-0 bg-background/80 backdrop-blur-md z-10">
             <tr>
-              <th className="text-left p-3 font-semibold">Case Type</th>
-              <th className="text-left p-3 font-semibold">Priority</th>
-              <th className="text-left p-3 font-semibold">Budget</th>
-              <th className="text-left p-3 font-semibold">Status</th>
-              <th className="text-left p-3 font-semibold">Action</th>
+              <th className="text-left p-3 font-semibold font-iceland text-xl">
+                Case Type
+              </th>
+              <th className="text-left p-3 font-semibold font-iceland text-xl">
+                Priority
+              </th>
+              <th className="text-left p-3 font-semibold font-iceland text-xl">
+                Budget
+              </th>
+              <th className="text-left p-3 font-semibold font-iceland text-xl">
+                Status
+              </th>
+              <th className="text-left p-3 font-semibold font-iceland text-xl">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -161,7 +171,7 @@ const OSINTCasesList = () => {
             {refresh && <RiLoaderLine className="animate-spin mr-2" />}
             Refresh
           </Button>
-          <div className="text-sm text-zinc-600 dark:text-zinc-400">
+          <div className="text-lg text-zinc-600 dark:text-zinc-400 font-iceland">
             Page {pagination.currentPage} of {pagination.totalPages}
           </div>
           {/* </div> */}
@@ -190,12 +200,12 @@ const OSINTCasesList = () => {
               <MdKeyboardArrowLeft className="w-5 h-5" />
             </Button>
 
-            <div className="flex items-center gap-1 px-2">
-              <span className="text-sm font-medium">{1}</span>
+            <div className="flex items-center gap-1 px-2 font-iceland text-lg">
+              <span className="font-medium">{1}</span>
               {pagination.currentPage > 2 && <span className="px-2">...</span>}
               {pagination.currentPage > 1 &&
                 pagination.currentPage < pagination.totalPages && (
-                  <span className="text-sm font-medium bg-violet-600 text-white px-2 py-1 rounded">
+                  <span className="font-medium bg-violet-600 text-white px-2 py-1 rounded">
                     {pagination.currentPage}
                   </span>
                 )}
@@ -203,9 +213,7 @@ const OSINTCasesList = () => {
                 <span className="px-2">...</span>
               )}
               {" / "}
-              <span className="text-sm font-medium">
-                {pagination.totalPages}
-              </span>
+              <span className="font-medium">{pagination.totalPages}</span>
             </div>
 
             <Button
@@ -247,7 +255,7 @@ export const getPriorityBadge = (priority) => {
   };
   return (
     <span
-      className={`capitalize select-none font-semibold px-2 py-1 rounded-full text-xs ${badgeClasses[priority]}`}
+      className={`w-fit h-fit capitalize select-none text-xs font-orbitron font-extrabold px-2 py-1 rounded-full ${badgeClasses[priority] || "bg-gray-100 text-gray-800"} shadow-md overflow-hidden`}
     >
       {priority}
     </span>
@@ -263,9 +271,7 @@ export const getStatusBadge = (status) => {
   };
   return (
     <span
-      className={`capitalize select-none font-semibold px-2 py-1 rounded-full text-xs ${
-        badgeClasses[status] || "bg-gray-100 text-gray-800"
-      }`}
+      className={`w-fit h-fit capitalize select-none text-base font-iceland font-semibold px-2 py-1 rounded-full ${badgeClasses[status] || "bg-gray-100 text-gray-800"} shadow-md overflow-hidden`}
     >
       {status ? status.replace("-", " ") : "unknown"}
     </span>
