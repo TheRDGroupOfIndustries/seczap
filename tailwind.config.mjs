@@ -9,7 +9,11 @@ const config = {
   ],
   theme: {
     extend: {
-      fontFamily: { roboto: "var(--font-roboto)" },
+      fontFamily: {
+        roboto: "var(--font-roboto)",
+        orbitron: "var(--font-orbitron)",
+        iceland: "var(--font-iceland)",
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

@@ -27,11 +27,11 @@ const Sidebar = ({ sections }) => {
             priority
             className="w-8 h-8 md:hidden overflow-hidden"
           />
-          <h2 className="hidden md:block text-xl md:text-2xl lg:text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-br from-blue-200 to-primary to-60%">
-            SecZap
+          <h2 className="hidden md:block font-iceland text-xl md:text-2xl lg:text-5xl font-semibold bg-clip-text text-transparent bg-gradient-to-br from-blue-200 to-primary to-60%">
+            SECZAP
           </h2>
         </Link>
-        <div className="w-full h-fit space-y-2 mt-12 animate-slide-right p-2">
+        <div className="w-full h-fit space-y-2 mt-8 animate-slide-right p-2">
           {sections.map((sec, index) => {
             const isActive = pathName === sec.href;
             return (
@@ -46,7 +46,7 @@ const Sidebar = ({ sections }) => {
               >
                 <sec.icon size={20} className="scale-125 md:scale-100" />
                 <span
-                  className={`hidden md:block ${!isActive && "group-hover-link-underline"} group-hover:translate-x-1 ease-in-out duration-300`}
+                  className={`hidden md:block font-iceland text-2xl ${!isActive && "group-hover-link-underline group-hover:translate-x-1"} ease-in-out duration-300`}
                 >
                   {sec.head}
                 </span>

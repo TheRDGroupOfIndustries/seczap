@@ -7,13 +7,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeInOut, staggerContainer } from "@/lib/utils";
-import { navLinks } from "@/constant/data";
+// import { navLinks } from "@/constant/data";
 import { Button } from "../ui/button";
 import { DialogTitle } from "../ui/dialog";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Menu } from "lucide-react";
 
-const Navbar = () => {
+const Navbar = ({ navData }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session, status } = useSession(); // console.log(session);
@@ -61,8 +61,11 @@ const Navbar = () => {
           variants={fadeInOut("right", "spring", 0.3, 0.5)}
           className="flex-between gap-6 md:gap-8 lg:gap-10"
         >
-          <Link href="/" className="text-xl md:text-2xl font-bold text-white">
-            SECZAP
+          <Link
+            href="/"
+            className="font-iceland text-2xl md:text-5xl font-bold text-white"
+          >
+            {navData?.heading || "SECZAP"}
           </Link>
 
           {/* desktop navigation */}
@@ -70,28 +73,29 @@ const Navbar = () => {
             variants={staggerContainer(0.1, 0.2)}
             className="hidden min-[854px]:flex gap-"
           >
-            {navLinks.map((link, index) => {
-              const isActive =
-                activeSection === "hero" ?
-                  link.href === "/"
-                : link.href === "/#" + activeSection;
-              return (
-                <motion.div
-                  key={index}
-                  variants={fadeInOut("up", "spring", 0.2, 0.5 + index * 0.3)}
-                >
-                  <Link href={link.href}>
-                    <Button
-                      variant="link"
-                      effect={isActive ? "underline" : "hoverUnderline"}
-                      className="text-lg text-sky-300 font-normal"
-                    >
-                      {link.name}
-                    </Button>
-                  </Link>
-                </motion.div>
-              );
-            })}
+            {navData?.links &&
+              navData?.links.map((link, index) => {
+                const isActive =
+                  activeSection === "hero" ?
+                    link.link === "/"
+                  : link.link === "/#" + activeSection;
+                return (
+                  <motion.div
+                    key={index}
+                    variants={fadeInOut("up", "spring", 0.2, 0.5 + index * 0.3)}
+                  >
+                    <Link href={link.link}>
+                      <Button
+                        variant="link"
+                        effect={isActive ? "underline" : "hoverUnderline"}
+                        className="text-lg text-sky-300 font-normal capitalize"
+                      >
+                        {link.text}
+                      </Button>
+                    </Link>
+                  </motion.div>
+                );
+              })}
           </motion.div>
         </motion.div>
 
@@ -144,7 +148,7 @@ const Navbar = () => {
         {/* mobile navigation */}
         <motion.div
           variants={fadeInOut("left", "spring", 0.3, 0.5)}
-          className="min-[854px]:hidden"
+          className="min-[854px]:hidden flex-center"
         >
           <Sheet>
             <SheetTrigger>
@@ -162,40 +166,49 @@ const Navbar = () => {
               >
                 <div className="w-full grid gap-4">
                   <motion.div variants={fadeInOut("down", "tween", 0.2, 0.5)}>
-                    <DialogTitle className="text-md text-gray-500 border-b-2 border-b-sky-600 dark:border-b-sky-800 pb-4">
+                    <DialogTitle className="text-md text-gray-500">
                       Menu
                     </DialogTitle>
                   </motion.div>
+                  <hr className="border-sky-600 dark:border-sky-800" />
 
-                  {navLinks.map((link, index) => {
-                    const isActive =
-                      activeSection === "hero" ?
-                        link.href === "/"
-                      : link.href === "/#" + activeSection;
-                    return (
-                      <motion.div
-                        key={index}
-                        variants={fadeInOut(
-                          "left",
-                          "spring",
-                          0.2,
-                          0.5 + index * 0.3
-                        )}
-                      >
-                        <Link href={link.href}>
-                          <SheetClose>
-                            <Button
-                              variant="link"
-                              effect={isActive ? "underline" : "hoverUnderline"}
-                              className="w-fit text-2xl font-extrabold text-sky-300 text-left"
+                  <div className="">
+                    {navData?.links &&
+                      navData?.links.map((link, index) => {
+                        const isActive =
+                          activeSection === "hero" ?
+                            link.link === "/"
+                          : link.link === "/#" + activeSection;
+                        return (
+                          <motion.div
+                            key={index}
+                            variants={fadeInOut(
+                              "left",
+                              "spring",
+                              0.2,
+                              0.5 + index * 0.3
+                            )}
+                          >
+                            <Link
+                              href={link.link}
+                              className="w-fit overflow-hidden"
                             >
-                              {link.name}
-                            </Button>
-                          </SheetClose>
-                        </Link>
-                      </motion.div>
-                    );
-                  })}
+                              <SheetClose>
+                                <Button
+                                  variant="link"
+                                  effect={
+                                    isActive ? "underline" : "hoverUnderline"
+                                  }
+                                  className="w-fit p-0 text-3xl font-extrabold text-sky-300 text-left"
+                                >
+                                  {link.text}
+                                </Button>
+                              </SheetClose>
+                            </Link>
+                          </motion.div>
+                        );
+                      })}
+                  </div>
                 </div>
                 <motion.div
                   variants={fadeInOut("up", "spring", 0.4, 0.5)}

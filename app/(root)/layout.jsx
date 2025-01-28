@@ -1,12 +1,16 @@
+import { navbarLinksQuery } from "@/sanity/lib/queries";
+import { sanityFetch } from "@/sanity/lib/fetch";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const navData = await sanityFetch({ query: navbarLinksQuery });
+
   return (
     <>
-      <Navbar />
+      <Navbar navData={navData} />
       {children}
-      <Footer />
+      <Footer navData={navData} />
     </>
   );
 }

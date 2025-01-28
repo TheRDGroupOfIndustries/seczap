@@ -22,7 +22,7 @@ const AboutUs = ({ aboutUsData }) => {
           whileInView="animate"
           exit="exit"
           viewport={{ once: false }}
-          className="font-bold text-white text-xl md:text-2xl lg:text-3xl xl:text-4xl"
+          className="font-bold text-white text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-iceland"
         >
           Who We Are
         </motion.h2>
@@ -62,7 +62,7 @@ const AboutUs = ({ aboutUsData }) => {
                     <SiTicktick className="fill-sky-600 text-sky-600" />
                   </motion.div>
                   <motion.p
-                    variants={fadeInOut("top", "spring", 0.4, 0.5 * index)}
+                    variants={fadeInOut("top", "spring", 0.4, 0.6 * index)}
                     className="text-xs lg:text-sm xl:text-md text-sky-600 text-balance"
                   >
                     {feature}

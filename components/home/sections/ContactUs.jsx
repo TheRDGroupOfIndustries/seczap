@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { MdLocationPin, MdLocalPhone, MdMail } from "react-icons/md";
+import Header from "@/components/ui/header";
 
 const ContactUs = ({ contactUsInfoData }) => {
   return (
@@ -21,16 +22,9 @@ const ContactUs = ({ contactUsInfoData }) => {
       id="contact-us"
       className="w-full h-fit select-none bg-primary-clr dark:bg-primary-clr p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
     >
-      <motion.div
-        variants={fadeInOut("down", "tween", 0.2, 0.5)}
-        className="flex-center"
-      >
-        <h2 className="font-extrabold text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-          Contact Us
-        </h2>
-      </motion.div>
+      <Header text="Contact Us" />
 
-      <div className="w-full h-fit grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 xl:gap-10">
+      <div className="w-full h-fit grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
         {/* Contact Form */}
         <motion.div
           variants={fadeInOut("right", "spring", 0.3, 0.5)}
@@ -240,7 +234,7 @@ const ContactInfo = ({ contactUsInfoData }) => {
   const { contactUsInfo, socialLinks } = contactUsInfoData;
 
   return (
-    <div className="w-full h-full space-y-4 md:space-y-6 lg:space-y-8 xl:space-y-10 overflow-hidde">
+    <div className="w-full h-full space-y-6 md:space-y-8 lg:space-y-10 overflow-hidde">
       <motion.div
         variants={fadeInOut("left", "spring", 0.3, 0.5)}
         className="w-full h-fit bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"

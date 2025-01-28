@@ -81,7 +81,7 @@ export const POST = async (request) => {
         </p>
         ${attachmentsList}
         <p>We will get back to you as soon as possible.</p>
-        <p>Best regards,<br>Seczap Support Team</p>
+        <p>Best regards,<br>SECZAP Support Team</p>
       `,
     };
 

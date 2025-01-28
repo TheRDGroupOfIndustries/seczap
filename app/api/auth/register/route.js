@@ -30,7 +30,7 @@ export const POST = async (request) => {
     await emailTransporter.sendMail({
       from: process.env.GMAIL_USER,
       to: email,
-      subject: "SecZap - Verify Email",
+      subject: "SECZAP - Verify Email",
       text: "Email Verification",
       html: body,
     });

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeInOut, staggerContainer } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import Header from "@/components/ui/header";
 
 const ReadyToSecure = ({ readyToSecureData }) => {
   const router = useRouter();
@@ -26,12 +27,7 @@ const ReadyToSecure = ({ readyToSecureData }) => {
           whileInView="show"
           className="w-full h-full flex-center flex-col gap-4 md:gap-6"
         >
-          <motion.h2
-            variants={fadeInOut("down", "tween", 0.2, 0.5)}
-            className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-extrabold"
-          >
-            {readyToSecureData?.heading}
-          </motion.h2>
+          <Header text={readyToSecureData?.heading} />
 
           <motion.p
             variants={fadeInOut("up", "tween", 0.3, 0.5)}

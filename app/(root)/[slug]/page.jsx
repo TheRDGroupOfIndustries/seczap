@@ -13,7 +13,7 @@ export async function generateMetadata({ params }) {
   });
 
   return {
-    title: `SecZap | ${page?.title || "Page Not Found"}`,
+    title: `SECZAP | ${page?.title || "Page Not Found"}`,
     description: page?.excerpt || "",
   };
 }

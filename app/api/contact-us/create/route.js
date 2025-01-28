@@ -54,7 +54,7 @@ export const POST = async (request) => {
         <p style="background-color: #f9f9f9; padding: 10px; border-radius: 5px;">
           ${message}
         </p>
-        <p>Best regards,<br>Seczap</p>
+        <p>Best regards,<br>SECZAP</p>
       `,
     };
 

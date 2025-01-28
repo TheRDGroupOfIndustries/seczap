@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { fadeInOut, staggerContainer } from "@/lib/utils";
 import { GoGraph, GoClockFill } from "react-icons/go";
 import { FaShieldVirus, FaDatabase } from "react-icons/fa6";
+import Header from "@/components/ui/header";
 
 const iconMap = {
   GoGraph,
@@ -32,16 +33,9 @@ const GrowingNeed = ({ growingNeedData }) => {
       id="growing-need"
       className="w-full h-fit select-none bg-primary-clr dark:bg-primary-clr border-b border-b-primary-clr-2/50 p-4 md:p-6 lg:p-8 xl:p-10 py-10 lg:py-14 xl:py-16 space-y-6 md:space-y-8 xl:space-y-10 overflow-hidden"
     >
-      <motion.div
-        variants={fadeInOut("down", "tween", 0.2, 0.5)}
-        className="flex-center"
-      >
-        <h2 className="font-extrabold text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-          {heading}
-        </h2>
-      </motion.div>
+      <Header text={heading} />
 
-      <div className="w-full h-fit grid grid-cols-1 md:grid-cols-[1fr,30%] gap-4 md:gap-6 lg:gap-8 xl:gap-10">
+      <div className="w-full h-fit grid grid-cols-1 md:grid-cols-[1fr,30%] gap-6 md:gap-8 lg:gap-10">
         <motion.div
           variants={fadeInOut("right", "tween", 0.3, 0.5)}
           id="content"
@@ -63,24 +57,29 @@ const GrowingNeed = ({ growingNeedData }) => {
 
             <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 overflow-hidde">
               {statsCards?.map((card, index) => (
-                <motion.div
+                <div
                   key={index}
-                  variants={fadeInOut("up", "spring", 0.2, 0.5 + index * 0.2)}
-                  className="w-full h-full bg-primary-clr/80 dark:bg-primary-clr/80 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+                  className="shadow-lg hover:shadow-xl hover:-translate-y-1.5 hover:translate-x-2 ease-in-out duration-300 overflow-hidde"
                 >
-                  <div className="w-full h-full text-blue-500 flex-center flex-col gap-2 lg:gap-4">
-                    <card.icon
-                      size={50}
-                      className="fill-blue-500 text-blue-500 font-bold"
-                    />
-                    <div className="font-bold text-lg md:text-xl lg:text-2xl xl:text-3xl">
-                      {card?.value}
+                  <motion.div
+                    key={index}
+                    variants={fadeInOut("up", "spring", 0.2, 0.5 + index * 0.2)}
+                    className="w-full h-full bg-primary-clr/80 dark:bg-primary-clr/80 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+                  >
+                    <div className="w-full h-full text-blue-500 flex-center flex-col gap-2 lg:gap-4">
+                      <card.icon
+                        size={50}
+                        className="fill-blue-500 text-blue-500 font-bold"
+                      />
+                      <div className="font-bold text-lg md:text-xl lg:text-2xl xl:text-3xl">
+                        {card?.value}
+                      </div>
+                      <p className="text-xs md:text-sm lg:text-md xl:text-lg text-balanc text-center text-blue-500">
+                        {card?.description}
+                      </p>
                     </div>
-                    <p className="text-xs md:text-sm lg:text-md xl:text-lg text-balanc text-center text-blue-500">
-                      {card?.description}
-                    </p>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -89,15 +88,17 @@ const GrowingNeed = ({ growingNeedData }) => {
         <motion.div
           variants={fadeInOut("left", "tween", 0.3, 0.5)}
           id="banner-image"
-          className="flex-1 relative w-full lg:w-fit h-full bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
+          className="flex-1 relative group w-full lg:w-fit h-full bg-primary-clr-2/60 dark:bg-primary-clr-2/60 backdrop-blur-md border border-sky-950 ring-1 ring-sky-900 rounded-lg p-4 md:p-6 lg:p-8 overflow-hidden"
         >
-          <Image
-            src={growingNeedBannerImage?.imageURL}
-            alt={growingNeedBannerImage?.alt}
-            width={1000}
-            height={1000}
-            className="w-full h-full rounded-xl object-cover overflow-hidden"
-          />
+          <div className="w-ful h-full rounded-xl overflow-hidden">
+            <Image
+              src={growingNeedBannerImage?.imageURL}
+              alt={growingNeedBannerImage?.alt}
+              width={1000}
+              height={1000}
+              className="w-full h-full rounded-xl object-cover group-hover:scale-110 ease-in-out duration-300 overflow-hidden"
+            />
+          </div>
         </motion.div>
       </div>
     </motion.section>

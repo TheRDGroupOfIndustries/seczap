@@ -240,3 +240,12 @@ export const singleDynamicPageQuery = groq`*[_type == "dynamicPage" && slug.curr
     }
   }
 }`;
+
+export const navbarLinksQuery = groq`*[_type == "navbarLinks"][0] {
+  heading,
+  links[] {
+    text,
+    link,
+    "slug": slug.current
+  }
+}`;

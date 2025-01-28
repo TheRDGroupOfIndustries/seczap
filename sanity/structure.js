@@ -1,7 +1,7 @@
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure = (S) =>
   S.list()
-    .title("Seczap CMS")
+    .title("SECZAP CMS")
     .items([
       // Homepage Items
       S.listItem()

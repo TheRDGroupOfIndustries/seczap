@@ -1,16 +1,16 @@
-# SecZap | Advanced Cybersecurity Solutions
+# SECZAP | Advanced Cybersecurity Solutions
 
-Welcome to **SecZap**, a cutting-edge cybersecurity and web intelligence platform that safeguards digital assets through advanced security solutions and open-source intelligence (OSINT).
+Welcome to **SECZAP**, a cutting-edge cybersecurity and web intelligence platform that safeguards digital assets through advanced security solutions and open-source intelligence (OSINT).
 
-## About SecZap
+## About SECZAP
 
 **Who We Are**
 
-SecZap is a cybersecurity and web intelligence firm based in New Delhi, India. We specialize in website security, cyber forensics, and OSINT analysis, providing comprehensive, tailored protection for businesses in an ever-evolving digital landscape.
+SECZAP is a cybersecurity and web intelligence firm based in New Delhi, India. We specialize in website security, cyber forensics, and OSINT analysis, providing comprehensive, tailored protection for businesses in an ever-evolving digital landscape.
 
 **What We Do**
 
-At SecZap, we deliver a range of cybersecurity services, including:
+At SECZAP, we deliver a range of cybersecurity services, including:
 - **Vulnerability Assessments**: Identify and address digital vulnerabilities using AI and skilled researchers.
 - **OSINT Investigations**: Transform open-source data into actionable insights for tracking criminals and mitigating risks.
 - **Cyber Forensics**: Investigate incidents, recover data, and enhance future resilience.
@@ -47,7 +47,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 
 ## Services
 
-SecZap offers a wide range of services, including:
+SECZAP offers a wide range of services, including:
 - **Vulnerability & Penetration Testing**: Ethical testing to identify weaknesses in web and mobile applications or network infrastructure.
 - **Digital/Cyber Forensics**: Solutions to uncover the causes behind incidents and prevent future breaches.
 - **Cyber Threat Intelligence & Dark Web Monitoring**: Research and track illegal activities and data leaks on the dark web.
@@ -82,14 +82,14 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 ---
 
-> **SecZap**: Protecting your digital world with intelligence and precision.
+> **SECZAP**: Protecting your digital world with intelligence and precision.
 
 ### Key Updates:
-1. **About SecZap**: Added a detailed section about the company, including who they are and what they do.
-2. **Features**: Highlighted SecZap's key differentiators and service offerings.
+1. **About SECZAP**: Added a detailed section about the company, including who they are and what they do.
+2. **Features**: Highlighted SECZAP's key differentiators and service offerings.
 3. **Contact Information**: Included the contact details and website link.
-4. **Mission & Vision**: Integrated SecZap's mission and vision from the PDF.
+4. **Mission & Vision**: Integrated SECZAP's mission and vision from the PDF.
 5. **Services**: Listed core services for clarity.
-6. **Updated Branding**: Replaced placeholders with SecZap-specific content.
+6. **Updated Branding**: Replaced placeholders with SECZAP-specific content.
 
 Let me know if you'd like further refinements!

@@ -27,7 +27,7 @@ const Hero = ({ heroData }) => {
             exit="exit"
             viewport={{ once: false }}
           >
-            <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-balance">
+            <h1 className="font-bold font-iceland text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-balance">
               {heroData?.heading}
             </h1>
           </motion.div>
@@ -39,21 +39,21 @@ const Hero = ({ heroData }) => {
             exit="exit"
             viewport={{ once: false }}
           >
-            <p className="text-sm lg:text-md xl:text-lg text-sky-600 text-balanc text-justif">
+            <p className="text-md font-iceland md:text-lg lg:text-xl xl:text-3xl text-sky-600 text-balanc text-justif">
               {heroData?.description}
             </p>
           </motion.div>
 
           <motion.div
             variants={fadeInOut("right", "tween", 0.5, 0.5)}
-            className="flex gap-2 md:gap-4"
+            className="flex flex-row max-[374px]:gap-4 max-[375px]:flex-col gap-2 md:gap-4"
           >
             {heroData?.buttonOne && (
               <Button
                 onClick={() => router.push(heroData?.buttonOne?.link)}
                 size="lg"
                 effect="shine"
-                className="bg-blue-500 hover:bg-blue-500/50 text-white text-md md:text-lg font-bold rounded md:px-4 lg:px-6 xl:px-8 overflow-hidden"
+                className="w-fit bg-blue-500 hover:bg-blue-500/50 text-white text-md md:text-lg font-bold rounded md:px-4 lg:px-6 xl:px-8 overflow-hidden"
               >
                 {heroData?.buttonOne?.text}
               </Button>
@@ -64,7 +64,7 @@ const Hero = ({ heroData }) => {
                 size="lg"
                 variant="outline"
                 effect="gooeyRight"
-                className="bg-transparent border-sky-700 text-sky-600 text-md md:text-lg font-bold rounded md:px-4 lg:px-6 xl:px-8 overflow-hidden"
+                className="w-fit bg-transparent border-sky-700 text-sky-600 text-md md:text-lg font-bold rounded md:px-4 lg:px-6 xl:px-8 overflow-hidden"
               >
                 {heroData?.buttonTwo?.text}
               </Button>

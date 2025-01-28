@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
   //font-[family-name:var(--font-geist-mono)]
-  "inline-flex items-center justify-center gap-2 select-none whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:translate-y-0.5 disabled:active:translate-y-0 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex font-orbitron items-center justify-center gap-2 select-none whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:translate-y-0.5 disabled:active:translate-y-0 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -75,23 +75,19 @@ const Button = React.forwardRef(
       >
         {Icon &&
           iconPlacement === "left" &&
-          (effect === "expandIcon" ? (
+          (effect === "expandIcon" ?
             <div className="w-0 translate-x-[0%] pr-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:translate-x-100 group-hover:pr-2 group-hover:opacity-100">
               <Icon />
             </div>
-          ) : (
-            <Icon />
-          ))}
+          : <Icon />)}
         <Slottable>{props.children}</Slottable>
         {Icon &&
           iconPlacement === "right" &&
-          (effect === "expandIcon" ? (
+          (effect === "expandIcon" ?
             <div className="w-0 translate-x-[100%] pl-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:translate-x-0 group-hover:pl-2 group-hover:opacity-100">
               <Icon />
             </div>
-          ) : (
-            <Icon />
-          ))}
+          : <Icon />)}
       </Comp>
     );
   }

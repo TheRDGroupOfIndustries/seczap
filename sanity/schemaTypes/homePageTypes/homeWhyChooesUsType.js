@@ -11,7 +11,7 @@ export const homeWhyChooesUsType = defineType({
       name: "heading",
       title: "Why Chooes Us Heading",
       type: "string",
-      initialValue: "Why Choose Seczap",
+      initialValue: "Why Choose SECZAP",
       validation: (Rule) => Rule.required(),
     }),
     defineField({

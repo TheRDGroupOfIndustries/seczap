@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import Account from "@/components/account/layout/Account";
 
 export const metadata = {
-  title: "SecZap - Account",
+  title: "SECZAP - Account",
 };
 
 export default function AccountLayout({ children }) {

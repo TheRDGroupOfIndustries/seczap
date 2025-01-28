@@ -56,8 +56,8 @@ const Dashboard = () => {
   };
 
   const colors = {
-    primaryGreen: "#2fff00",
-    lighterGreen: ["#2fff00eb", "#2fff00c3", "#2fff009e", "#2fff0071"],
+    primaryClr: "#00a2ff",
+    lighterClr: ["#00a2ffd0", "#00a2ffb0", "#00a2ffa0", "#00a2ff80"],
   };
 
   // Data for Total Scans line chart
@@ -67,10 +67,10 @@ const Dashboard = () => {
       {
         label: "Scans",
         data: [800, 1150, 3000, 1450, 2700, 1300, 2400],
-        backgroundColor: colors.primaryGreen,
-        borderColor: colors.primaryGreen,
+        backgroundColor: colors.primaryClr,
+        borderColor: colors.primaryClr,
         tension: 0.4,
-        pointBackgroundColor: colors.primaryGreen,
+        pointBackgroundColor: colors.primaryClr,
         pointBorderColor: "#fff",
         pointRadius: 6,
         pointHoverRadius: 8,
@@ -85,7 +85,7 @@ const Dashboard = () => {
       {
         label: "Threats Detected",
         data: [45, 30, 25],
-        backgroundColor: [colors.primaryGreen, ...colors.lighterGreen],
+        backgroundColor: [colors.primaryClr, ...colors.lighterClr],
         hoverOffset: 4,
       },
     ],
@@ -106,14 +106,14 @@ const Dashboard = () => {
           label: (context) => ` ${context.label}: ${context.raw}%`,
         },
         bodyFont: { size: 10 },
-        bodyColor: colors.primaryGreen,
+        bodyColor: colors.primaryClr,
         padding: 8,
       },
     },
   };
 
   return (
-    <div className="w-full h-fit space-y-4 overflow-hidden">
+    <div className="w-full h-fit space-y-4 overflow-hidde">
       <Total />
       <div className="w-full h-fit animate-slide-down grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Total Scans Line Chart */}
@@ -178,7 +178,7 @@ const Total = () => {
 
   return (
     <>
-      <div className="w-full h-fit grid grid-cols-1 md:grid-cols-3 gap-4 py-1 overflow-hidden">
+      <div className="w-full h-fit grid grid-cols-1 md:grid-cols-3 gap-4 py-1 overflow-hidde">
         {totalTabs.map((t, index) => (
           <div
             key={index}

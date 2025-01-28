@@ -13,6 +13,7 @@ import { homeReadyToSecureType } from "./homePageTypes/homeReadyToSecureType";
 import { homeFAQsType } from "./homePageTypes/homeFAQsType";
 import { homeContactUsType } from "./homePageTypes/homeContactUsType";
 import { dynamicPageType } from "./pagesTypes/dynamicPageType";
+import { navbarLinksType } from "./navbarLinksTypes/navbarLinksType";
 
 export const schema = {
   types: [
@@ -33,5 +34,7 @@ export const schema = {
     homeContactUsType,
 
     dynamicPageType,
+
+    navbarLinksType,
   ],
 };

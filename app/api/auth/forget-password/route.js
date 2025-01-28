@@ -53,7 +53,7 @@ export async function POST(request) {
     await emailTransporter.sendMail({
       from: process.env.GMAIL_USER,
       to: email,
-      subject: "SecZap - Reset Password",
+      subject: "SECZAP - Reset Password",
       html: body,
     });
     return NextResponse.json({
